@@ -8,9 +8,37 @@ import {
 } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import SignUpModal from "./SignUpModal";
+import { signIn } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+
+
 
 
 export default function LoginModal() {
+  const router = useRouter()
+
+  const onSubmit = async (e) => {
+
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget)
+    const userData = Object.fromEntries(formData.entries())
+
+    const { data, error } = await signIn.email({
+      email: userData.email,
+      password: userData.password
+    })
+
+
+    if (data) {
+      router.refresh()
+      router.push('/')
+    }
+    if (error) {
+      alert('something is wrong')
+    }
+    console.log(data, error)
+  }
+
 
 
   return (
@@ -58,7 +86,9 @@ export default function LoginModal() {
 
                 </Modal.Header>
 
-                <Form className="flex flex-col gap-4"
+                <Form
+                onSubmit={onSubmit}
+                className="flex flex-col gap-4"
                 // onSubmit={onSubmit}
                 >
                   <TextField

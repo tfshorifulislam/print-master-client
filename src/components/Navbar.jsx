@@ -7,7 +7,7 @@ import { Button } from '@heroui/react';
 
 const Navbar = () => {
 
-    const user = useSession()
+    const {data:user , isPending} = useSession()
     console.log(user)
 
     const handleSignOut = async () => {

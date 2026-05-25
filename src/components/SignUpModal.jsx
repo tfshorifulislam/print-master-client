@@ -1,33 +1,42 @@
 "use client";
+
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Modal, Form, Input, Label, TextField } from "@heroui/react";
 
 import { Xmark, } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default function signupModal() {
+
+
+export default function SignupModal() {
+     const router = useRouter()
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const formData =  new FormData(e.currentTarget)
+        const formData = new FormData(e.currentTarget)
         const userData = Object.fromEntries(formData.entries())
 
-        const {data, error } = await authClient.signUp.email({
-        name: userData.name,
-        email: userData.email,
-        password: userData.password
-    })
+        const { data, error } = await authClient.signUp.email({
+            name: userData.name,
+            email: userData.email,
+            password: userData.password
+        })
 
-    
-    if(data){
-        redirect('/')
-    }
-    if(error){
-        alert('something is wrong')
-    }
-       console.log(data, error)
+
+
+        if (data) {
+             router.push('/')
+            router.refresh()
+            window.location.reload()
+        }
+
+        if (error) {
+            alert('something is wrong')
+        }
+        console.log(data, error)
+
     }
 
 
@@ -78,7 +87,7 @@ export default function signupModal() {
 
 
                                 <Form className="flex flex-col gap-4"
-                                onSubmit={onSubmit}
+                                    onSubmit={onSubmit}
                                 >
                                     <TextField
                                         isRequired
