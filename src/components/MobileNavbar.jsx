@@ -76,7 +76,6 @@ const MobileNavbar = () => {
                         <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-black dark:bg-white" />
                     )}
                 </Link>
-
                 <MobileProfileDropdown />
             </div>
         </div>

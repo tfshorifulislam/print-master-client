@@ -44,7 +44,7 @@ export default function LoginModal() {
   return (
     <Modal>
       {/* Open Modal Button */}
-      <Button className="cursor-pointer rounded-sm bg-linear-to-r from-[#0055ff] to-[#0024b5] px-4 py-6 text-sm font-medium text-white transition hover:opacity-90 md:rounded-lg  md:text-base">
+      <Button>
         Login
       </Button>
 
