@@ -1,5 +1,7 @@
 'use client'
 import { Magnifier } from '@gravity-ui/icons';
+import LoginModal from './LoginModal';
+
 
 const Navbar = () => {
     return (
@@ -30,9 +32,7 @@ const Navbar = () => {
 
             {/* Right - Login Button */}
             <div className="shrink-0">
-                <button className="cursor-pointer px-5 py-2.5 rounded-sm md:rounded-lg font-medium text-white bg-linear-to-r from-[#0055ff] to-[#0024b5] hover:opacity-90 transition">
-                    Login
-                </button>
+                <LoginModal/>
             </div>
         </nav>
     );
