@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import MobileNavbar from "@/components/MobileNavbar";
 
 const inter = Inter({
   variable: '--font-inter',
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <main>
           <Navbar/>
+          <MobileNavbar/>
           {children}
         </main>
       </body>

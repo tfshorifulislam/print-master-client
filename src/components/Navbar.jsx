@@ -5,7 +5,7 @@ import LoginModal from './LoginModal';
 
 const Navbar = () => {
     return (
-        <nav className="w-full top-0 sticky flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
+        <nav className="w-full top-0 sticky hidden sm:flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
 
             {/* Left - Logo */}
             <div className="shrink-0 cursor-pointer">
