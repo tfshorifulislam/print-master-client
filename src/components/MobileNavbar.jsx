@@ -13,9 +13,9 @@ const MobileNavbar = () => {
 
     const items = [
         { id: "dashboard", icon: RxDashboard, path: "/" },
-        { id: "message", icon: FiMessageCircle, path: "/messages" },
-        { id: "post", icon: HiOutlinePlus, path: "/create" },
-        { id: "notification", icon: FiBell, path: "/notification" },
+        // { id: "message", icon: FiMessageCircle, path: "/messages" },
+        // { id: "post", icon: HiOutlinePlus, path: "/create" },
+        // { id: "notification", icon: FiBell, path: "/notification" },
         { id: "setting", icon: CiSettings, path: "/settings" },
     ];
 
