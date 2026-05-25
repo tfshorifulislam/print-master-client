@@ -2,15 +2,33 @@
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Modal, Form, Input, Label, TextField } from "@heroui/react";
 
-import {
-
-    Xmark,
-} from "@gravity-ui/icons";
+import { Xmark, } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
-import SignUpModal from "./SignUpModal";
-
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function signupModal() {
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const formData =  new FormData(e.currentTarget)
+        const userData = Object.fromEntries(formData.entries())
+
+        const {data, error } = await authClient.signUp.email({
+        name: userData.name,
+        email: userData.email,
+        password: userData.password
+    })
+
+    
+    if(data){
+        redirect('/')
+    }
+    if(error){
+        alert('something is wrong')
+    }
+       console.log(data, error)
+    }
 
 
     return (
@@ -60,7 +78,7 @@ export default function signupModal() {
 
 
                                 <Form className="flex flex-col gap-4"
-                                // onSubmit={onSubmit}
+                                onSubmit={onSubmit}
                                 >
                                     <TextField
                                         isRequired

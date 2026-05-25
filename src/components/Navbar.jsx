@@ -1,9 +1,19 @@
 'use client'
 import { Magnifier } from '@gravity-ui/icons';
 import LoginModal from './LoginModal';
+import { signOut, useSession } from '@/lib/auth-client';
+import { Button } from '@heroui/react';
 
 
 const Navbar = () => {
+
+    const user = useSession()
+    console.log(user)
+
+    const handleSignOut = async () => {
+        await signOut();
+        alert('logout')
+    }
     return (
         <nav className="w-full top-0 sticky hidden sm:flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
 
@@ -32,7 +42,11 @@ const Navbar = () => {
 
             {/* Right - Login Button */}
             <div className="shrink-0">
-                <LoginModal/>
+                {user ?
+                    <Button onClick={handleSignOut}>LogOut</Button>
+                    :
+                    <LoginModal />
+                }
             </div>
         </nav>
     );
