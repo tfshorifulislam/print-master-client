@@ -3,6 +3,7 @@ import { Magnifier } from '@gravity-ui/icons';
 import LoginModal from './LoginModal';
 import { signOut, useSession } from '@/lib/auth-client';
 import { Button } from '@heroui/react';
+import CreatePost from './CreatePost';
 
 
 const Navbar = () => {
@@ -48,6 +49,7 @@ const Navbar = () => {
                     <LoginModal />
                 }
             </div>
+            <CreatePost/>
         </nav>
     );
 };
