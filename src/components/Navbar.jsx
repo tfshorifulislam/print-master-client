@@ -49,7 +49,7 @@ const Navbar = () => {
                         (
                             <Avatar
                                 size="lg"
-                                className="bg-black cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition">
+                                className="bg-linear-to-br from-blue-500 to-indigo-600 cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition">
                             </Avatar>
                         )
                         : user ?
