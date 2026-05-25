@@ -4,11 +4,13 @@ import { useSession } from "@/lib/auth-client";
 import axios from "axios";
 import { useState } from "react";
 import { FaPlus, FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
+import ImagePostLoadingn from "./ImagePostLoader";
 
 export default function CreatePost() {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const reset = () => {
     setText("");
@@ -26,6 +28,7 @@ export default function CreatePost() {
     e.preventDefault();
 
     try {
+       setLoading(true)
       const formData = new FormData();
 
       formData.append("text", text);
@@ -47,6 +50,8 @@ export default function CreatePost() {
       reset();
     } catch (error) {
       console.log(error);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -66,7 +71,7 @@ export default function CreatePost() {
         <form
           onSubmit={onSubmit}
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-          onClick={reset}
+          // onClick={reset}
         >
           {/* Modal Box */}
           <div
@@ -133,11 +138,15 @@ export default function CreatePost() {
               {/* Post */}
               <button
                 type="submit"
-                disabled={!text && !file}
+                disabled={!file || loading}
                 className="flex items-center gap-2 bg-black text-white px-5 py-2 rounded-xl text-sm disabled:opacity-40"
               >
-                <FaPaperPlane size={14} />
-                Post
+                {loading ? (<>
+                  <ImagePostLoadingn />
+                </>)
+                  : (<>
+                    <FaPaperPlane size={14} />Post
+                  </>)}
               </button>
             </div>
           </div>
