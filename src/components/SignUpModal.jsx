@@ -5,13 +5,13 @@ import { Button, Description, FieldError, Modal, Form, Input, Label, TextField }
 
 import { Xmark, } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
-import { authClient } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 
 
 export default function SignupModal() {
-     const router = useRouter()
+    const router = useRouter()
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +27,7 @@ export default function SignupModal() {
 
 
         if (data) {
-             router.push('/')
+            router.push('/')
             router.refresh()
         }
 
@@ -38,6 +38,12 @@ export default function SignupModal() {
 
     }
 
+
+    const handleLoginWithGoogle = async () => {
+        await signIn.social({
+            provider: 'google'
+        })
+    }
 
     return (
         <Modal>
@@ -161,6 +167,7 @@ export default function SignupModal() {
 
                                 {/* Google Login */}
                                 <button
+                                    onSubmit={handleLoginWithGoogle}
                                     type="button"
                                     className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white text-sm font-medium text-black transition hover:bg-gray-50 md:h-14 md:rounded-2xl md:text-base"
                                 >

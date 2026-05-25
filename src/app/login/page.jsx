@@ -31,6 +31,12 @@ export default function Login() {
         console.log(data, error)
     }
 
+    const handleLoginWithGoogle = async () => {
+        await authClient.signIn.social({
+            provider: 'google'
+        })
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 
@@ -90,6 +96,7 @@ export default function Login() {
 
                     {/* GOOGLE LOGIN */}
                     <button
+                        onSubmit={handleLoginWithGoogle}
                         type="button"
                         className="w-full flex items-center justify-center gap-2 border py-3 rounded-xl hover:bg-gray-50"
                     >

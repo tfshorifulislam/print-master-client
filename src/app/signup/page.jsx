@@ -12,7 +12,7 @@ import {
 } from "@heroui/react";
 import { Check } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
-import { authClient } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -41,6 +41,12 @@ export default function SignupPage() {
             alert("Something went wrong");
         }
     };
+
+    const handleLoginWithGoogle = async () => {
+        await signIn.social({
+            provider: 'google'
+        })
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950 px-4">
@@ -125,6 +131,7 @@ export default function SignupPage() {
 
                     {/* Google */}
                     <button
+                        onSubmit={handleLoginWithGoogle}
                         type="button"
                         className="w-full flex items-center justify-center gap-2 border py-3 rounded-xl hover:bg-gray-50"
                     >
