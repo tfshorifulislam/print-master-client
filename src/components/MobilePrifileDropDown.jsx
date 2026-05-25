@@ -48,19 +48,21 @@ export default function MobileProfileDrawer() {
       {open && (
         <div
           onClick={close}
-          className="fixed inset-0 bg-black/40 z-40"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
         />
       )}
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 z-50 bg-white dark:bg-neutral-900 shadow-xl border-l border-neutral-200 dark:border-neutral-800 flex flex-col transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-80 z-50
+        bg-white dark:bg-neutral-900
+        shadow-2xl
+        flex flex-col transition-transform duration-300
+        ${open ? "translate-x-0" : "translate-x-full"}`}
       >
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-200 dark:border-neutral-800">
+        <div className="flex items-center justify-between px-5 py-4 shadow-sm border-neutral-100 dark:border-neutral-800">
           <h2 className="text-sm uppercase text-neutral-500">Account</h2>
           <button onClick={close}>
             <FaTimes />
@@ -70,10 +72,10 @@ export default function MobileProfileDrawer() {
         {/* CONTENT */}
         <div className="flex-1 overflow-y-auto">
 
-          {/* USER INFO (only if logged in) */}
           {user && (
             <>
-              <div className="p-5 flex items-center gap-4 border-b">
+              {/* USER */}
+              <div className="p-5 flex items-center gap-4 shadow-sm border-neutral-100 dark:border-neutral-800">
                 <Avatar size="lg">
                   <Avatar.Image src={user?.user?.image} />
                   <Avatar.Fallback>{userInitial}</Avatar.Fallback>
@@ -81,7 +83,7 @@ export default function MobileProfileDrawer() {
 
                 <div>
                   <p className="font-medium">{userName}</p>
-                  <p className="text-xs text-gray-500">{userEmail}</p>
+                  <p className="text-xs text-gray-500 truncate">{userEmail}</p>
                 </div>
               </div>
 
@@ -92,9 +94,11 @@ export default function MobileProfileDrawer() {
                     key={item.href}
                     href={item.href}
                     onClick={close}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl
+                    hover:bg-neutral-100 dark:hover:bg-neutral-800
+                    transition"
                   >
-                    <item.icon />
+                    <item.icon className="text-neutral-500" />
                     {item.label}
                   </Link>
                 ))}
@@ -102,23 +106,22 @@ export default function MobileProfileDrawer() {
             </>
           )}
 
-          {/* GUEST UI (inside scroll area, not bottom fixed) */}
           {!user && (
-            <div className="p-6 space-y-4">
-              <p className="text-sm text-gray-500">
-                You are not signed in
-              </p>
+            <div className="p-6 text-sm text-gray-500">
+              You are not signed in
             </div>
           )}
         </div>
 
-        {/* BOTTOM ACTIONS */}
-        <div className="p-5 border-t border-neutral-200 dark:border-neutral-800 space-y-3">
+        {/* BOTTOM */}
+        <div className="p-5 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] border-neutral-100 dark:border-neutral-800 space-y-3">
 
           {user ? (
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center justify-center gap-3 py-3 text-red-500 bg-neutral-100 dark:bg-neutral-800 rounded-xl"
+              className="w-full flex items-center justify-center gap-3 py-3
+              text-red-500 bg-neutral-100 dark:bg-neutral-800
+              rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-700"
             >
               <FaSignOutAlt />
               Sign out
@@ -136,25 +139,19 @@ export default function MobileProfileDrawer() {
               <Link
                 href="/signup"
                 onClick={close}
-                className="block text-center py-3 border rounded-xl"
+                className="block text-center py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl"
               >
                 Sign up
               </Link>
 
-              <button
-                onClick={() => {
-                  close();
-                }}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl"
-              >
+              <button className="w-full flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl">
                 <FaGoogle />
-                Continue with Google
+                Google
               </button>
             </>
           )}
 
         </div>
-
       </div>
     </>
   );

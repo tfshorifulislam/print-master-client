@@ -5,6 +5,7 @@ import { signOut, useSession } from '@/lib/auth-client';
 import CreatePost from './CreatePost';
 import ProfileDropdown from './ProfileDropDownIcon';
 import { Avatar } from '@heroui/react';
+import { Link } from '@heroui/react';
 
 
 const Navbar = () => {
@@ -22,8 +23,13 @@ const Navbar = () => {
 
                 {/* Left - Logo */}
                 <div className="shrink-0 cursor-pointer">
-                    <h1 className="text-xl font-bold text-[#0055ff] tracking-wide">
-                        Print-marser
+                    <h1>
+                        <Link
+                            href="/"
+                            className="text-xl no-underline font-bold text-[#0055ff] tracking-wide"
+                        >
+                            Print-marser
+                        </Link>
                     </h1>
                 </div>
 
