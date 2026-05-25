@@ -15,7 +15,7 @@ const Navbar = () => {
         alert('logout')
     }
     return (
-        <nav className="w-full top-0 sticky hidden sm:flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
+        <nav className="w-full top-0 sticky flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
 
             {/* Left - Logo */}
             <div className="shrink-0 cursor-pointer">
@@ -25,7 +25,7 @@ const Navbar = () => {
             </div>
 
             {/* Center - Pinterest style full search */}
-            <div className="flex-1 mx-6">
+            <div className="flex-1 mx-6 hidden sm:block">
                 <div className="relative w-full">
                     <input
                         type="text"
@@ -41,7 +41,7 @@ const Navbar = () => {
             </div>
 
             {/* Right - Login Button */}
-            <div className="shrink-0">
+            <div className="shrink-0 hidden sm:block">
                 {user ?
                     <Button onClick={handleSignOut}>LogOut</Button>
                     :
