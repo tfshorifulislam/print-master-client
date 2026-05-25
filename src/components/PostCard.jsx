@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa";
 
 const PostCard = ({ card }) => {
     return (
-        <div className="group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white cursor-pointer">
+        <div className="group relative  break-inside-avoid mb-3 overflow-hidden cursor-pointer">
 
             {/* Image Wrapper */}
             <div className="relative w-full">
@@ -14,11 +14,11 @@ const PostCard = ({ card }) => {
                     alt={card.text || "post"}
                     width={500}
                     height={700}
-                    className="w-full h-auto object-cover rounded-2xl transition duration-500 group-hover:brightness-90"
+                    className="w-full h-auto object-cover rounded-sm transition duration-500 group-hover:brightness-90"
                 />
 
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 rounded-2xl" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300" />
 
                 {/* Save Button */}
                 <button className="absolute top-4 right-4 bg-red-600 text-white px-5 py-2 rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition duration-300 hover:bg-red-700">
