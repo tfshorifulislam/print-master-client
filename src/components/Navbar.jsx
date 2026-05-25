@@ -6,7 +6,7 @@ const Navbar = () => {
         <nav className="w-full top-0 sticky flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
 
             {/* Left - Logo */}
-            <div className="shrink-0">
+            <div className="shrink-0 cursor-pointer">
                 <h1 className="text-xl font-bold text-[#0055ff] tracking-wide">
                     Print-marser
                 </h1>
@@ -30,7 +30,7 @@ const Navbar = () => {
 
             {/* Right - Login Button */}
             <div className="shrink-0">
-                <button className="px-5 py-2.5 rounded-sm md:rounded-lg font-medium text-white bg-linear-to-r from-[#0055ff] to-[#0024b5] hover:opacity-90 transition">
+                <button className="cursor-pointer px-5 py-2.5 rounded-sm md:rounded-lg font-medium text-white bg-linear-to-r from-[#0055ff] to-[#0024b5] hover:opacity-90 transition">
                     Login
                 </button>
             </div>
