@@ -29,7 +29,6 @@ export default function SignupModal() {
         if (data) {
              router.push('/')
             router.refresh()
-            window.location.reload()
         }
 
         if (error) {
