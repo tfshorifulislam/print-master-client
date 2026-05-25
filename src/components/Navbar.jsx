@@ -49,11 +49,11 @@ const Navbar = () => {
                         (
                             <Avatar
                                 size="lg"
-                                className=" cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition">
+                                className="bg-black cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition">
                             </Avatar>
                         )
                         : user ?
-                            <ProfileDropdown user={user} handleSignOut={handleSignOut} />
+                            <ProfileDropdown handleSignOut={handleSignOut} />
                             :
                             <LoginModal />
                     }

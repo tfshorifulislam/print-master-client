@@ -3,10 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
 import { Avatar, Dropdown } from "@heroui/react";
+import { useSession } from "@/lib/auth-client";
 
-export default function ProfileDropdown({ user, handleSignOut }) {
+export default function ProfileDropdown({ handleSignOut }) {
+
+    const { data: user, isPending } = useSession()
+    console.log(user)
+
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const close = () => setOpen(false);
@@ -22,35 +26,29 @@ export default function ProfileDropdown({ user, handleSignOut }) {
         <Dropdown placement="bottom-end" isOpen={open} onOpenChange={setOpen}>
             {/* Trigger */}
             <Dropdown.Trigger>
-                <Avatar
-                    size="lg"
-                    className="cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition"
-                >
-                    {user?.image ? (
-                        <Avatar.Image src={user.image} alt={user?.name} />
-                    ) : null}
-
-                    <Avatar.Fallback>
-                        {user?.name?.[0]?.toUpperCase() || "U"}
-                    </Avatar.Fallback>
-                </Avatar>
+                <div>
+                    <Avatar size="lg">
+                        <Avatar.Image alt="John Doe" src={user?.user?.image} />
+                        <Avatar.Fallback>{user?.user?.name.charAt(0)}</Avatar.Fallback>
+                    </Avatar>
+                </div>
             </Dropdown.Trigger>
 
             {/* Panel */}
             <Dropdown.Popover className="w-64 p-2 rounded-2xl border bg-white shadow-xl border-neutral-200 dark:bg-neutral-950 dark:border-neutral-800">
 
                 {/* Header */}
-                <div className="flex items-center gap-3 p-3 border-b border-neutral-200 dark:border-neutral-800">
-                    <Avatar size="md">
-                        <Avatar.Image src={user?.image} />
-                        <Avatar.Fallback>
-                            {user?.name?.[0]?.toUpperCase()}
-                        </Avatar.Fallback>
+                <div className="flex cursor-pointer items-center gap-3 p-3 border-b border-neutral-200 dark:border-neutral-800">
+                    <Avatar
+                        size="lg"
+                        className="cursor-pointer">
+                        <Avatar.Image alt="John Doe" src={user?.user?.image} />
+                        <Avatar.Fallback>{user?.user?.name.charAt(0)}</Avatar.Fallback>
                     </Avatar>
 
                     <div className="min-w-0">
-                        <p className="text-sm font-medium truncate">{user?.name}</p>
-                        <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
+                        <p className="text-sm font-medium truncate">{user?.user?.name}</p>
+                        <p className="text-xs text-neutral-500 truncate">{user?.user?.email}</p>
                     </div>
                 </div>
 
