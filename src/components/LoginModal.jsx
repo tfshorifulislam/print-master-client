@@ -1,190 +1,171 @@
 "use client";
-
-import React, { useState } from "react";
-import {  Xmark } from "@gravity-ui/icons";
+import { Check } from "@gravity-ui/icons";
+import { Button, Description, FieldError, Modal, Form, Input, Label, TextField } from "@heroui/react";
 
 import {
-  Button,
-  Input,
-  Label,
-  Modal,
-  Surface,
-  TextField,
-} from "@heroui/react";
+
+  Xmark,
+} from "@gravity-ui/icons";
+import { FcGoogle } from "react-icons/fc";
+import SignUpModal from "./SignUpModal";
+
 
 export default function LoginModal() {
+
 
   return (
     <Modal>
       {/* Open Modal Button */}
-      <Button className="cursor-pointer px-5 py-2.5 rounded-sm md:rounded-lg font-medium text-white bg-linear-to-r from-[#0055ff] to-[#0024b5] hover:opacity-90 transition">
+      <Button className="cursor-pointer rounded-sm bg-gradient-to-r from-[#0055ff] to-[#0024b5] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 md:rounded-lg md:px-5 md:py-2.5 md:text-base">
         Login
       </Button>
 
       {/* Backdrop */}
       <Modal.Backdrop className="bg-black/50 backdrop-blur-sm">
-        <Modal.Container placement="center">
+
+        {/* Container */}
+        <Modal.Container
+          placement="center"
+          className="p-2 sm:p-4"
+        >
 
           {/* Dialog */}
-          <Modal.Dialog className="relative w-full max-w-5xl overflow-hidden rounded-[32px] border-0 bg-white p-0 shadow-2xl">
+          <Modal.Dialog className="relative w-full max-w-[98vw] overflow-hidden rounded-2xl border-0 bg-white shadow-2xl md:max-w-5xl md:rounded-[32px]">
 
             {/* Close Button */}
-            <Modal.CloseTrigger className="absolute right-5 top-5 z-50 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#0055ff] text-[#0024b5] hover:bg-[#0055ff] hover:text-white transition">
+            <Modal.CloseTrigger className="absolute right-3 top-3 z-50 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0055ff] text-[#0024b5] transition hover:bg-[#0055ff] hover:text-white md:right-5 md:top-5 md:h-11 md:w-11">
+
               <Xmark className="size-5" />
+
             </Modal.CloseTrigger>
 
+            {/* Main Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2">
 
               {/* LEFT SIDE */}
-              <div className="p-5 md:p-8">
+              <div className="p-4 sm:p-6 md:p-8">
 
                 {/* Header */}
-                <Modal.Header className="mb-8 flex flex-col items-start p-0">
+                <Modal.Header className="mb-6 flex flex-col items-start p-0 md:mb-8">
 
-                  <Modal.Heading className="text-4xl font-bold text-black">
+                  <Modal.Heading className="pr-10 text-2xl font-bold text-black sm:text-3xl md:text-4xl">
                     Welcome Back
                   </Modal.Heading>
 
-                  <p className="mt-2 text-gray-500">
+                  <p className="mt-2 text-sm text-gray-500 sm:text-base">
                     Login to continue your creative journey.
                   </p>
 
                 </Modal.Header>
 
-                {/* Body */}
-                <Modal.Body className="p-1 md:p-5">
+                <Form className="flex flex-col gap-4"
+                // onSubmit={onSubmit}
+                >
+                  <TextField
+                    isRequired
+                    name="email"
+                    type="email"
+                    validate={(value) => {
+                      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+                        return "Please enter a valid email address";
+                      }
+                      return null;
+                    }}
+                  >
+                    <Label>Email</Label>
+                    <Input placeholder="john@example.com" />
+                    <FieldError />
+                  </TextField>
 
-                  <Surface className="border-0 bg-transparent shadow-none">
+                  <TextField
+                    isRequired
+                    minLength={8}
+                    name="password"
+                    type="password"
+                    validate={(value) => {
+                      if (value.length < 8) {
+                        return "Password must be at least 8 characters";
+                      }
+                      if (!/[A-Z]/.test(value)) {
+                        return "Password must contain at least one uppercase letter";
+                      }
+                      if (!/[0-9]/.test(value)) {
+                        return "Password must contain at least one number";
+                      }
+                      return null;
+                    }}
+                  >
+                    <Label>Password</Label>
+                    <Input placeholder="Enter your password" />
+                    <Description>Must be at least 8 characters with 1 uppercase and 1 number</Description>
+                    <FieldError />
+                  </TextField>
 
-                    <form
-                      className="flex flex-col gap-5"
-                    >
+                  <Button
+                    className='bg-[#0055ff] rounded-sm md:rounded-lg'
+                    type="submit">
+                    <Check />
+                    Submit
+                  </Button>
+                </Form>
 
-                      {/* EMAIL */}
-                      <TextField
-                        isRequired
-                        name="email"
-                        type="email"
-                        validate={(value) => {
-                          if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-                            return "Please enter a valid email address";
-                          }
-                          return null;
-                        }}
-                      >
-                        <Label>Email</Label>
-                        <Input placeholder="john@example.com" />
+                {/* Divider */}
+                <div className="flex items-center gap-4 py-1">
 
-                      </TextField>
+                  <div className="h-px flex-1 bg-gray-300"></div>
 
-                      {/* PASSWORD */}
-                      <TextField
-                        isRequired
-                        minLength={8}
-                        name="password"
-                        type="password"
-                        validate={(value) => {
-                          if (value.length < 8) {
-                            return "Password must be at least 8 characters";
-                          }
-                          if (!/[A-Z]/.test(value)) {
-                            return "Password must contain at least one uppercase letter";
-                          }
-                          if (!/[0-9]/.test(value)) {
-                            return "Password must contain at least one number";
-                          }
-                          return null;
-                        }}
-                      >
-                        <Label>Password</Label>
-                        <Input placeholder="Enter your password" />
-                      </TextField>
+                  <span className="text-xs text-gray-500 sm:text-sm">
+                    OR
+                  </span>
 
-                      {/* Forgot Password */}
-                      <button
-                        type="button"
-                        className="w-fit text-sm font-medium text-[#0055ff] hover:underline"
-                      >
-                        Forgot your password?
-                      </button>
+                  <div className="h-px flex-1 bg-gray-300"></div>
 
-                      {/* Login Button */}
-                      <Button
-                        type="submit"
-                        className="mt-2 rounded-sm md:rounded-lg text-base font-semibold text-white bg-linear-to-r from-[#0055ff] to-[#0024b5] hover:opacity-90 transition"
-                      >
-                        Log in
-                      </Button>
+                </div>
 
-                      {/* Divider */}
-                      <div className="flex items-center gap-4 py-1">
+                {/* Google Login */}
+                <button
+                  type="button"
+                  className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white text-sm font-medium text-black transition hover:bg-gray-50 md:h-14 md:rounded-2xl md:text-base"
+                >
 
-                        <div className="h-px flex-1 bg-gray-300"></div>
+                  <FcGoogle className="text-xl" />
+                  Continue with Google
+                </button>
+                {/* Signup */}
+                <p className="pt-1 text-center text-xs text-gray-600 sm:text-sm">
 
-                        <span className="text-sm text-gray-500">
-                          OR
-                        </span>
+                  Don’t have an account? <SignUpModal />
 
-                        <div className="h-px flex-1 bg-gray-300"></div>
-
-                      </div>
-
-                      {/* Google Login */}
-                      <button
-                        type="button"
-                        className="flex h-14 w-full items-center justify-center gap-3 rounded-2xl border border-gray-300 bg-white font-medium text-black hover:bg-gray-50 transition"
-                      >
-
-                        <img
-                          src="https://www.svgrepo.com/show/475656/google-color.svg"
-                          alt="google"
-                          className="h-5 w-5"
-                        />
-
-                        Continue with Google
-
-                      </button>
-
-                      {/* Signup */}
-                      <p className="pt-1 text-center text-sm text-gray-600">
-
-                        Don’t have an account?{" "}
-
-                        <span className="cursor-pointer font-semibold text-[#0055ff] hover:underline">
-                          Sign up
-                        </span>
-
-                      </p>
-
-                    </form>
-
-                  </Surface>
-
-                </Modal.Body>
-
+                </p>
               </div>
 
               {/* RIGHT SIDE */}
-              <div className="hidden md:flex items-center justify-center bg-[#f7f7f7] p-10">
+              <div className="relative hidden items-center justify-center overflow-hidden bg-[#f7f7f7] p-6 md:flex lg:p-10">
 
-                <div className="text-center">
+                {/* Blur Effects */}
+                <div className="absolute -left-20 -top-20 h-52 w-52 rounded-full bg-[#0055ff]/10 blur-3xl"></div>
+
+                <div className="absolute -bottom-20 -right-20 h-52 w-52 rounded-full bg-[#0024b5]/10 blur-3xl"></div>
+
+                {/* Content */}
+                <div className="relative z-10 text-center">
 
                   {/* QR */}
-                  <div className="mx-auto mb-6 flex h-52 w-52 items-center justify-center rounded-[28px] bg-white shadow-md">
+                  <div className="mx-auto mb-5 flex h-40 w-40 items-center justify-center rounded-3xl bg-white shadow-md lg:h-52 lg:w-52">
 
                     <img
                       src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=print-master"
                       alt="qr"
-                      className="h-40 w-40"
+                      className="h-32 w-32 lg:h-40 lg:w-40"
                     />
 
                   </div>
 
-                  <h2 className="mb-3 text-3xl font-bold text-black">
+                  <h2 className="mb-3 text-2xl font-bold text-black lg:text-3xl">
                     Instant Login
                   </h2>
 
-                  <p className="max-w-xs text-gray-600">
+                  <p className="mx-auto max-w-xs text-sm text-gray-600 lg:text-base">
                     Scan QR code with your phone and instantly
                     access your account securely.
                   </p>
@@ -198,6 +179,7 @@ export default function LoginModal() {
           </Modal.Dialog>
 
         </Modal.Container>
+
       </Modal.Backdrop>
     </Modal>
   );
