@@ -24,11 +24,14 @@ export default function ProfileDropdown({ user, handleSignOut }) {
             <Dropdown.Trigger>
                 <Avatar
                     size="lg"
-                    className=" cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition"
+                    className="cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition"
                 >
-                    <Avatar.Image src={user?.image} />
+                    {user?.image ? (
+                        <Avatar.Image src={user.image} alt={user?.name} />
+                    ) : null}
+
                     <Avatar.Fallback>
-                        {user?.name?.[0]?.toUpperCase()}
+                        {user?.name?.[0]?.toUpperCase() || "U"}
                     </Avatar.Fallback>
                 </Avatar>
             </Dropdown.Trigger>
