@@ -58,7 +58,9 @@ const Navbar = () => {
                             <LoginModal />
                     }
                 </div>
-                <CreatePost />
+                <div className='hidden sm:flex  fixed bottom-6 right-6 bg-black rounded-full'>
+                    <CreatePost />
+                </div>
             </div>
         </nav>
     );

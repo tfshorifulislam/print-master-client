@@ -61,7 +61,7 @@ export default function CreatePost() {
       <button
         disabled={isPending}
         onClick={() => setOpen(true)}
-        className="cursor-pointer fixed bottom-6 right-6 bg-black text-white p-4 rounded-full shadow-lg hover:scale-105 transition"
+        className="cursor-pointer text-white p-4 rounded-full shadow-lg hover:scale-105 transition"
       >
         <FaPlus />
       </button>
