@@ -6,6 +6,7 @@ import axios from 'axios';
 import { FaTh, FaBookmark, FaShare } from 'react-icons/fa';
 import { useSession } from "@/lib/auth-client";
 import { motion } from "framer-motion";
+import Link from 'next/link';
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
@@ -73,21 +74,21 @@ const Profile = () => {
                                 sizes="(max-width: 768px) 112px, 160px"
                                 className="object-cover"
                             />
-                    </div>
+                        </div>
 
-                    {/* RIGHT SIDE */}
-                    <div className="flex-1 w-full">
+                        {/* RIGHT SIDE */}
+                        <div className="flex-1 w-full">
 
-                        {/* TOP */}
-                        <div className="flex flex-col md:flex-row md:items-center gap-4">
+                            {/* TOP */}
+                            <div className="flex flex-col md:flex-row md:items-center gap-4">
 
-                            <h1 className="text-2xl font-light tracking-wide">
-                                {user?.name}
-                            </h1>
+                                <h1 className="text-2xl font-light tracking-wide">
+                                    {user?.name}
+                                </h1>
 
-                            <div className="flex gap-3">
+                                <div className="flex gap-3">
 
-                                <button className="
+                                    <button className="
                                 bg-black 
                                 dark:bg-white 
                                 text-white 
@@ -100,10 +101,10 @@ const Profile = () => {
                                 hover:opacity-90 
                                 transition
                             ">
-                                    Edit Profile
-                                </button>
+                                        Edit Profile
+                                    </button>
 
-                                <button className="
+                                    <button className="
                                 w-10 
                                 h-10 
                                 border 
@@ -119,137 +120,138 @@ const Profile = () => {
                                 dark:hover:text-black 
                                 transition
                             ">
-                                    <FaShare size={14} />
-                                </button>
+                                        <FaShare size={14} />
+                                    </button>
+
+                                </div>
 
                             </div>
 
-                        </div>
-
-                        {/* USERNAME */}
-                        <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
-                            @{user?.userName || "username"}
-                        </p>
-
-                        {/* STATS */}
-                        <div className="flex items-center gap-8 mt-6">
-
-                            <div>
-                                <span className="font-bold text-lg">
-                                    {posts.length}
-                                </span>
-
-                                <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
-                                    posts
-                                </span>
-                            </div>
-
-                            <div>
-                                <span className="font-bold text-lg">
-                                    {user?.save?.length || 0}
-                                </span>
-
-                                <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
-                                    saved
-                                </span>
-                            </div>
-
-                        </div>
-
-                        {/* BIO */}
-                        <div className="mt-5 max-w-md">
-                            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {user?.bio || "No bio added yet."}
+                            {/* USERNAME */}
+                            <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+                                @{user?.userName || "username"}
                             </p>
+
+                            {/* STATS */}
+                            <div className="flex items-center gap-8 mt-6">
+
+                                <div>
+                                    <span className="font-bold text-lg">
+                                        {posts.length}
+                                    </span>
+
+                                    <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
+                                        posts
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <span className="font-bold text-lg">
+                                        {user?.save?.length || 0}
+                                    </span>
+
+                                    <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
+                                        saved
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            {/* BIO */}
+                            <div className="mt-5 max-w-md">
+                                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    {user?.bio || "No bio added yet."}
+                                </p>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
+                {/* TABS */}
+                <div className="relative flex items-center justify-center gap-4 sm:gap-12 border-b border-black/10 dark:border-white/10">
 
-            {/* TABS */}
-            <div className="relative flex items-center justify-center gap-4 sm:gap-12 border-b border-black/10 dark:border-white/10">
+                    <button
+                        onClick={() => setActiveTab("posts")}
+                        className={`relative flex items-center gap-2 px-4 py-3 text-xs uppercase tracking-[3px] transition-colors duration-200 ${activeTab === "posts"
+                            ? "text-white dark:text-black"
+                            : "text-gray-500 hover:text-black dark:hover:text-white"
+                            }`}
+                    >
 
-                <button
-                    onClick={() => setActiveTab("posts")}
-                    className={`relative flex items-center gap-2 px-4 py-3 text-xs uppercase tracking-[3px] transition-colors duration-200 ${activeTab === "posts"
-                        ? "text-white dark:text-black"
-                        : "text-gray-500 hover:text-black dark:hover:text-white"
-                        }`}
-                >
+                        {activeTab === "posts" && (
+                            <motion.div
+                                layoutId="activeTab"
+                                className="absolute inset-0 bg-black dark:bg-white rounded-t-md"
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 30,
+                                }}
+                            />
+                        )}
+
+                        <span className="relative z-10 flex items-center gap-2">
+                            <FaTh size={12} />
+                            Posts
+                        </span>
+
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab("saved")}
+                        className={`relative flex items-center gap-2 px-4 py-3 text-xs uppercase tracking-[3px] transition-colors duration-200 ${activeTab === "saved"
+                            ? "text-white dark:text-black"
+                            : "text-gray-500 hover:text-black dark:hover:text-white"
+                            }`}
+                    >
+
+                        {activeTab === "saved" && (
+                            <motion.div
+                                layoutId="activeTab"
+                                className="absolute inset-0 bg-black dark:bg-white rounded-t-md"
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 400,
+                                    damping: 30,
+                                }}
+                            />
+                        )}
+
+                        <span className="relative z-10 flex items-center gap-2">
+                            <FaBookmark size={12} />
+                            Saved
+                        </span>
+
+                    </button>
+
+                </div>
+
+                {/* POSTS GRID */}
+                <div className="py-1">
 
                     {activeTab === "posts" && (
-                        <motion.div
-                            layoutId="activeTab"
-                            className="absolute inset-0 bg-black dark:bg-white rounded-t-md"
-                            transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 30,
-                            }}
-                        />
-                    )}
 
-                    <span className="relative z-10 flex items-center gap-2">
-                        <FaTh size={12} />
-                        Posts
-                    </span>
+                        posts.length === 0 ? (
 
-                </button>
+                            <div className="h-[400px] flex items-center justify-center">
+                                <p className="text-gray-500 text-sm">
+                                    No posts yet
+                                </p>
+                            </div>
 
-                <button
-                    onClick={() => setActiveTab("saved")}
-                    className={`relative flex items-center gap-2 px-4 py-3 text-xs uppercase tracking-[3px] transition-colors duration-200 ${activeTab === "saved"
-                        ? "text-white dark:text-black"
-                        : "text-gray-500 hover:text-black dark:hover:text-white"
-                        }`}
-                >
+                        ) : (
 
-                    {activeTab === "saved" && (
-                        <motion.div
-                            layoutId="activeTab"
-                            className="absolute inset-0 bg-black dark:bg-white rounded-t-md"
-                            transition={{
-                                type: "spring",
-                                stiffness: 400,
-                                damping: 30,
-                            }}
-                        />
-                    )}
+                            <div className="grid grid-cols-3 md:grid-cols-4 gap-[2px] md:gap-1">
 
-                    <span className="relative z-10 flex items-center gap-2">
-                        <FaBookmark size={12} />
-                        Saved
-                    </span>
+                                {posts.map((post) => (
 
-                </button>
-
-            </div>
-
-            {/* POSTS GRID */}
-            <div className="py-1">
-
-                {activeTab === "posts" && (
-
-                    posts.length === 0 ? (
-
-                        <div className="h-[400px] flex items-center justify-center">
-                            <p className="text-gray-500 text-sm">
-                                No posts yet
-                            </p>
-                        </div>
-
-                    ) : (
-
-                        <div className="grid grid-cols-3 gap-[2px] md:gap-1">
-
-                            {posts.map((post) => (
-
-                                <div
-                                    key={post._id}
-                                    className="
+                                    <Link
+                                        href={`/post/${post._id}`}
+                                        key={post._id}
+                                        className="
                                     relative 
                                     aspect-square 
                                     overflow-hidden 
@@ -257,43 +259,43 @@ const Profile = () => {
                                     bg-gray-100 
                                     dark:bg-neutral-900
                                 "
-                                >
+                                    >
 
-                                    <Image
-                                        src={post.image}
-                                        alt="post"
-                                        fill
-                                        sizes="33vw"
-                                        className="object-cover group-hover:scale-110 transition duration-500"
-                                    />
+                                        <Image
+                                            src={post.image}
+                                            alt="post"
+                                            fill
+                                            sizes="33vw"
+                                            className="object-cover group-hover:scale-110 transition duration-500"
+                                        />
 
-                                    {/* OVERLAY */}
-                                    <div
-                                        className="absolute inset-0  bg-black/0  group-hover:bg-black/40 transition duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                        {/* OVERLAY */}
                                         <div
-                                            className="text-center text-white">
-                                            <p
-                                                className="font-semibold text-sm">
-                                                View
-                                            </p>
+                                            className="absolute inset-0  bg-black/0  group-hover:bg-black/40 transition duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                            <div
+                                                className="text-center text-white">
+                                                <p
+                                                    className="font-semibold text-sm">
+                                                    View
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )
-                )}
+                                    </Link>
+                                ))}
+                            </div>
+                        )
+                    )}
 
-                {/* SAVED */}
-                {activeTab === "saved" && (
-                    <div className="h-100 flex items-center justify-center">
-                        <p className="text-gray-500 text-sm">
-                            Saved items will appear here
-                        </p>
-                    </div>
-                )}
+                    {/* SAVED */}
+                    {activeTab === "saved" && (
+                        <div className="h-100 flex items-center justify-center">
+                            <p className="text-gray-500 text-sm">
+                                Saved items will appear here
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
         </div >
     );
 };
