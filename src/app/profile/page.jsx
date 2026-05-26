@@ -8,12 +8,49 @@ import { useSession } from "@/lib/auth-client";
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const { data: session, isPending } = useSession();
     const user = session?.user;
 
-  
+    // ---------------- FETCH POSTS ----------------
+    useEffect(() => {
 
+        if (!user?.id) return;
+
+        const fetchPosts = async () => {
+            try {
+                setLoading(true);
+
+                const res = await axios.get(
+                    `http://localhost:5000/uploads/user/${user.id}`
+                );
+
+                setPosts(res.data);
+
+                console.log(res.data);
+
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPosts();
+
+    }, [user]);
+
+
+    // ---------------- LOADING STATE ----------------
+    if (isPending || loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                Loading profile...
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-white">
@@ -48,9 +85,7 @@ const Profile = () => {
 
                         <div className="flex gap-6 mt-4">
                             <div>
-                                <p className="font-bold">
-                                    {/* {userPosts?.length || 0} */}
-                                    </p>
+                                <p className="font-bold">{posts.length}</p>
                                 <p className="text-xs text-gray-500">Posts</p>
                             </div>
 
@@ -79,22 +114,20 @@ const Profile = () => {
 
                     <button
                         onClick={() => setActiveTab("posts")}
-                        className={`py-3 flex items-center gap-2 border-b-2 ${
-                            activeTab === "posts"
+                        className={`py-3 flex items-center gap-2 border-b-2 ${activeTab === "posts"
                                 ? "border-black text-black"
                                 : "border-transparent text-gray-400"
-                        }`}
+                            }`}
                     >
                         <FaTh /> Posts
                     </button>
 
                     <button
                         onClick={() => setActiveTab("saved")}
-                        className={`py-3 flex items-center gap-2 border-b-2 ${
-                            activeTab === "saved"
+                        className={`py-3 flex items-center gap-2 border-b-2 ${activeTab === "saved"
                                 ? "border-black text-black"
                                 : "border-transparent text-gray-400"
-                        }`}
+                            }`}
                     >
                         <FaBookmark /> Saved
                     </button>
@@ -105,14 +138,14 @@ const Profile = () => {
                 <div className="px-4 py-8">
 
                     {/* POSTS TAB */}
-                    {/* {activeTab === "posts" && (
-                        userPosts.length === 0 ? (
+                    {activeTab === "posts" && (
+                        posts.length === 0 ? (
                             <p className="text-center text-gray-400 py-10">
                                 No posts found
                             </p>
                         ) : (
                             <div className="columns-2 sm:columns-3 gap-3 space-y-3">
-                                {userPosts.map((post) => (
+                                {posts.map((post) => (
                                     <div key={post._id} className="break-inside-avoid">
                                         <Image
                                             src={post.image}
@@ -125,7 +158,7 @@ const Profile = () => {
                                 ))}
                             </div>
                         )
-                    )} */}
+                    )}
 
                     {/* SAVED TAB */}
                     {activeTab === "saved" && (

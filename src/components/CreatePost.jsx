@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import axios from "axios";
 import { useState } from "react";
 import { FaPlus, FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
@@ -19,7 +19,7 @@ export default function CreatePost() {
   };
 
 
-  const { data: session, isPending } = useSession()
+  const { data: session, isPending } = authClient.useSession()
   console.log(session)
   const user = session?.user
   console.log(user)
@@ -33,6 +33,7 @@ export default function CreatePost() {
 
       formData.append("text", text);
       formData.append("email", user?.email);
+      formData.append("_id", user?._id);
       formData.append("id", user?.id);
       formData.append("name", user?.name);
 
@@ -40,8 +41,7 @@ export default function CreatePost() {
         formData.append("image", file);
       }
 
-      const res = await axios.post(
-        "http://localhost:5000/upload",
+      const res = await axios.post("http://localhost:5000/upload",
         formData
       );
 
