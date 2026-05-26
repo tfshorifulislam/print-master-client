@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "@/lib/auth-client";
@@ -14,6 +13,7 @@ import {
 import { Avatar } from "@heroui/react";
 
 export default function MobileProfileDrawer() {
+
   const { data: user } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -30,9 +30,6 @@ export default function MobileProfileDrawer() {
     close();
   };
 
-  const userName = user?.user?.name || "User";
-  const userEmail = user?.user?.email || "";
-  const userInitial = userName.charAt(0).toUpperCase();
 
   return (
     <>
@@ -40,7 +37,7 @@ export default function MobileProfileDrawer() {
       <div onClick={() => setOpen(true)} className="cursor-pointer">
         <Avatar size="lg">
           <Avatar.Image src={user?.user?.image} />
-          <Avatar.Fallback>{userInitial}</Avatar.Fallback>
+          <Avatar.Fallback>{user?.user?.name?.charAt(0) || "U"}</Avatar.Fallback>
         </Avatar>
       </div>
 
@@ -75,17 +72,19 @@ export default function MobileProfileDrawer() {
           {user && (
             <>
               {/* USER */}
-              <div className="p-5 flex items-center gap-4 shadow-sm border-neutral-100 dark:border-neutral-800">
+              <Link href={'/profile'}
+                onClick={close}
+                className="p-5 flex items-center gap-4 shadow-sm border-neutral-100 dark:border-neutral-800">
                 <Avatar size="lg">
-                  <Avatar.Image src={user?.user?.image} />
-                  <Avatar.Fallback>{userInitial}</Avatar.Fallback>
+                  <Avatar.Image src={user?.image} />
+                  <Avatar.Fallback>{user?.user?.name?.charAt(0) || "U"}</Avatar.Fallback>
                 </Avatar>
 
                 <div>
-                  <p className="font-medium">{userName}</p>
-                  <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                  <p className="font-medium">{user?.user.name}</p>
+                  <p className="text-xs text-gray-500 truncate">{user?.user.email}</p>
                 </div>
-              </div>
+              </Link>
 
               {/* MENU */}
               <div className="p-3 space-y-1">
