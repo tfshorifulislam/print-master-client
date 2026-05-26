@@ -10,26 +10,23 @@ const PostDetails = async ({ params }) => {
     const { id } = await params;
 
     // single post
-    const res = await axios.get(
-        `${process.env.API_URL}/upload/${id}`
-    );
+    const res = await axios.get(`${process.env.API_URL}/upload/${id}`);
     const post = res.data;
+    console.log('post',post)
 
     // session user
     const session = await auth.api.getSession({
         headers: await headers()
     });
-
     const user = session?.user;
+    // console.log(user,'user')
 
     // user other posts (optional endpoint assumed)
-    const postsRes = await axios.get(
-        `${process.env.API_URL}/uploads`
-    );
-
+    const postsRes = await axios.get(`${process.env.API_URL}/uploads`);
     const userPosts = postsRes.data?.filter(
         (p) => p.email === post?.email
     );
+
 
     return (
         <div className="min-h-screen bg-white">
@@ -60,18 +57,18 @@ const PostDetails = async ({ params }) => {
 
                             <Avatar size="lg">
                                 <Avatar.Image
-                                    src={user?.image}
-                                    alt={user?.name}
+                                    src={post?.userImage}
+                                    alt={post?.name}
                                 />
 
-                                <Avatar.Fallback className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-bold">
-                                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                                <Avatar.Fallback className="bg-linear-to-br from-blue-500 to-indigo-600 text-white font-bold">
+                                    {post?.name?.charAt(0)?.toUpperCase()}
                                 </Avatar.Fallback>
                             </Avatar>
 
                             <div>
                                 <h2 className="font-semibold text-lg">
-                                    {user?.name}
+                                    {post?.name}
                                 </h2>
 
                                 <p className="text-xs text-gray-500">
