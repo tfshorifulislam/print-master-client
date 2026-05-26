@@ -5,6 +5,8 @@ import axios from "axios";
 import { useState } from "react";
 import { FaPlus, FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
 import ImagePostLoadingn from "./ImagePostLoader";
+import { useRouter } from "next/navigation";
+
 
 export default function CreatePost() {
   const [open, setOpen] = useState(false);
@@ -24,11 +26,22 @@ export default function CreatePost() {
   const user = session?.user
   console.log(user)
 
+  const router = useRouter()
+
+  const handleOpen = () => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    setOpen(true);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
-       setLoading(true)
+      setLoading(true)
       const formData = new FormData();
 
       formData.append("text", text);
@@ -51,7 +64,7 @@ export default function CreatePost() {
       reset();
     } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       setLoading(false)
     }
   };
@@ -61,7 +74,7 @@ export default function CreatePost() {
       {/* Floating + Button */}
       <button
         disabled={isPending}
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
         className="cursor-pointer text-white p-4 rounded-full shadow-lg hover:scale-105 transition"
       >
         <FaPlus />
@@ -72,7 +85,7 @@ export default function CreatePost() {
         <form
           onSubmit={onSubmit}
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-          // onClick={reset}
+        // onClick={reset}
         >
           {/* Modal Box */}
           <div

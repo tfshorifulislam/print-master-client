@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "@/lib/auth-client";
@@ -11,9 +12,9 @@ import {
   FaGoogle,
 } from "react-icons/fa";
 import { Avatar } from "@heroui/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function MobileProfileDrawer() {
-
   const { data: user } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -30,128 +31,144 @@ export default function MobileProfileDrawer() {
     close();
   };
 
-
   return (
     <>
       {/* Avatar */}
       <div onClick={() => setOpen(true)} className="cursor-pointer">
         <Avatar size="lg">
           <Avatar.Image src={user?.user?.image} />
-          <Avatar.Fallback>{user?.user?.name?.charAt(0) || "U"}</Avatar.Fallback>
+          <Avatar.Fallback>
+            {user?.user?.name?.charAt(0) || "U"}
+          </Avatar.Fallback>
         </Avatar>
       </div>
 
-      {/* Overlay */}
-      {open && (
-        <div
-          onClick={close}
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
-        />
-      )}
+      {/* OVERLAY */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            onClick={close}
+            className="fixed inset-0 bg-black/40 z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 z-50
-        bg-white dark:bg-neutral-900
-        shadow-2xl
-        flex flex-col transition-transform duration-300
-        ${open ? "translate-x-0" : "translate-x-full"}`}
-      >
+      {/* DRAWER */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed rounded-sm right-0 bottom-0 w-60 h-[calc(100vh-64px)]
+            bg-white dark:bg-neutral-900 z-9999
+            shadow-2xl flex flex-col"
+            initial={{ x: 400 }}
+            animate={{ x: 0 }}
+            exit={{ x: 400 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {/* HEADER */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-200 dark:border-neutral-800">
+              <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                Account Menu
+              </h2>
 
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 shadow-sm border-neutral-100 dark:border-neutral-800">
-          <h2 className="text-sm uppercase text-neutral-500">Account</h2>
-          <button onClick={close}>
-            <FaTimes />
-          </button>
-        </div>
-
-        {/* CONTENT */}
-        <div className="flex-1 overflow-y-auto">
-
-          {user && (
-            <>
-              {/* USER */}
-              <Link href={'/profile'}
+              <button
                 onClick={close}
-                className="p-5 flex items-center gap-4 shadow-sm border-neutral-100 dark:border-neutral-800">
+                className="flex items-center justify-center w-10 h-10 rounded-full
+                bg-black text-white dark:bg-white dark:text-black shadow-md"
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            {/* USER */}
+            {user && (
+              <Link
+                href="/profile"
+                onClick={close}
+                className="p-5 flex items-center gap-4 border-b border-neutral-200 dark:border-neutral-800"
+              >
                 <Avatar size="lg">
-                  <Avatar.Image src={user?.image} />
-                  <Avatar.Fallback>{user?.user?.name?.charAt(0) || "U"}</Avatar.Fallback>
+                  <Avatar.Image src={user?.user?.image} />
+                  <Avatar.Fallback>
+                    {user?.user?.name?.charAt(0) || "U"}
+                  </Avatar.Fallback>
                 </Avatar>
 
-                <div>
-                  <p className="font-medium">{user?.user.name}</p>
-                  <p className="text-xs text-gray-500 truncate">{user?.user.email}</p>
+                <div className="min-w-0">
+                  <p className="font-medium truncate">
+                    {user?.user?.name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {user?.user?.email}
+                  </p>
                 </div>
               </Link>
+            )}
 
-              {/* MENU */}
-              <div className="p-3 space-y-1">
-                {menuItems.map((item) => (
+            {/* MENU */}
+            <div className="flex-1 overflow-y-auto p-3 space-y-1">
+              {user ? (
+                menuItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={close}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl
-                    hover:bg-neutral-100 dark:hover:bg-neutral-800
-                    transition"
+                    hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
                   >
                     <item.icon className="text-neutral-500" />
                     {item.label}
                   </Link>
-                ))}
-              </div>
-            </>
-          )}
-
-          {!user && (
-            <div className="p-6 text-sm text-gray-500">
-              You are not signed in
+                ))
+              ) : (
+                <div className="p-3 text-sm text-gray-500">
+                  You are not signed in
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* BOTTOM */}
-        <div className="p-5 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] border-neutral-100 dark:border-neutral-800 space-y-3">
+            {/* BOTTOM */}
+            <div className="p-5 border-t border-neutral-200 dark:border-neutral-800 space-y-3">
+              {user ? (
+                <button
+                  onClick={handleSignOut}
+                  className="w-full flex items-center justify-center gap-3 py-3
+                  text-red-500 bg-neutral-100 dark:bg-neutral-800 rounded-xl"
+                >
+                  <FaSignOutAlt />
+                  Sign out
+                </button>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={close}
+                    className="block text-center py-3 bg-black text-white rounded-xl"
+                  >
+                    Login
+                  </Link>
 
-          {user ? (
-            <button
-              onClick={handleSignOut}
-              className="w-full flex items-center justify-center gap-3 py-3
-              text-red-500 bg-neutral-100 dark:bg-neutral-800
-              rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-700"
-            >
-              <FaSignOutAlt />
-              Sign out
-            </button>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                onClick={close}
-                className="block text-center py-3 bg-black text-white dark:bg-white dark:text-black rounded-xl"
-              >
-                Login
-              </Link>
+                  <Link
+                    href="/signup"
+                    onClick={close}
+                    className="block text-center py-3 border rounded-xl"
+                  >
+                    Sign up
+                  </Link>
 
-              <Link
-                href="/signup"
-                onClick={close}
-                className="block text-center py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl"
-              >
-                Sign up
-              </Link>
-
-              <button className="w-full flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl">
-                <FaGoogle />
-                Google
-              </button>
-            </>
-          )}
-
-        </div>
-      </div>
+                  <button className="w-full flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl">
+                    <FaGoogle />
+                    Google
+                  </button>
+                </>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
