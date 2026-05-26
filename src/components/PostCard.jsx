@@ -1,10 +1,11 @@
 // PostCard.jsx
 import Image from "next/image";
+import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 
 const PostCard = ({ card }) => {
     return (
-        <div className="group relative  break-inside-avoid mb-3 overflow-hidden cursor-pointer">
+        <Link href={`/post/${card._id}`} className="group relative  break-inside-avoid mb-3 overflow-hidden cursor-pointer">
 
             {/* Image Wrapper */}
             <div className="relative w-full">
@@ -21,7 +22,7 @@ const PostCard = ({ card }) => {
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300" />
 
                 {/* Save Button */}
-                <button className="absolute top-4 right-4 bg-red-600 text-white px-5 py-2 rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition duration-300 hover:bg-red-700">
+                <button className="absolute top-4 right-4 bg-[#0055ff] text-white px-5 py-2 rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition duration-300 hover:bg-red-700">
                     Save
                 </button>
 
@@ -38,7 +39,7 @@ const PostCard = ({ card }) => {
 
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

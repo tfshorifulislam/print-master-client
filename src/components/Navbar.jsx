@@ -18,7 +18,7 @@ const Navbar = () => {
         alert('logout')
     }
     return (
-        <nav className="w-full top-0 sticky  bg-white border-b border-gray-200">
+        <nav className="w-full top-0 sticky z-9999 bg-white border-b border-gray-200">
             <div className='w-11/12 mx-auto bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3'>
 
                 {/* Left - Logo */}
@@ -64,7 +64,7 @@ const Navbar = () => {
                             <LoginModal />
                     }
                 </div>
-                <div className='hidden sm:flex  fixed bottom-6 right-6 bg-black rounded-full'>
+                <div className='hidden sm:flex  fixed bottom-6 right-6 bg-[#0055ff] rounded-full'>
                     <CreatePost />
                 </div>
             </div>

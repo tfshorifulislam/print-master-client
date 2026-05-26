@@ -44,10 +44,8 @@ export default function LoginModal() {
   return (
     <Modal>
       {/* Open Modal Button */}
-      <Button className='bg-linear-to-br from-blue-500 to-indigo-600  rounded-sm'>
-        <Link href={'/login'}>
+      <Button className='bg-linear-to-br from-blue-500 to-indigo-600 rounded-sm'>
           Login
-        </Link>
       </Button>
 
       {/* Backdrop */}
