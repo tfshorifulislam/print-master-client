@@ -1,119 +1,139 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
-import { FaTh, FaBookmark, FaUserEdit, FaShare } from 'react-icons/fa';
+import axios from 'axios';
+import { FaTh, FaBookmark, FaShare } from 'react-icons/fa';
 import { useSession } from "@/lib/auth-client";
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
-    const { data: session } = useSession();
+
+    const { data: session, isPending } = useSession();
     const user = session?.user;
+
+  
+
 
     return (
         <div className="min-h-screen bg-white">
 
             <div className="w-full max-w-3xl mx-auto pt-8 pb-20">
 
-                {/* Profile Header - TikTok Style */}
-                <div className="px-5">
+                {/* PROFILE HEADER */}
+                <div className="px-5 flex gap-5">
 
-                    <div className="flex gap-5">
-
-                        {/* Avatar */}
-                        <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
-                            <Image
-                                src={user?.image || '/avatar.png'}
-                                alt={user?.name || 'User'}
-                                fill
-                                className="rounded-full object-cover border-4 border-white shadow-md"
-                            />
-                        </div>
-
-                        {/* User Info */}
-                        <div className="flex-1 mt-2">
-                            <div className="flex items-center gap-3">
-                                <h1 className="text-2xl font-bold text-black">
-                                    {user?.name || "Username"}
-                                </h1>
-                            </div>
-
-                            <p className="text-gray-500 mt-1">
-                                @{user?.userName || "username"}
-                            </p>
-
-                            {/* Stats */}
-                            <div className="flex gap-6 mt-5">
-                                <div>
-                                    <p className="font-semibold text-lg">{user?.post?.length || 0}</p>
-                                    <p className="text-xs text-gray-500">Posts</p>
-                                </div>
-                                <div>
-                                    <p className="font-semibold text-lg">{user?.save?.length || 0}</p>
-                                    <p className="text-xs text-gray-500">Saved</p>
-                                </div>
-                            </div>
-
-                            {/* Bio */}
-                            <p className="mt-4 text-[15px] text-gray-700 leading-relaxed">
-                                {user?.bio || "This user has no bio yet."}
-                            </p>
-                        </div>
+                    <div className="relative w-24 h-24">
+                        <Image
+                            src={user?.image || '/avatar.jpg'}
+                            alt="user"
+                            fill
+                            className="rounded-full object-cover border-4 border-white shadow"
+                        />
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex gap-3 mt-6">
-                        <button className="flex-1 py-2.5 bg-black text-white font-medium rounded-full text-sm hover:bg-gray-800 transition">
-                            Edit Profile
-                        </button>
-                        <button className="px-5 py-2.5 border border-gray-300 rounded-full hover:bg-gray-100 transition">
-                            <FaShare />
-                        </button>
-                    </div>
-                </div>
+                    <div className="flex-1">
 
-                {/* Tabs */}
-                <div className="mt-10 border-b border-gray-200">
-                    <div className="flex justify-center">
+                        <h1 className="text-2xl font-bold">
+                            {user?.name}
+                        </h1>
 
-                        <button
-                            onClick={() => setActiveTab("posts")}
-                            className={`flex-1 max-w-[180px] py-4 flex items-center justify-center gap-2 font-medium transition-all border-b-2 ${activeTab === "posts"
-                                    ? "border-black text-black"
-                                    : "border-transparent text-gray-400"
-                                }`}
-                        >
-                            <FaTh size={18} />
-                            Posts
-                        </button>
+                        <p className="text-gray-500">
+                            @{user?.userName || "username"}
+                        </p>
 
-                        <button
-                            onClick={() => setActiveTab("saved")}
-                            className={`flex-1 max-w-[180px] py-4 flex items-center justify-center gap-2 font-medium transition-all border-b-2 ${activeTab === "saved"
-                                    ? "border-black text-black"
-                                    : "border-transparent text-gray-400"
-                                }`}
-                        >
-                            <FaBookmark size={18} />
-                            Saved
-                        </button>
+                        <p className="text-sm text-gray-700 mt-2">
+                            {user?.bio || "No bio yet"}
+                        </p>
+
+                        <div className="flex gap-6 mt-4">
+                            <div>
+                                <p className="font-bold">
+                                    {/* {userPosts?.length || 0} */}
+                                    </p>
+                                <p className="text-xs text-gray-500">Posts</p>
+                            </div>
+
+                            <div>
+                                <p className="font-bold">{user?.save?.length || 0}</p>
+                                <p className="text-xs text-gray-500">Saved</p>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
 
-                {/* Tab Content */}
+                {/* BUTTONS */}
+                <div className="flex gap-3 mt-6 px-5">
+                    <button className="flex-1 bg-black text-white py-2 rounded-full">
+                        Edit Profile
+                    </button>
+
+                    <button className="px-4 border rounded-full">
+                        <FaShare />
+                    </button>
+                </div>
+
+                {/* TABS */}
+                <div className="mt-8 border-b flex justify-center gap-10">
+
+                    <button
+                        onClick={() => setActiveTab("posts")}
+                        className={`py-3 flex items-center gap-2 border-b-2 ${
+                            activeTab === "posts"
+                                ? "border-black text-black"
+                                : "border-transparent text-gray-400"
+                        }`}
+                    >
+                        <FaTh /> Posts
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab("saved")}
+                        className={`py-3 flex items-center gap-2 border-b-2 ${
+                            activeTab === "saved"
+                                ? "border-black text-black"
+                                : "border-transparent text-gray-400"
+                        }`}
+                    >
+                        <FaBookmark /> Saved
+                    </button>
+
+                </div>
+
+                {/* CONTENT */}
                 <div className="px-4 py-8">
-                    {activeTab === "posts" && (
-                        <div className="text-center text-gray-400 py-12">
-                            Your Posts will appear here
-                        </div>
+
+                    {/* POSTS TAB */}
+                    {/* {activeTab === "posts" && (
+                        userPosts.length === 0 ? (
+                            <p className="text-center text-gray-400 py-10">
+                                No posts found
+                            </p>
+                        ) : (
+                            <div className="columns-2 sm:columns-3 gap-3 space-y-3">
+                                {userPosts.map((post) => (
+                                    <div key={post._id} className="break-inside-avoid">
+                                        <Image
+                                            src={post.image}
+                                            alt="post"
+                                            width={500}
+                                            height={700}
+                                            className="rounded-lg w-full h-auto"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    )} */}
+
+                    {/* SAVED TAB */}
+                    {activeTab === "saved" && (
+                        <p className="text-center text-gray-400 py-10">
+                            Saved items will appear here
+                        </p>
                     )}
 
-                    {activeTab === "saved" && (
-                        <div className="text-center text-gray-400 py-12">
-                            Your Saved items will appear here
-                        </div>
-                    )}
                 </div>
 
             </div>

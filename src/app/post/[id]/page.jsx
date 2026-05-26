@@ -56,7 +56,7 @@ const PostDetails = async ({ params }) => {
                     <div className="flex flex-col gap-6">
 
                         {/* USER */}
-                        <div className="flex items-center gap-3">
+                        <Link href={'/profile'} className="flex items-center gap-3">
 
                             <Avatar size="lg">
                                 <Avatar.Image
@@ -79,7 +79,7 @@ const PostDetails = async ({ params }) => {
                                 </p>
                             </div>
 
-                        </div>
+                        </Link>
 
                         {/* TEXT */}
                         {post?.text && (

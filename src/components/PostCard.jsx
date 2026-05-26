@@ -1,45 +1,44 @@
-// PostCard.jsx
 import Image from "next/image";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 
 const PostCard = ({ card }) => {
     return (
-        <Link href={`/post/${card._id}`} className="group relative  break-inside-avoid mb-3 overflow-hidden cursor-pointer">
+        <div className="relative break-inside-avoid overflow-hidden mb-3 group">
 
-            {/* Image Wrapper */}
-            <div className="relative w-full">
+            {/* IMAGE LINK ONLY */}
+            <Link href={`/post/${card._id}`} className="block relative">
 
                 <Image
                     src={card.image}
                     alt={card.text || "post"}
                     width={500}
                     height={700}
-                    className="w-full h-auto object-cover rounded-sm transition duration-500 group-hover:brightness-90"
+                    className="w-full h-auto object-cover rounded-md transition group-hover:brightness-90"
                 />
 
-                {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300" />
+                {/* overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition" />
 
-                {/* Save Button */}
-                <button className="absolute top-4 right-4 bg-[#0055ff] text-white px-5 py-2 rounded-full text-sm font-semibold opacity-0 group-hover:opacity-100 transition duration-300 hover:bg-red-700">
-                    Save
-                </button>
-
-                {/* Bottom Actions */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition duration-300">
-
-                    <div className="bg-white/90 backdrop-blur-md px-3 py-2 rounded-full text-xs font-medium truncate max-w-[70%]">
+                {/* bottom text */}
+                <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition flex justify-between items-center">
+                    <p className="bg-white/90 px-3 py-1 rounded-full text-xs truncate max-w-[70%]">
                         {card.text || "Creative Design"}
-                    </div>
+                    </p>
 
-                    <button className="bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition">
+                    <div className="bg-white w-9 h-9 rounded-full flex items-center justify-center">
                         <FaHeart size={14} />
-                    </button>
-
+                    </div>
                 </div>
-            </div>
-        </Link>
+
+            </Link>
+
+            {/* SAVE BUTTON (OUTSIDE LINK) */}
+            <button className="absolute top-3 right-3 bg-[#0055ff] text-white px-4 py-2 rounded-full text-sm opacity-0 group-hover:opacity-100 transition">
+                Save
+            </button>
+
+        </div>
     );
 };
 

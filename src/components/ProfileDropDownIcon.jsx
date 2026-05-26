@@ -23,9 +23,9 @@ export default function ProfileDropdown({ handleSignOut }) {
       <Dropdown.Trigger>
         <div className="cursor-pointer transition-transform hover:scale-105 active:scale-95">
           <Avatar size="lg" className="ring-2 ring-offset-2 ring-white dark:ring-neutral-900 shadow-md">
-            <Avatar.Image 
-              alt={user?.user?.name} 
-              src={user?.user?.image} 
+            <Avatar.Image
+              alt={user?.user?.name}
+              src={user?.user?.image}
               className="object-cover"
             />
             <Avatar.Fallback className="bg-linear-to-br from-blue-500 to-indigo-600 text-white font-semibold">
@@ -37,12 +37,20 @@ export default function ProfileDropdown({ handleSignOut }) {
 
       {/* Popover Panel - Awesome Design */}
       <Dropdown.Popover className="w-72 p-2 rounded-xl border border-neutral-200 bg-white shadow-xl dark:bg-neutral-900 dark:border-neutral-700 overflow-hidden">
-        
+
         {/* Profile Header */}
-        <div className="px-5 py-6 flex items-center gap-4 border-b border-neutral-100 dark:border-neutral-800 cursor-pointer">
-          <Avatar size="xl" className="shadow-md">
-            <Avatar.Image alt={user?.user?.name} src={user?.user?.image} />
-            <Avatar.Fallback className="bg-linear-to-br from-blue-500 to-indigo-600 text-white text-2xl font-bold">
+        <Link
+          href={'/profile'}
+          onClick={close}
+          className="px-5 py-6 flex items-center gap-4 border-b border-neutral-100 dark:border-neutral-800 cursor-pointer">
+          <Avatar
+            size="xl"
+            className="shadow-md">
+            <Avatar.Image
+              alt={user?.user?.name}
+              src={user?.user?.image} />
+            <Avatar.Fallback
+              className="bg-linear-to-br from-blue-500 to-indigo-600 text-white text-2xl font-bold">
               {user?.user?.name?.charAt(0) || "U"}
             </Avatar.Fallback>
           </Avatar>
@@ -55,7 +63,7 @@ export default function ProfileDropdown({ handleSignOut }) {
               {user?.user?.email}
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* Menu Items */}
         <div className="py-3 px-2">
