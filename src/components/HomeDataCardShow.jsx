@@ -6,11 +6,11 @@ import PostCard from "./PostCard";
 const HomeDataCardShow = async () => {
 
     const res = await axios.get(`${process.env.API_URL}/uploads`);
-    const data = res.data;
+    const data = res.data.reverse();
 
     return (
         <div
-            className="w-11/12 mx-auto mt-6 columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3">
+            className="w-11/12 mx-auto mt-6 columns-2 sm:columns-4 md:columns-5 lg:columns-6 gap-3">
 
             {
                 data.map((card) => (
