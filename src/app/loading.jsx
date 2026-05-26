@@ -1,26 +1,51 @@
 "use client";
 
-export default function GlobalLoader({ fullScreen = true }) {
-  return (
-    <div
-      className={
-        fullScreen
-          ? "fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-[9999]"
-          : "flex items-center justify-center min-h-[200px]"
-      }
-    >
-      <div className="relative w-16 h-16 flex items-center justify-center">
+import { Skeleton } from "@heroui/react";
 
-        {/* Outer Ring */}
-        <div className="absolute inset-0 rounded-full border-4 border-emerald-500/20" />
+const PinterestLoader = () => {
+    return (
+        <div
+            className="
+                w-[95%]
+                mx-auto
+                mt-6
+                columns-2
+                sm:columns-3
+                md:columns-4
+                lg:columns-5
+                gap-4
+            "
+        >
 
-        {/* Spinner */}
-        <div className="absolute inset-0 rounded-full border-4 border-t-emerald-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+            {
+                Array.from({ length: 15 }).map((_, index) => (
 
-        {/* Dot */}
-        <div className="w-5 h-5 bg-emerald-500 rounded-full animate-pulse" />
+                    <div
+                        key={index}
+                        className="mb-4 break-inside-avoid"
+                    >
 
-      </div>
-    </div>
-  );
-}
+                        {/* Image Skeleton */}
+                        <Skeleton
+                            className={`
+                                w-full
+                                rounded-2xl
+                                ${index % 3 === 0
+                                    ? "h-[320px]"
+                                    : index % 2 === 0
+                                        ? "h-[420px]"
+                                        : "h-[260px]"
+                                }
+                            `}
+                        />
+
+                    </div>
+
+                ))
+            }
+
+        </div>
+    );
+};
+
+export default PinterestLoader;
