@@ -39,7 +39,7 @@ const Navbar = () => {
                         <input
                             type="text"
                             placeholder="Search designs, projects, creators..."
-                            className="w-full py-3 pl-12 pr-4 rounded-sm md:rounded-lg bg-gray-100 text-black placeholder-gray-500 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0055ff] focus:border-[#0055ff] transition"
+                            className="w-full py-2 pl-12 pr-4 rounded-sm md:rounded-lg bg-gray-100 text-black placeholder-gray-500 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0055ff] focus:border-[#0055ff] transition"
                         />
 
                         {/* Search icon */}

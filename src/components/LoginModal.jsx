@@ -1,18 +1,12 @@
 "use client";
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Modal, Form, Input, Label, TextField } from "@heroui/react";
-
-import {
-
-  Xmark,
-} from "@gravity-ui/icons";
+import { Xmark, } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import SignUpModal from "./SignUpModal";
 import { signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-
-
-
+import Link from "next/link";
 
 export default function LoginModal() {
   const router = useRouter()
@@ -50,8 +44,10 @@ export default function LoginModal() {
   return (
     <Modal>
       {/* Open Modal Button */}
-      <Button>
-        Login
+      <Button className='bg-linear-to-br from-blue-500 to-indigo-600  rounded-sm'>
+        <Link href={'/login'}>
+          Login
+        </Link>
       </Button>
 
       {/* Backdrop */}
