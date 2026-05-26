@@ -41,6 +41,7 @@ export default function LoginModal() {
 
 
   const handleLoginWithGoogle = async () => {
+    console.log('clicked')
     await signIn.social({
       provider: 'google'
     })
@@ -94,7 +95,6 @@ export default function LoginModal() {
                 <Form
                   onSubmit={onSubmit}
                   className="flex flex-col gap-4"
-                // onSubmit={onSubmit}
                 >
                   <TextField
                     isRequired
@@ -159,7 +159,7 @@ export default function LoginModal() {
 
                 {/* Google Login */}
                 <button
-                  onSubmit={handleLoginWithGoogle}
+                  onClick={handleLoginWithGoogle}
                   type="button"
                   className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white text-sm font-medium text-black transition hover:bg-gray-50 md:h-14 md:rounded-2xl md:text-base"
                 >

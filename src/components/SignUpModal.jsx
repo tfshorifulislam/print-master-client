@@ -40,6 +40,7 @@ export default function SignupModal() {
 
 
     const handleLoginWithGoogle = async () => {
+        console.log('clicked')
         await signIn.social({
             provider: 'google'
         })
@@ -167,7 +168,7 @@ export default function SignupModal() {
 
                                 {/* Google Login */}
                                 <button
-                                    onSubmit={handleLoginWithGoogle}
+                                    onClick={handleLoginWithGoogle}
                                     type="button"
                                     className="flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white text-sm font-medium text-black transition hover:bg-gray-50 md:h-14 md:rounded-2xl md:text-base"
                                 >

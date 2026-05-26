@@ -13,6 +13,7 @@ import {
 import { Check } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import { authClient, signIn } from "@/lib/auth-client";
+import Link from "next/link";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -115,7 +116,7 @@ export default function SignupPage() {
 
                         <Button
                             type="submit"
-                            className="bg-blue-600 text-white rounded-lg"
+                            className="bg-blue-600 text-white cursor-pointer rounded-lg"
                         >
                             <Check />
                             Create Account
@@ -131,13 +132,21 @@ export default function SignupPage() {
 
                     {/* Google */}
                     <button
-                        onSubmit={handleLoginWithGoogle}
+                        onClick={handleLoginWithGoogle}
                         type="button"
                         className="w-full flex items-center justify-center gap-2 border py-3 rounded-xl hover:bg-gray-50"
                     >
                         <FcGoogle className="text-xl" />
                         Continue with Google
                     </button>
+
+                    {/* LOGIN */}
+                    <p className="text-center text-sm mt-4 text-gray-600">
+                        Don’t have an account?{" "}
+                        <Link href="/login" className="text-blue-500">
+                            Login
+                        </Link>
+                    </p>
                 </div>
 
                 {/* RIGHT SIDE */}

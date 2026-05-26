@@ -32,7 +32,8 @@ export default function Login() {
     }
 
     const handleLoginWithGoogle = async () => {
-        await authClient.signIn.social({
+        console.log('clicked')
+        await signIn.social({
             provider: 'google'
         })
     }
@@ -61,6 +62,7 @@ export default function Login() {
 
                         {/* EMAIL */}
                         <input
+                            name="email"
                             type="email"
                             placeholder="john@example.com"
                             className="w-full border p-3 rounded-xl outline-none"
@@ -69,6 +71,7 @@ export default function Login() {
 
                         {/* PASSWORD */}
                         <input
+                            name="password"
                             type="password"
                             placeholder="Enter your password"
                             className="w-full border p-3 rounded-xl outline-none"
@@ -96,7 +99,7 @@ export default function Login() {
 
                     {/* GOOGLE LOGIN */}
                     <button
-                        onSubmit={handleLoginWithGoogle}
+                        onClick={handleLoginWithGoogle}
                         type="button"
                         className="w-full flex items-center justify-center gap-2 border py-3 rounded-xl hover:bg-gray-50"
                     >
