@@ -60,7 +60,7 @@ export default function MobileProfileDrawer() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed rounded-sm right-0 bottom-0 w-60 h-[calc(100vh-64px)]
+            className="fixed rounded-sm right-0 bottom-0 w-60 h-full
             bg-white dark:bg-neutral-900 z-9999
             shadow-2xl flex flex-col"
             initial={{ x: 400 }}

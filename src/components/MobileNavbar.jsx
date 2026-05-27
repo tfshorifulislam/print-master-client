@@ -20,63 +20,74 @@ const MobileNavbar = () => {
             href: "/notification",
             icon: FiBell,
         },
-        {
-            href: "/settings",
-            icon: CiSettings,
-        },
     ];
 
     const isActive = (path) => pathname === path;
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 sm:hidden">
+        <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white dark:bg-[#0A0A0A] border-t border-gray-100 dark:border-zinc-800/80 px-2 py-1.5 sm:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.03)] dark:shadow-[0_-4px_30px_rgba(0,0,0,0.4)] transition-colors duration-300">
+            <div className="flex items-center justify-between max-w-md mx-auto">
 
-            <div className="flex items-center justify-between px-6 py-2">
-
-                {/* Left + Center Nav Items */}
-                {navItems.slice(0, 2).map((item) => (
-                    <Link
-                        key={item.href}
-                        href={item.href}
-                        className="relative flex flex-col items-center justify-center p-2"
-                    >
-                        <item.icon
-                            className={`text-2xl transition-colors ${isActive(item.href)
-                                ? "text-black dark:text-white"
-                                : "text-neutral-500 dark:text-neutral-400"
+                {/* Left Side Nav Items (Dashboard & Notification) */}
+                <div className="flex items-center justify-around w-2/5">
+                    {navItems.map((item) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className="relative flex flex-col items-center justify-center p-2 group"
+                        >
+                            <item.icon
+                                className={`text-2xl transition-all duration-300 ${
+                                    isActive(item.href)
+                                        ? "text-[#7C3AED] dark:text-[#A78BFA] scale-105"
+                                        : "text-neutral-400 dark:text-neutral-500"
                                 }`}
-                        />
+                            />
 
-                        {isActive(item.href) && (
-                            <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-black dark:bg-white" />
-                        )}
-                    </Link>
-                ))}
+                            {/* একটিভ ইন্ডিকেটর ডট */}
+                            {isActive(item.href) && (
+                                <span className="absolute bottom-0 h-1 w-1 rounded-full bg-[#7C3AED] dark:bg-[#A78BFA]" />
+                            )}
+                        </Link>
+                    ))}
+                </div>
 
-                {/* Create Button (Center Floating Style) */}
-                <div className="relative -mt-10">
-                    <div className="bg-black text-white rounded-full p-1 shadow-lg">
-                        <CreatePost />
+                {/* 🎯 Center Create Button - একদম পারফেক্টলি অ্যালাইনড এবং সমান হাইটে */}
+                <div className="w-1/5 flex items-center justify-center">
+                    <div className="bg-gradient-to-tr from-[#7C3AED] via-[#3B82F6] to-[#A78BFA] p-[2px] rounded-full shadow-md active:scale-95 transition-all duration-200">
+                        <div className="bg-white dark:bg-[#0A0A0A] active:bg-transparent rounded-full p-2.5 text-[#7C3AED] dark:text-white flex items-center justify-center">
+                            <CreatePost />
+                        </div>
                     </div>
                 </div>
 
-                {/* Settings + Profile */}
-                <Link
-                    href="/settings"
-                    className="relative flex flex-col items-center justify-center p-2"
-                >
-                    <CiSettings
-                        className={`text-2xl transition-colors ${isActive("/settings")
-                            ? "text-black dark:text-white"
-                            : "text-neutral-500 dark:text-neutral-400"
+                {/* Right Side Items (Settings & Profile) */}
+                <div className="flex items-center justify-around w-2/5">
+                    {/* Settings Link */}
+                    <Link
+                        href="/settings"
+                        className="relative flex flex-col items-center justify-center p-2 group"
+                    >
+                        <CiSettings
+                            className={`text-2xl transition-all duration-300 ${
+                                isActive("/settings")
+                                    ? "text-[#7C3AED] dark:text-[#A78BFA] scale-105"
+                                    : "text-neutral-400 dark:text-neutral-500"
                             }`}
-                    />
+                        />
 
-                    {isActive("/settings") && (
-                        <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-black dark:bg-white" />
-                    )}
-                </Link>
-                <MobileProfileDropdown />
+                        {/* একটিভ ইন্ডিকেটর ডট */}
+                        {isActive("/settings") && (
+                            <span className="absolute bottom-0 h-1 w-1 rounded-full bg-[#7C3AED] dark:bg-[#A78BFA]" />
+                        )}
+                    </Link>
+
+                    {/* Profile Dropdown */}
+                    <div className="flex items-center justify-center">
+                        <MobileProfileDropdown />
+                    </div>
+                </div>
+
             </div>
         </div>
     );
