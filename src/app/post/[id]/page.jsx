@@ -36,10 +36,10 @@ const PostDetails = async ({ params }) => {
 
     return (
         <div className="min-h-screen bg-white">
-            <div className="w-[95%] max-w-6xl mx-auto py-10">
+            <div className="w-11/12  mx-auto py-10">
 
                 {/* MAIN SECTION */}
-                <div className="grid md:grid-cols-2 gap-10">
+                <div className="grid max-w-6xl mx-auto md:grid-cols-2 gap-10">
 
                     {/* LEFT - IMAGE */}
                     <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-50">
