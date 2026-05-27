@@ -28,7 +28,6 @@ const Profile = async ({ params }) => {
             </div>
         );
     }
-
     const user = await userRes.json();
 
     const postsRes = await axios.get(`${process.env.API_URL}/uploads`);
@@ -39,7 +38,6 @@ const Profile = async ({ params }) => {
     );
 
     const username = user?.email ? user.email.split('@')[0] : 'username';
-
     const isOwnProfile = currentUserEmail === user?.email;
 
     return (
