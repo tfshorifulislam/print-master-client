@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { signOut, useSession } from "@/lib/auth-client";
+import { signIn, signOut, useSession } from "@/lib/auth-client";
 import {
   FaUser,
   FaCog,
@@ -30,6 +30,14 @@ export default function MobileProfileDrawer() {
     await signOut();
     close();
   };
+
+  const handleLoginWithGoogle = async () => {
+    console.log('clicked')
+    await signIn.social({
+      provider: 'google'
+    })
+  }
+
 
   return (
     <>
@@ -159,7 +167,9 @@ export default function MobileProfileDrawer() {
                     Sign up
                   </Link>
 
-                  <button className="w-full flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl">
+                  <button
+                  onClick={handleLoginWithGoogle}
+                  className="w-full flex items-center justify-center gap-2 py-3 bg-red-500 text-white rounded-xl">
                     <FaGoogle />
                     Google
                   </button>
