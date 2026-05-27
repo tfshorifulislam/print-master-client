@@ -7,9 +7,7 @@ import ProfileDropdown from './ProfileDropDownIcon';
 import { Avatar } from '@heroui/react';
 import { Link } from '@heroui/react';
 
-
 const Navbar = () => {
-
     const { data: user, isPending } = useSession()
     console.log(user)
 
@@ -17,56 +15,66 @@ const Navbar = () => {
         await signOut();
         alert('logout')
     }
-    return (
-        <nav className="w-full top-0 sticky z-9999 bg-white border-b border-gray-200">
-            <div className='w-11/12 mx-auto bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3'>
 
-                {/* Left - Logo */}
-                <div className="shrink-0 cursor-pointer">
+    return (
+        <nav className="w-full top-0 sticky z-[9999] bg-white dark:bg-[#0A0A0A] border-b border-gray-100 dark:border-zinc-800 transition-colors duration-200 hidden sm:flex">
+            <div className='w-11/12 mx-auto flex items-center justify-between py-3.5 gap-4'>
+
+                <div className="shrink-0 cursor-pointer select-none">
                     <h1>
                         <Link
                             href="/"
-                            className="text-xl no-underline font-bold text-[#0055ff] tracking-wide"
+                            className="text-xl md:text-2xl no-underline font-extrabold bg-gradient-to-r from-[#3B82F6] to-[#7C3AED] bg-clip-text text-transparent tracking-tight"
                         >
-                            Print-marser
+                            Print-master
                         </Link>
                     </h1>
                 </div>
 
-                {/* Center - Pinterest style full search */}
-                <div className="flex-1 mx-6 hidden sm:block">
+                <div className="flex-1 max-w-2xl mx-2 md:mx-6">
                     <div className="relative w-full">
                         <input
                             type="text"
                             placeholder="Search designs, projects, creators..."
-                            className="w-full py-2 pl-12 pr-4 rounded-sm md:rounded-lg bg-gray-100 text-black placeholder-gray-500 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0055ff] focus:border-[#0055ff] transition"
+                            className="w-full py-2 pl-12 pr-4 rounded-full bg-gray-50 dark:bg-zinc-900 text-[#0A0A0A] dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 border border-transparent focus:outline-none focus:bg-white dark:focus:bg-[#0A0A0A] focus:ring-2 focus:ring-[#7C3AED] transition-all text-sm"
                         />
 
-                        {/* Search icon */}
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
-                            <Magnifier />
+
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500">
+                            <Magnifier className="w-4 h-4" />
                         </div>
                     </div>
                 </div>
 
-                {/* Right - Login Button */}
-                <div className="shrink-0 hidden sm:flex justify-center items-center">
-                    {isPending ?
-                        (
-                            <Avatar
-                                size="lg"
-                                className="bg-linear-to-br from-blue-500 to-indigo-600 cursor-pointer ring-2 ring-transparent hover:ring-emerald-500 transition">
-                            </Avatar>
-                        )
-                        : user ?
-                            <ProfileDropdown handleSignOut={handleSignOut} />
-                            :
-                            <LoginModal />
+
+                <div className="shrink-0 flex items-center gap-3 md:gap-4">
+
+
+                    {
+                        user &&
+                        <div className='bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-full px-2py-2 font-semibold text-sm transition shadow-sm cursor-pointer flex items-center justify-center'>
+                            <CreatePost />
+                        </div>
                     }
+
+
+                    <div className="flex items-center justify-center">
+                        {isPending ? (
+                            <Avatar
+                                size="md"
+                                className="bg-gradient-to-br from-[#7C3AED] to-[#3B82F6] cursor-pointer animate-pulse"
+                            />
+                        ) : user ? (
+                            <ProfileDropdown handleSignOut={handleSignOut} />
+                        ) : (
+                            <div className="bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm font-semibold rounded-full transition shadow-sm">
+                                <LoginModal />
+                            </div>
+                        )}
+                    </div>
+
                 </div>
-                <div className='hidden sm:flex  fixed bottom-6 right-6 bg-[#0055ff] rounded-full'>
-                    <CreatePost />
-                </div>
+
             </div>
         </nav>
     );
