@@ -10,15 +10,7 @@ import {
 const PostCard = ({ card }) => {
     return (
         <div
-            className="
-                border-b 
-                border-gray-100 dark:border-zinc-900
-                p-5 
-                bg-white dark:bg-black
-                hover:bg-gray-50/50 dark:hover:bg-zinc-950/40
-                transition-colors duration-300
-            "
-        >
+            className="border-b  border-gray-100 dark:border-zinc-900 p-5 bg-white dark:bg-black hover:bg-gray-50/50 dark:hover:bg-zinc-950/40 transition-colors duration-300">
             {/* HEADER */}
             <div className="flex gap-3 items-center mb-3">
                 <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-zinc-800" />
@@ -33,24 +25,26 @@ const PostCard = ({ card }) => {
             </div>
 
             {/* TEXT & MEDIA */}
-            <Link href={`/post/${card._id || 1}`}>
+            <div>
                 <p className="text-[15px] text-gray-800 dark:text-zinc-200 mb-3 leading-relaxed">
                     {card.text || "No caption available"}
                 </p>
 
                 {/* IMAGE */}
-                {card.image && (
-                    <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-zinc-900 shadow-sm">
-                        <Image
-                            src={card.image}
-                            alt="post image"
-                            width={800}
-                            height={600}
-                            className="w-full object-cover max-h-[450px] hover:scale-[1.01] transition-transform duration-500"
-                        />
-                    </div>
-                )}
-            </Link>
+                <Link href={`/post/${card._id}`}>
+                    {card.image && (
+                        <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-zinc-900 shadow-sm">
+                            <Image
+                                src={card.image}
+                                alt="post image"
+                                width={800}
+                                height={600}
+                                className="w-full object-cover max-h-113 hover:scale-[1.01] transition-transform duration-500"
+                            />
+                        </div>
+                    )}
+                </Link>
+            </div>
 
             {/* ================= RE-DESIGNED UNIQUE ACTION BAR ================= */}
             <div className="

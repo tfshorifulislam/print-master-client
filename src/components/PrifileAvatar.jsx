@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Avatar, Drawer } from "@heroui/react";
+import { Avatar, Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,10 +15,20 @@ import {
 } from "react-icons/bi";
 
 import { MdDashboardCustomize } from "react-icons/md";
+import { signOut, useSession } from "@/lib/auth-client";
+
 
 export function ProfileAvatar() {
-  const pathname = usePathname();
 
+  const {data: session} = useSession()
+  console.log(session)
+
+  const handleSignOut = async () => {
+    await signOut();
+    alert('logout')
+  }
+
+  const pathname = usePathname();
   const navItems = [
     { name: "Home", icon: BiHomeCircle, path: "/" },
     { name: "Search", icon: BiSearch, path: "/search" },
@@ -67,10 +77,9 @@ export function ProfileAvatar() {
                       className={`
                         flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition
 
-                        ${
-                          isActive
-                            ? "bg-zinc-200 dark:bg-zinc-900 font-semibold"
-                            : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                        ${isActive
+                          ? "bg-zinc-200 dark:bg-zinc-900 font-semibold"
+                          : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
                         }
                       `}
                     >
@@ -89,7 +98,12 @@ export function ProfileAvatar() {
 
               </nav>
             </Drawer.Body>
-
+            <Button
+              onClick={handleSignOut}
+              variant="danger"
+              className='w-full rounded-lg'>
+              Logout
+            </Button>
           </Drawer.Dialog>
         </Drawer.Content>
       </Drawer.Backdrop>
