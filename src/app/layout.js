@@ -1,13 +1,19 @@
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import MobileNavbar from "@/components/MobileNavbar";
+import { Providers } from "./providers";
+import Asidebar from "@/components/Asidebar";
+import RightSideBar from "@/components/RightSideBar";
+import MobileScreenBottomNavbar from "@/components/MobileScreenBottomNavbar";
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin']
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-})
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -18,14 +24,21 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <main>
-          <Navbar/>
-          <MobileNavbar/>
-          {children}
-        </main>
+      <body className="min-h-screen bg-background text-foreground">
+        <Providers>
+          <div className="flex max-w-360 mx-auto">
+            <Asidebar />
+            <main
+              className="flex-1 min-h-screen">
+              {children}
+            </main>
+            <MobileScreenBottomNavbar />
+            <RightSideBar />
+          </div>
+        </Providers>
       </body>
     </html>
   );
