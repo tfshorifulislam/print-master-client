@@ -10,7 +10,7 @@ const HomeDataCardShow = async () => {
 
     return (
         <div
-            className="w-11/12 mx-auto mt-6 columns-2 sm:columns-4 md:columns-5 lg:columns-6 gap-3">
+            className="w-11/12 mx-auto mt-6 columns-2  md:columns-3 lg:columns-4 gap-3">
 
             {
                 data.map((card) => (
