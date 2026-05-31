@@ -14,8 +14,8 @@ import {
 } from "react-icons/bi";
 
 import { MdDashboardCustomize } from "react-icons/md";
-import { ProfileAvatar } from "./ProfileAvatar";
-import { ThemeSwitch } from "./ToggleTheme";
+import { ProfileAvatar } from "./PrifileAvatar";
+import { ThemeSwitch } from "./ThemeSwitch";
 
 const Asidebar = () => {
   const pathname = usePathname();
