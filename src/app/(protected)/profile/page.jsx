@@ -1,24 +1,27 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import axios from "axios";
 import { useSession } from "@/lib/auth-client";
-import IsPendingLoading from '@/components/IsPendingLoading';
-import { 
-    FaRegComment, 
-    FaRetweet, 
-    FaRegHeart, 
-    FaRegBookmark, 
+import IsPendingLoading from "@/components/IsPendingLoading";
+
+import {
+    FaRegComment,
+    FaRetweet,
+    FaRegHeart,
+    FaRegBookmark,
     FaArrowUpFromBracket,
-    FaEllipsis 
+    FaEllipsis,
+    FaCalendarDays,
+    FaLink,
+    FaLocationDot,
 } from "react-icons/fa6";
-import { FaCalendarDays, FaLink, FaLocationDot } from "react-icons/fa6";
 
 const Profile = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
 
     const { data: session, isPending } = useSession();
     const user = session?.user;
@@ -29,24 +32,20 @@ const Profile = () => {
         const fetchPosts = async () => {
             try {
                 setLoading(true);
-                setError(null);
 
-                // ✅ Use NEXT_PUBLIC_ prefix
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+                const apiUrl =
+                    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
                 const res = await axios.get(`${apiUrl}/uploads`);
 
-                const userPosts = res.data.filter(post => 
-                    post.email === user.email && 
-                    post.name === user.name
+                const userPosts = res.data.filter(
+                    (post) => post.email === user.email
                 );
 
                 setPosts(userPosts);
             } catch (err) {
-                console.error("Axios Error:", err);
-                setError(err.response?.status === 404 
-                    ? "API endpoint not found. Check your backend URL." 
-                    : "Failed to load posts");
+                console.error(err);
+                setError("Failed to load posts");
             } finally {
                 setLoading(false);
             }
@@ -59,126 +58,231 @@ const Profile = () => {
         return <IsPendingLoading />;
     }
 
-    const username = user?.email ? user.email.split('@')[0] : 'username';
+    const username = user?.email
+        ? user.email.split("@")[0]
+        : "username";
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white border-x border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
+        <div className="min-h-screen bg-zinc-50 dark:bg-black text-black dark:text-white">
 
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-black/80 border-b border-zinc-200 dark:border-zinc-800 h-14 flex items-center px-4">
-                <div>
-                    <h1 className="font-bold text-xl">{user?.name}</h1>
-                    <p className="text-xs text-zinc-500 -mt-1">{posts.length} Posts</p>
+
+            {/* TOP HEADER */}
+            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
+                <div className="flex flex-col">
+                    <h1 className="text-xl font-bold tracking-tight leading-tight">
+                        {user?.name || "User Name"}
+                    </h1>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                        {posts.length} Posts
+                    </span>
                 </div>
             </div>
 
-            {/* Banner */}
-            <div className="h-52 bg-gradient-to-r from-zinc-800 to-black relative">
-                {user?.banner && (
-                    <Image src={user.banner} alt="banner" fill className="object-cover" />
-                )}
-            </div>
+            {/* HERO SECTION */}
+            <div className="w-full">
 
-            {/* Avatar + Button */}
-            <div className="px-4 flex justify-between items-start -mt-14 relative z-10">
-                <div className="w-28 h-28 rounded-full border-[4px] border-white dark:border-black overflow-hidden bg-zinc-200">
-                    <Image
-                        src={user?.image || "/avatar.jpg"}
-                        alt={user?.name}
-                        width={112}
-                        height={112}
-                        className="object-cover"
-                    />
+                {/* BANNER */}
+                <div className="w-full aspect-[3/1] bg-zinc-200 dark:bg-zinc-800 relative overflow-hidden">
+                    {user?.banner && (
+                        <Image
+                            src={user.banner}
+                            alt="banner"
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    )}
+
+                    {/* soft overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
-                <button className="mt-4 px-6 py-2 rounded-full border border-zinc-300 dark:border-zinc-700 font-bold text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900">
-                    Edit Profile
-                </button>
-            </div>
+                {/* AVATAR + ACTIONS */}
+                <div className="px-4 flex justify-between relative">
 
-            {/* User Information */}
-            <div className="px-4 mt-3">
-                <h2 className="text-2xl font-bold">{user?.name}</h2>
-                <p className="text-zinc-500">@{username}</p>
+                    {/* AVATAR */}
+                    <div className="-mt-10 relative w-24 h-24 sm:w-32 sm:h-32">
+                        <div className="absolute inset-0 rounded-full border-4 border-white dark:border-black overflow-hidden bg-black">
+                            <Image
+                                src={user?.image || "/avatar.jpg"}
+                                alt="avatar"
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                        </div>
+                    </div>
 
-                <p className="mt-3 text-[15px] leading-relaxed">
-                    {user?.bio || "Building amazing projects 🚀 | Full Stack Developer"}
-                </p>
+                    {/* ACTION BUTTONS */}
+                    <div className="mt-3 flex items-center gap-2">
 
-                <div className="flex flex-wrap gap-x-5 gap-y-1 mt-3 text-[15px] text-zinc-500">
-                    <span className="flex items-center gap-1"><FaLocationDot /> Bangladesh</span>
-                    <span className="flex items-center gap-1"><FaLink className="text-sky-500" /> yoursite.com</span>
-                    <span className="flex items-center gap-1"><FaCalendarDays /> Joined May 2025</span>
+                        <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                            <FaEllipsis />
+                        </button>
+
+                        <button className="px-4 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                            Message
+                        </button>
+
+                        <button className="px-4 py-1.5 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold">
+                            Follow
+                        </button>
+
+                    </div>
+
                 </div>
 
-                <div className="flex gap-6 mt-4 text-[15px]">
-                    <div><span className="font-bold">142</span><span className="text-zinc-500 ml-1">Following</span></div>
-                    <div><span className="font-bold">8.4K</span><span className="text-zinc-500 ml-1">Followers</span></div>
+                {/* USER INFO */}
+                <div className="px-4 mt-3">
+
+                    <h2 className="text-xl font-extrabold">
+                        {user?.name}
+                    </h2>
+
+                    <span className="text-zinc-500 text-[15px]">
+                        @{username}
+                    </span>
+
+                    <p className="mt-3 text-[15px] text-zinc-900 dark:text-zinc-100 whitespace-pre-wrap">
+                        {user?.bio || "Digital Creator 🎬 · Welcome to my profile ✨"}
+                    </p>
+
+                    {/* META */}
+                    <div className="flex flex-wrap gap-4 mt-3 text-[14px] text-zinc-500">
+
+                        <span className="flex items-center gap-1">
+                            <FaLocationDot /> Global
+                        </span>
+
+                        <span className="flex items-center gap-1 text-sky-500">
+                            <FaLink /> domain.com
+                        </span>
+
+                        <span className="flex items-center gap-1">
+                            <FaCalendarDays /> Joined 2026
+                        </span>
+
+                    </div>
+
+                    {/* STATS */}
+                    <div className="flex gap-5 mt-4 text-[14px] text-zinc-500 pb-4">
+
+                        <span>
+                            <b className="text-black dark:text-white">{posts.length}</b> Posts
+                        </span>
+
+                        <span>
+                            <b className="text-black dark:text-white">142</b> Following
+                        </span>
+
+                        <span>
+                            <b className="text-black dark:text-white">8.4K</b> Followers
+                        </span>
+
+                    </div>
+
                 </div>
+
             </div>
 
-            {/* Tab */}
-            <div className="border-b border-zinc-200 dark:border-zinc-800 mt-6">
-                <div className="text-center py-4 font-bold border-b-4 border-black dark:border-white w-fit mx-auto">
-                    Posts
-                </div>
+            {/* Posts Header */}
+            <div className="mt-8 mb-4">
+                <h2 className="text-2xl font-bold">
+                    Recent Posts
+                </h2>
             </div>
+
+            {/* Empty */}
+            {!error && posts.length === 0 && (
+                <div className="bg-white dark:bg-zinc-900 rounded-3xl p-10 text-center border border-zinc-200 dark:border-zinc-800">
+                    No posts yet
+                </div>
+            )}
 
             {/* Posts */}
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
-                {error && <div className="text-red-500 text-center py-10">{error}</div>}
+            <div className="space-y-5 pb-10">
+                {posts.map((post) => (
+                    <div
+                        key={post._id}
+                        className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden"
+                    >
+                        <div className="p-5">
 
-                {posts.length === 0 && !error ? (
-                    <div className="text-center py-20 text-zinc-500">No posts yet</div>
-                ) : (
-                    posts.map((post) => (
-                        <div key={post._id} className="p-4 hover:bg-zinc-50 dark:hover:bg-zinc-950/50 transition">
                             <div className="flex gap-3">
-                                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                                    <Image
-                                        src={user?.image || "/avatar.jpg"}
-                                        alt="avatar"
-                                        width={40}
-                                        height={40}
-                                        className="object-cover"
-                                    />
-                                </div>
+
+                                <Image
+                                    src={user?.image || "/avatar.jpg"}
+                                    alt="avatar"
+                                    width={48}
+                                    height={48}
+                                    className="rounded-full object-cover"
+                                    unoptimized
+                                />
 
                                 <div className="flex-1">
+
                                     <div className="flex items-center gap-2">
-                                        <span className="font-bold">{user?.name}</span>
-                                        <span className="text-zinc-500">@{username}</span>
-                                        <span className="text-zinc-500">· 2h</span>
+                                        <h3 className="font-bold">
+                                            {user?.name}
+                                        </h3>
+
+                                        <span className="text-zinc-500 text-sm">
+                                            @{username}
+                                        </span>
+
                                         <FaEllipsis className="ml-auto cursor-pointer" />
                                     </div>
 
-                                    <p className="text-[15px] mt-1 leading-normal">{post.text}</p>
-
-                                    {post.image && (
-                                        <div className="mt-3 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                                            <Image
-                                                src={post.image}
-                                                alt="post"
-                                                width={700}
-                                                height={450}
-                                                className="w-full object-cover"
-                                            />
-                                        </div>
-                                    )}
-
-                                    <div className="flex justify-between max-w-md mt-4 text-zinc-500">
-                                        <button className="flex items-center gap-2 hover:text-sky-500"><FaRegComment size={19} /> <span>{post.comments || 0}</span></button>
-                                        <button className="flex items-center gap-2 hover:text-green-500"><FaRetweet size={19} /></button>
-                                        <button className="flex items-center gap-2 hover:text-pink-500"><FaRegHeart size={19} /> <span>{post.likes || 0}</span></button>
-                                        <button className="hover:text-sky-500"><FaRegBookmark size={19} /></button>
-                                        <button className="hover:text-sky-500"><FaArrowUpFromBracket size={19} /></button>
-                                    </div>
+                                    <p className="mt-3 whitespace-pre-wrap">
+                                        {post.text}
+                                    </p>
                                 </div>
                             </div>
+
+                            {/* POST IMAGE */}
+                            {post?.image && (
+                                <div className="mt-5 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700">
+                                    <Image
+                                        src={post.image}
+                                        alt="Post Image"
+                                        width={1000}
+                                        height={700}
+                                        className="w-full h-auto object-cover"
+                                        unoptimized
+                                    />
+                                </div>
+                            )}
+
+                            <div className="flex justify-between mt-5 text-zinc-500 max-w-lg">
+
+                                <button className="flex items-center gap-2 hover:text-sky-500 transition">
+                                    <FaRegComment />
+                                    <span>{post.comments || 0}</span>
+                                </button>
+
+                                <button className="hover:text-green-500 transition">
+                                    <FaRetweet />
+                                </button>
+
+                                <button className="flex items-center gap-2 hover:text-pink-500 transition">
+                                    <FaRegHeart />
+                                    <span>{post.likes || 0}</span>
+                                </button>
+
+                                <button className="hover:text-yellow-500 transition">
+                                    <FaRegBookmark />
+                                </button>
+
+                                <button className="hover:text-sky-500 transition">
+                                    <FaArrowUpFromBracket />
+                                </button>
+
+                            </div>
                         </div>
-                    ))
-                )}
+                    </div>
+                ))}
             </div>
+
         </div>
     );
 };
