@@ -5,18 +5,13 @@ import Image from "next/image";
 import axios from "axios";
 import { useSession } from "@/lib/auth-client";
 import IsPendingLoading from "@/components/IsPendingLoading";
-
 import {
-    FaRegComment,
-    FaRetweet,
-    FaRegHeart,
-    FaRegBookmark,
-    FaArrowUpFromBracket,
     FaEllipsis,
     FaCalendarDays,
     FaLink,
     FaLocationDot,
 } from "react-icons/fa6";
+import { FiHeart, FiMessageCircle, FiRepeat, FiSend } from "react-icons/fi";
 
 const Profile = () => {
     const [posts, setPosts] = useState([]);
@@ -25,6 +20,7 @@ const Profile = () => {
 
     const { data: session, isPending } = useSession();
     const user = session?.user;
+    const currentUserEmail = user?.email;
 
     useEffect(() => {
         if (!user?.email) return;
@@ -61,6 +57,8 @@ const Profile = () => {
     const username = user?.email
         ? user.email.split("@")[0]
         : "username";
+
+    const isOwnProfile = currentUserEmail === user?.email;
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-black text-black dark:text-white">
@@ -120,13 +118,21 @@ const Profile = () => {
                             <FaEllipsis />
                         </button>
 
-                        <button className="px-4 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900">
-                            Message
-                        </button>
+                        {isOwnProfile ? (
+                            <button className="px-4 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                                Edit Profile
+                            </button>
+                        ) : (
+                            <>
+                                <button className="px-4 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                                    Message
+                                </button>
 
-                        <button className="px-4 py-1.5 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold">
-                            Follow
-                        </button>
+                                <button className="px-4 py-1.5 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold hover:scale-105 transition">
+                                    Follow
+                                </button>
+                            </>
+                        )}
 
                     </div>
 
@@ -253,31 +259,46 @@ const Profile = () => {
                                 </div>
                             )}
 
-                            <div className="flex justify-between mt-5 text-zinc-500 max-w-lg">
+                            {/* ===== THREADS THIN LINE ACTION BAR ====== */}
+                            <div className="flex flex-col gap-2.5 mt-2">
 
-                                <button className="flex items-center gap-2 hover:text-sky-500 transition">
-                                    <FaRegComment />
-                                    <span>{post.comments || 0}</span>
-                                </button>
+                                {/* COMPACT ICON GROUP */}
+                                <div className="flex items-center gap-1.5 text-zinc-900 dark:text-zinc-100 -ml-2">
 
-                                <button className="hover:text-green-500 transition">
-                                    <FaRetweet />
-                                </button>
+                                    {/* LIKE BUTTON */}
+                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
+                                        <FiHeart className="text-[20px] stroke-2 group-hover:scale-105 transition-transform" />
+                                    </button>
 
-                                <button className="flex items-center gap-2 hover:text-pink-500 transition">
-                                    <FaRegHeart />
-                                    <span>{post.likes || 0}</span>
-                                </button>
+                                    {/* COMMENT BUTTON */}
+                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
+                                        <FiMessageCircle className="text-xl stroke-2group-hover:-scale-x-100 transition-transform" />
+                                    </button>
 
-                                <button className="hover:text-yellow-500 transition">
-                                    <FaRegBookmark />
-                                </button>
+                                    {/* REPOST BUTTON */}
+                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
+                                        <FiRepeat className="text-[20px] stroke-2 group-hover:rotate-180 transition-transform duration-300" />
+                                    </button>
 
-                                <button className="hover:text-sky-500 transition">
-                                    <FaArrowUpFromBracket />
-                                </button>
+                                    {/* SHARE BUTTON */}
+                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
+                                        <FiSend className="text-[20px] stroke-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                    </button>
+                                </div>
+
+                                {/* ENGAGEMENT FOOTPRINT COUNTER */}
+                                <div className="flex items-center gap-1.5 text-[13.5px] text-zinc-400 dark:text-zinc-500 select-none">
+                                    <span
+                                        className="hover:underline cursor-pointer">12 replies
+                                    </span>
+                                    <span>·</span>
+                                    <span
+                                        className="hover:underline cursor-pointer">99 likes
+                                    </span>
+                                </div>
 
                             </div>
+                            {/* ================== */}
                         </div>
                     </div>
                 ))}
