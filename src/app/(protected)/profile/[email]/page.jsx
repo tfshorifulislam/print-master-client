@@ -1,10 +1,20 @@
 import React from 'react';
 import Image from 'next/image';
 import axios from 'axios';
-import { FaTh, FaHeart, FaComment, FaEllipsisH } from 'react-icons/fa';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
+import {
+    FaCalendarDays,
+    FaLink,
+    FaLocationDot,
+    FaRegComment,
+    FaRetweet,
+    FaRegHeart,
+    FaRegBookmark,
+    FaArrowUpFromBracket,
+    FaEllipsis
+} from "react-icons/fa6";
 
 const Profile = async ({ params }) => {
     const { email } = await params;
@@ -39,124 +49,208 @@ const Profile = async ({ params }) => {
     const isOwnProfile = currentUserEmail === user?.email;
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white antialiased">
-            <div className="max-w-6xl mx-auto px-4 pt-6 md:pt-12">
+        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white antialiased border-x border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
 
-                {/* PROFILE HEADER SECTION */}
-                <div className="flex flex-row items-center justify-start gap-6 md:gap-16 pb-8 md:pb-12 border-b border-gray-200 dark:border-zinc-800">
-                    
-                    {/* AVATAR CONTAINER */}
-                    <div className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 overflow-hidden rounded-full border border-gray-200 dark:border-zinc-800 shrink-0">
+            {/* TOP HEADER */}
+            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
+                <div className="flex flex-col">
+                    <h1 className="text-xl font-bold tracking-tight leading-tight">
+                        {user?.name || "User Name"}
+                    </h1>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                        {userPosts?.length || 0} Posts
+                    </span>
+                </div>
+            </div>
+
+            {/* HERO */}
+            <div>
+
+                {/* BANNER */}
+                <div className="w-full aspect-[3/1] bg-zinc-200 dark:bg-zinc-800 relative overflow-hidden">
+                    {user?.banner && (
                         <Image
-                            src={user?.image || '/avatar.jpg'}
-                            alt={`${user?.name}'s profile`}
+                            src={user.banner}
+                            alt="banner"
                             fill
                             className="object-cover"
-                            priority
                         />
+                    )}
+                </div>
+
+                {/* AVATAR + ACTIONS (FIXED OVERLAP) */}
+                <div className="px-4 relative flex justify-between">
+
+                    {/* AVATAR FIX */}
+                    <div className="relative -mt-10 w-24 h-24 sm:w-32 sm:h-32">
+                        <div className="absolute inset-0 rounded-full border-4 border-white dark:border-black overflow-hidden">
+                            <Image
+                                src={user?.image || "/avatar.jpg"}
+                                alt="avatar"
+                                fill
+                                className="object-cover"
+                                priority
+                            />
+                        </div>
                     </div>
 
-                    {/* USER DETAILS */}
-                    <div className="flex-1 min-w-0">
-                        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6 mb-4">
-                            <h2 className="text-xl font-normal truncate max-w-[200px] sm:max-w-xs md:max-w-sm">
-                                {username}
-                            </h2> 
+                    {/* BUTTONS */}
+                    <div className="mt-3 flex items-center gap-2">
 
-                            <div className="flex items-center gap-2 sm:gap-3">
-                                {isOwnProfile ? (
-                                    <button className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-sm font-semibold rounded-lg transition cursor-pointer">
-                                        Edit Profile
-                                    </button>
-                                ) : (
-                                    <>
-                                        <button className="px-5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold rounded-lg transition cursor-pointer">
-                                            Follow
-                                        </button>
-                                        <button className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-sm font-semibold rounded-lg transition cursor-pointer">
-                                            Message
-                                        </button>
-                                        <button className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition text-lg cursor-pointer">
-                                            <FaEllipsisH />
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </div>
+                        {!isOwnProfile && (
+                            <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                                <FaEllipsis />
+                            </button>
+                        )}
 
-                        {/* STATS & BIO (DESKTOP / TABLET VIEW) */}
-                        <div className="hidden sm:block text-sm space-y-3">
-                            <div className="text-base">
-                                <span className="font-semibold">{userPosts.length}</span> posts
-                            </div>
-                            <h1 className="font-semibold text-base">{user?.name}</h1>
-                            <p className="text-gray-600 dark:text-zinc-400 whitespace-pre-wrap leading-relaxed">
-                                {user?.bio || "Digital Creator 🎬\nWelcome to my official profile ✨"}
-                            </p>
-                        </div>
+                        {isOwnProfile ? (
+                            <button className="px-4 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                                Edit profile
+                            </button>
+                        ) : (
+                            <>
+                                <button className="px-4 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-bold">
+                                    Message
+                                </button>
+                                <button className="px-4 py-1.5 bg-black text-white dark:bg-white dark:text-black rounded-full text-sm font-bold">
+                                    Follow
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                {/* BIO & STATS (MOBILE ONLY VIEW) */}
-                <div className="block sm:hidden text-sm space-y-2 py-4 border-b border-gray-100 dark:border-zinc-900">
-                    <h1 className="font-semibold text-base">{user?.name}</h1>
-                    <p className="text-gray-600 dark:text-zinc-400 whitespace-pre-wrap leading-relaxed">
-                        {user?.bio || "Digital Creator 🎬\nWelcome to my official profile ✨"}
+                {/* USER INFO */}
+                <div className="px-4 mt-2">
+
+                    <h2 className="text-xl font-extrabold">
+                        {user?.name}
+                    </h2>
+
+                    <span className="text-zinc-500 text-[15px]">
+                        @{username}
+                    </span>
+
+                    <p className="mt-3 text-[15px] text-zinc-900 dark:text-zinc-100 whitespace-pre-wrap">
+                        {user?.bio || "Digital Creator 🎬 · Welcome to my profile ✨"}
                     </p>
-                    <div className="text-sm pt-2 border-t border-gray-100 dark:border-zinc-900 mt-2">
-                        <span className="font-semibold">{userPosts.length}</span> posts
-                    </div>
-                </div>
 
-                {/* TABS HEADER */}
-                <div className="flex justify-center uppercase tracking-widest text-xs font-semibold py-4">
-                    <div className="flex items-center gap-1.5 text-black dark:text-white border-t border-black dark:border-white pt-4 -mt-4">
-                        <FaTh className="text-[10px]" />
-                        <span>Posts</span>
+                    {/* META */}
+                    <div className="flex flex-wrap gap-4 mt-3 text-[14px] text-zinc-500">
+                        <span className="flex items-center gap-1">
+                            <FaLocationDot /> Global
+                        </span>
+                        <span className="flex items-center gap-1 text-sky-500">
+                            <FaLink /> domain.com
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <FaCalendarDays /> Joined 2026
+                        </span>
                     </div>
-                </div>
 
-                {/* POSTS GRID */}
-                {userPosts.length === 0 ? (
-                    <div className="h-64 flex flex-col items-center justify-center text-gray-400 gap-2">
-                        <div className="p-4 border-2 border-gray-300 dark:border-zinc-700 rounded-full">
-                            <FaTh className="text-3xl" />
-                        </div>
-                        <span className="text-lg font-semibold mt-2">No Posts Yet</span>
+                    {/* STATS */}
+                    <div className="flex gap-5 mt-3 text-[14px] text-zinc-500 pb-4">
+                        <span>
+                            <b className="text-black dark:text-white">{userPosts.length}</b> Posts
+                        </span>
+                        <span>
+                            <b className="text-black dark:text-white">142</b> Following
+                        </span>
+                        <span>
+                            <b className="text-black dark:text-white">8.4K</b> Followers
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* TAB */}
+            <div className="border-b border-zinc-200 dark:border-zinc-800 text-center py-3 font-semibold">
+                Posts
+            </div>
+
+            {/* POSTS */}
+            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+
+                {userPosts?.length === 0 ? (
+                    <div className="text-center py-20 text-zinc-500">
+                        No posts yet
                     </div>
                 ) : (
-                    /* 🎯 ফিক্সড রেসপন্সিভ গ্রিড: মোবাইলে ৩ কলাম (Instagram-like), ট্যাবে ৪ কলাম, ডেক্সটপে ৫ কলাম */
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1 md:gap-4 pb-12">
-                        {userPosts.map((post) => (
-                            <Link
-                                href={`/post/${post._id}`}
-                                key={post._id}
-                                className="group relative aspect-square w-full bg-gray-100 dark:bg-zinc-900 overflow-hidden cursor-pointer"
-                            >
-                                <Image
-                                    src={post.image || '/placeholder.jpg'}
-                                    alt="User post"
-                                    fill
-                                    sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, 20vw"
-                                    className="object-cover transition duration-300 group-hover:scale-105"
-                                />
+                    userPosts.map((post) => (
+                        <div key={post._id} className="p-4">
 
-                                {/* HOVER OVERLAY */}
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-200 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-white font-semibold text-xs sm:text-base md:text-lg p-1 text-center">
-                                    <div className="flex items-center gap-1.5">
-                                        <FaHeart className="text-xs sm:text-base" />
-                                        <span>{post.likes || 0}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <FaComment className="text-xs sm:text-base" />
-                                        <span>{post.comments || 0}</span>
-                                    </div>
+                            <div className="flex gap-3">
+
+                                {/* avatar */}
+                                <div className="w-10 h-10 relative rounded-full overflow-hidden">
+                                    <Image
+                                        src={user?.image || "/avatar.jpg"}
+                                        alt="user"
+                                        fill
+                                        className="object-cover"
+                                    />
                                 </div>
-                            </Link>
-                        ))}
-                    </div>
+
+                                {/* content */}
+                                <div className="flex-1">
+
+                                    <div className="flex gap-2 text-[15px]">
+                                        <span className="font-bold">{user?.name}</span>
+                                        <span className="text-zinc-500">@{username}</span>
+                                        <span className="text-zinc-500">· 2h</span>
+                                    </div>
+
+                                    <p className="mt-1 text-[15px]">
+                                        {post.text}
+                                    </p>
+
+                                    {post.image && (
+                                        <div className="mt-3 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
+                                            <Image
+                                                src={post.image}
+                                                alt="post"
+                                                width={800}
+                                                height={500}
+                                                className="w-full object-cover"
+                                            />
+                                        </div>
+                                    )}
+
+                                    {/* actions */}
+                                    <div className="flex justify-between mt-3 text-zinc-500 text-sm max-w-md">
+
+                                        <button className="flex items-center gap-1 hover:text-sky-500">
+                                            <FaRegComment /> {post.comments || 0}
+                                        </button>
+
+                                        <button className="flex items-center gap-1 hover:text-green-500">
+                                            <FaRetweet /> 0
+                                        </button>
+
+                                        <button className="flex items-center gap-1 hover:text-pink-500">
+                                            <FaRegHeart /> {post.likes || 0}
+                                        </button>
+
+                                        <button className="hover:text-sky-500">
+                                            <FaRegBookmark />
+                                        </button>
+
+                                        <button className="hover:text-sky-500">
+                                            <FaArrowUpFromBracket />
+                                        </button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    ))
                 )}
+
             </div>
+
         </div>
     );
 };
