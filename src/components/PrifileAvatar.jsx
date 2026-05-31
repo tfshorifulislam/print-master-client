@@ -20,8 +20,8 @@ import { signOut, useSession } from "@/lib/auth-client";
 
 export function ProfileAvatar() {
 
-  const {data: session} = useSession()
-  console.log(session)
+  const { data: user, isPending  } = useSession()
+  console.log(user)
 
   const handleSignOut = async () => {
     await signOut();
@@ -43,12 +43,15 @@ export function ProfileAvatar() {
     <Drawer>
       {/* TRIGGER (NO BUTTON WRAPPER) */}
       <Drawer.Trigger className="cursor-pointer">
-        <Avatar>
+        <Avatar size="lg" className="ring-2 ring-offset-2 ring-white dark:ring-neutral-900 shadow-md">
           <Avatar.Image
-            alt="John Doe"
-            src="https://img.heroui.chat/image/avatar?w=400&h=400&u=3"
+            alt={user?.user?.name}
+            src={user?.user?.image}
+            className="object-cover"
           />
-          <Avatar.Fallback>JD</Avatar.Fallback>
+          <Avatar.Fallback className="bg-linear-to-br from-blue-500 to-indigo-600 text-white font-semibold">
+            {user?.user?.name?.charAt(0) || 'U'}
+          </Avatar.Fallback>
         </Avatar>
       </Drawer.Trigger>
 
