@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
+import { Providers } from "../providers";
 import Asidebar from "@/components/Asidebar";
 import RightSideBar from "@/components/RightSideBar";
 import MobileScreenBottomNavbar from "@/components/MobileNavbar";

@@ -1,6 +1,2 @@
 @import "tailwindcss";
 @import "@heroui/styles";
-
-:root {
-  font-family: var(--font-inter);
-}
