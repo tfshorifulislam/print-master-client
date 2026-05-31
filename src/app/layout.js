@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-screen bg-background text-foreground">
         <Providers>
-          <div className="flex max-w-360 mx-auto">
+          <div className="flex max-w-300 mx-auto">
             <Asidebar />
             <main
               className="flex-1 min-h-screen">

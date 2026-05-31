@@ -1,26 +1,24 @@
-// HomeDataCardShow.jsx
-import axios from "axios";
 import React from "react";
 import PostCard from "./PostCard";
+import LogoCenter from "./LogoCenter";
 
 const HomeDataCardShow = async () => {
+    const res = await fetch(`${process.env.API_URL}/uploads`, {
+        cache: "no-store",
+    });
 
-    const res = await axios.get(`${process.env.API_URL}/uploads`);
-    const data = res.data.reverse();
+    const data = await res.json();
 
     return (
-        <div
-            className="w-11/12 mx-auto mt-6 columns-2  md:columns-3 lg:columns-4 gap-3">
+        <div className="border-b max-w-xl mx-auto">
+            <LogoCenter />
 
-            {
-                data.map((card) => (
-                    <PostCard
-                        key={card._id}
-                        card={card}
-                    />
-                ))
-            }
-
+            {/* FEED CONTAINER */}
+            <div className="border-x">
+                {data?.reverse()?.map((card) => (
+                    <PostCard key={card._id} card={card} />
+                ))}
+            </div>
         </div>
     );
 };
