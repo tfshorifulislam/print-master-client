@@ -49,7 +49,7 @@ export default function CreatePost() {
       formData.append("_id", user?._id);
       formData.append("id", user?.id);
       formData.append("name", user?.name);
-      formData.append("userImage", user?.image);
+      formData.append("userImage", user?.image || '');
 
       if (file) {
         formData.append("image", file);

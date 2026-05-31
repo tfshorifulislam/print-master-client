@@ -5,6 +5,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { FaTh, FaBookmark, FaShare } from 'react-icons/fa';
 import { useSession } from "@/lib/auth-client";
+import IsPendingLoading from '@/components/IsPendingLoading';
 
 
 const Profile = () => {
@@ -44,11 +45,7 @@ const Profile = () => {
     // ---------------- LOADING ----------------
     if (isPending || loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
-                <p className="animate-pulse text-sm tracking-widest">
-                    LOADING PROFILE...
-                </p>
-            </div>
+            <IsPendingLoading/>
         );
     }
 
