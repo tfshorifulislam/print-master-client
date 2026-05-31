@@ -9,8 +9,8 @@ export function ThemeSwitch() {
 
   return (
     <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-      <span className="text-3xl ">
-        {theme === "dark" ? <IoIosSunny /> : <WiMoonAltWaningCrescent2 />}
+      <span className="text-xl flex items-center gap-5 ">
+        {theme === "dark" ? <IoIosSunny /> : <WiMoonAltWaningCrescent2 />} Theme
       </span>
     </button>
   );

@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import {
     BiHomeCircle,
     BiSearch,
@@ -11,38 +10,38 @@ import {
     BiMessageSquareDetail,
     BiBookmark,
     BiUser,
+    BiDotsHorizontalRounded,
 } from "react-icons/bi";
-
 import { MdDashboardCustomize } from "react-icons/md";
+
 import { ProfileAvatar } from "./PrifileAvatar";
 import { ThemeSwitch } from "./ThemeSwitch";
+import { PiDropboxLogoFill } from "react-icons/pi";
 
 const Asidebar = () => {
     const pathname = usePathname();
 
     const navItems = [
         { name: "Home", icon: BiHomeCircle, path: "/" },
-        { name: "Search", icon: BiSearch, path: "/search" },
-        { name: "Notification", icon: BiBell, path: "/notification" },
-        { name: "Chat", icon: BiMessageSquareDetail, path: "/chat" },
+        { name: "Explore", icon: BiSearch, path: "/explore" },
+        { name: "Notifications", icon: BiBell, path: "/notification" },
+        { name: "Messages", icon: BiMessageSquareDetail, path: "/chat" },
         { name: "Bookmarks", icon: BiBookmark, path: "/bookmarks" },
         { name: "Dashboard", icon: MdDashboardCustomize, path: "/dashboard" },
         { name: "Profile", icon: BiUser, path: "/profile" },
     ];
 
     return (
-        <aside className="hidden md:flex flex-col justify-between h-screen p-3 transition-all duration-300 sticky top-0">
-
-            {/* TOP */}
-            <div className="flex flex-col gap-2 mt-2">
-
-                {/* PROFILE */}
-                <div className="px-2 mb-4">
-                    <ProfileAvatar />
+        <aside className="hidden lg:flex flex-col justify-between h-screen w-72 xl:w-80 p-3 transition-all duration-300 sticky top-0 overflow-y-auto">
+            {/* TOP SECTION */}
+            <div className="flex flex-col">
+                {/* X Logo */}
+                <div className="px-4 py-3 mb-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-full w-fit transition-colors cursor-pointer">
+                    <PiDropboxLogoFill size={32} className="text-black dark:text-white" />
                 </div>
 
                 {/* NAV ITEMS */}
-                <div className="flex flex-col gap-1">
+                <nav className="flex flex-col gap-1 mt-1">
                     {navItems.map((item) => {
                         const isActive = pathname === item.path;
 
@@ -50,24 +49,21 @@ const Asidebar = () => {
                             <Link
                                 key={item.name}
                                 href={item.path}
-                                className={`flex items-center gap-4 px-3 py-3 rounded-lg transition-all duration-200 ${isActive
-                                        ? "bg-zinc-100 dark:bg-zinc-900"
+                                className={`group flex items-center gap-5 px-4 py-3.5 rounded-3xl text-xl transition-all duration-200 
+                                    ${isActive
+                                        ? "font-bold bg-zinc-100 dark:bg-zinc-900"
                                         : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
                                     }`}
                             >
                                 <item.icon
-                                    size={24}
-                                    className={
-                                        isActive
-                                            ? "text-black dark:text-white"
-                                            : "text-zinc-600 dark:text-zinc-400"
-                                    }
+                                    size={28}
+                                    className={isActive ? "text-black dark:text-white" : "text-zinc-600 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white"}
                                 />
 
                                 <span
-                                    className={`hidden lg:inline text-base tracking-wide ${isActive
-                                            ? "font-bold text-black dark:text-white"
-                                            : "text-zinc-700 dark:text-zinc-300"
+                                    className={`hidden xl:inline tracking-tight ${isActive
+                                        ? "text-black dark:text-white"
+                                        : "text-zinc-700 dark:text-zinc-300"
                                         }`}
                                 >
                                     {item.name}
@@ -75,18 +71,45 @@ const Asidebar = () => {
                             </Link>
                         );
                     })}
-                </div>
-            </div>
 
-            {/* BOTTOM */}
-            <div className="flex flex-col gap-3">
+                    {/* theme Button */}
+                    <div className="px-4 mt-2">
+                        <ThemeSwitch />
+                    </div>
 
-                <ThemeSwitch />
+                </nav>
 
-                <button className="w-full py-3 rounded-lg font-bold text-lg bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-all duration-200 active:scale-95">
+                {/* POST BUTTON */}
+                <button className="mt-6 mx-4 bg-black dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200 text-white dark:text-black font-bold text-xl py-4 rounded-3xl shadow-md">
                     Post
                 </button>
+            </div>
 
+            {/* BOTTOM SECTION - User Profile */}
+            <div className="mt-auto mb-4">
+                <div className="flex items-center gap-3 px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-3xl cursor-pointer transition-all group">
+                    {/* Avatar */}
+                    <div className="flex-shrink-0">
+                        <ProfileAvatar />
+                    </div>
+
+                    {/* User Info - Visible on large screens */}
+                    <div className="hidden xl:flex flex-col flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="font-bold text-[15px] text-black dark:text-white truncate">
+                                    Your Name
+                                </p>
+                                <p className="text-zinc-500 dark:text-zinc-400 text-[15px] truncate">
+                                    @yourhandle
+                                </p>
+                            </div>
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                <BiDotsHorizontalRounded size={20} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </aside>
     );

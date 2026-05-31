@@ -5,8 +5,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { FaTh, FaBookmark, FaShare } from 'react-icons/fa';
 import { useSession } from "@/lib/auth-client";
-import { motion } from "framer-motion";
-import Link from 'next/link';
+
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
