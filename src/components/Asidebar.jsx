@@ -17,9 +17,20 @@ import { MdDashboardCustomize } from "react-icons/md";
 import { ProfileAvatar } from "./PrifileAvatar";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { PiDropboxLogoFill } from "react-icons/pi";
+import { useSession } from "@/lib/auth-client";
+import IsPendingLoading from "./IsPendingLoading";
 
 const Asidebar = () => {
     const pathname = usePathname();
+
+    const { data: session, isPending } = useSession()
+    const user = session?.user;
+    const userName = user?.email ? user.email.split('@')[0] : 'username';
+    if (isPending) {
+        return (
+            <IsPendingLoading />
+        )
+    }
 
     const navItems = [
         { name: "Home", icon: BiHomeCircle, path: "/" },
@@ -80,9 +91,9 @@ const Asidebar = () => {
                 </nav>
 
                 {/* POST BUTTON */}
-                <button className="mt-6 mx-4 bg-black dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-[0.98] transition-all duration-200 text-white dark:text-black font-bold text-xl py-4 rounded-3xl shadow-md">
-                    Post
-                </button>
+                <Link href={'/createpost'}>
+                Post
+                </Link>
             </div>
 
             {/* BOTTOM SECTION - User Profile */}
@@ -95,19 +106,19 @@ const Asidebar = () => {
 
                     {/* User Info - Visible on large screens */}
                     <div className="hidden xl:flex flex-col flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
+                        <Link href={'/profile'} className="flex items-center justify-between">
                             <div>
                                 <p className="font-bold text-[15px] text-black dark:text-white truncate">
-                                    Your Name
+                                    {user?.name}
                                 </p>
                                 <p className="text-zinc-500 dark:text-zinc-400 text-[15px] truncate">
-                                    @yourhandle
+                                    @{userName}
                                 </p>
                             </div>
                             <div className="opacity-0 group-hover:opacity-100 transition-opacity">
                                 <BiDotsHorizontalRounded size={20} />
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </div>

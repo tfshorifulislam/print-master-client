@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient, useSession } from "@/lib/auth-client";
+import {  useSession } from "@/lib/auth-client";
 import axios from "axios";
 import { useState } from "react";
 import { FaPlus, FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
@@ -21,7 +21,7 @@ export default function CreatePost() {
   };
 
 
-  const { data: session, isPending } = authClient.useSession()
+  const { data: session, isPending } = useSession()
   console.log(session)
   const user = session?.user
   console.log(user)
@@ -75,7 +75,7 @@ export default function CreatePost() {
       <button
         disabled={isPending}
         onClick={handleOpen}
-        className="cursor-pointer text-white p-4 rounded-full shadow-lg hover:scale-105 transition"
+        className="mt-8 cursor-pointer text-white dark:text-black flex justify-center items-center p-4 rounded-lg shadow-sm bg-black dark:bg-white hover:scale-105 transition"
       >
         <FaPlus />
       </button>
@@ -84,7 +84,7 @@ export default function CreatePost() {
       {open && (
         <form
           onSubmit={onSubmit}
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          className="relative bg-black/50 flex items-center justify-center z-5000000 p-4"
         // onClick={reset}
         >
           {/* Modal Box */}

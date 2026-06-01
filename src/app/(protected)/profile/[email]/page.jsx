@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import axios from 'axios';
-import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import {
@@ -25,13 +24,6 @@ const Profile = async ({ params }) => {
         cache: 'no-store'
     });
 
-    if (!userRes.ok) {
-        return (
-            <div className="h-screen flex items-center justify-center text-gray-500 font-medium">
-                User not found or error loading profile.
-            </div>
-        );
-    }
     const user = await userRes.json();
 
     const postsRes = await axios.get(`${process.env.API_URL}/uploads`);

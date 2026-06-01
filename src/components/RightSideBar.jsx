@@ -5,7 +5,7 @@ import SearchInputRightSideTop from "./SearchInputRightSideTop";
 
 const RightSideBar = () => {
   return (
-    <aside className="hidden lg:flex flex-col w-72 lg:w-80 h-screen sticky top-0 p-4 gap-5">
+    <aside className="hidden lg:block sticky top-0 flex-col w-72 lg:w-80 h-screen p-4 gap-5">
 
       {/* SEARCH */}
       <SearchInputRightSideTop />
@@ -16,12 +16,12 @@ const RightSideBar = () => {
       </h2>
 
       {/* AD 1 */}
-      <div className="rounded-xl bg-zinc-100 dark:bg-zinc-900 p-4 min-h-40 flex items-center justify-center text-sm text-zinc-600 dark:text-zinc-400 hover:scale-[1.02] transition">
+      <div className="rounded-lg p-4 min-h-40 flex items-center justify-center text-sm text-zinc-600 dark:text-zinc-400 hover:scale-[1.02] transition">
         Advertisement 1
       </div>
 
       {/* AD 2 */}
-      <div className="rounded-xl bg-zinc-100 dark:bg-zinc-900 p-4 min-h-40 flex items-center justify-center text-sm text-zinc-600 dark:text-zinc-400 hover:scale-[1.02] transition">
+      <div className="rounded-lg p-4 min-h-40 flex items-center justify-center text-sm text-zinc-600 dark:text-zinc-400 hover:scale-[1.02] transition">
         Advertisement 2
       </div>
 

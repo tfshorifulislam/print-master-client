@@ -16,7 +16,7 @@ const SearchInputRightSideTop = () => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Search..."
-          className="w-full bg-transparent outline-none text-sm text-zinc-900 dark:text-white"
+          className="w-full  outline-none text-sm text-zinc-900 dark:text-white"
         />
       </div>
     </div>

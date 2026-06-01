@@ -5,13 +5,20 @@ import Image from "next/image";
 import axios from "axios";
 import { useSession } from "@/lib/auth-client";
 import IsPendingLoading from "@/components/IsPendingLoading";
+
 import {
     FaEllipsis,
     FaCalendarDays,
     FaLink,
     FaLocationDot,
 } from "react-icons/fa6";
-import { FiHeart, FiMessageCircle, FiRepeat, FiSend } from "react-icons/fi";
+
+import {
+    FiHeart,
+    FiMessageCircle,
+    FiRepeat,
+    FiSend,
+} from "react-icons/fi";
 
 const Profile = () => {
     const [posts, setPosts] = useState([]);
@@ -20,7 +27,11 @@ const Profile = () => {
 
     const { data: session, isPending } = useSession();
     const user = session?.user;
+
     const currentUserEmail = user?.email;
+
+    // FIX: proper env usage
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         if (!user?.email) return;
@@ -29,10 +40,7 @@ const Profile = () => {
             try {
                 setLoading(true);
 
-                const apiUrl =
-                    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-                const res = await axios.get(`${apiUrl}/uploads`);
+                const res = await axios.get(`${API_URL}/uploads`);
 
                 const userPosts = res.data.filter(
                     (post) => post.email === user.email
@@ -48,36 +56,34 @@ const Profile = () => {
         };
 
         fetchPosts();
-    }, [user]);
+    }, [user, API_URL]);
 
     if (isPending || loading) {
         return <IsPendingLoading />;
     }
 
-    const username = user?.email
-        ? user.email.split("@")[0]
-        : "username";
+    const username = user?.email?.split("@")[0] || "username";
 
-    const isOwnProfile = currentUserEmail === user?.email;
+    // FIX: correct logic
+    const isOwnProfile = true; // current page = logged user
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-black text-black dark:text-white">
 
-
             {/* TOP HEADER */}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
                 <div className="flex flex-col">
-                    <h1 className="text-xl font-bold tracking-tight leading-tight">
+                    <h1 className="text-xl font-bold leading-tight">
                         {user?.name || "User Name"}
                     </h1>
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                    <span className="text-xs text-zinc-500">
                         {posts.length} Posts
                     </span>
                 </div>
             </div>
 
-            {/* HERO SECTION */}
-            <div className="w-full">
+            {/* HERO */}
+            <div>
 
                 {/* BANNER */}
                 <div className="w-full aspect-[3/1] bg-zinc-200 dark:bg-zinc-800 relative overflow-hidden">
@@ -90,8 +96,6 @@ const Profile = () => {
                             priority
                         />
                     )}
-
-                    {/* soft overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
@@ -111,7 +115,7 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* ACTION BUTTONS */}
+                    {/* ACTIONS */}
                     <div className="mt-3 flex items-center gap-2">
 
                         <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900">
@@ -135,10 +139,9 @@ const Profile = () => {
                         )}
 
                     </div>
-
                 </div>
 
-                {/* USER INFO */}
+                {/* INFO */}
                 <div className="px-4 mt-3">
 
                     <h2 className="text-xl font-extrabold">
@@ -188,32 +191,19 @@ const Profile = () => {
                     </div>
 
                 </div>
-
             </div>
 
-            {/* Posts Header */}
-            <div className="mt-8 mb-4">
-                <h2 className="text-2xl font-bold">
-                    Recent Posts
-                </h2>
-            </div>
-
-            {/* Empty */}
-            {!error && posts.length === 0 && (
-                <div className="bg-white dark:bg-zinc-900 rounded-3xl p-10 text-center border border-zinc-200 dark:border-zinc-800">
-                    No posts yet
-                </div>
-            )}
-
-            {/* Posts */}
+            {/* POSTS */}
             <div className="space-y-5 pb-10">
+
                 {posts.map((post) => (
                     <div
                         key={post._id}
-                        className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden"
+                        className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
                     >
                         <div className="p-5">
 
+                            {/* USER */}
                             <div className="flex gap-3">
 
                                 <Image
@@ -222,35 +212,29 @@ const Profile = () => {
                                     width={48}
                                     height={48}
                                     className="rounded-full object-cover"
-                                    unoptimized
                                 />
 
                                 <div className="flex-1">
 
                                     <div className="flex items-center gap-2">
-                                        <h3 className="font-bold">
-                                            {user?.name}
-                                        </h3>
-
-                                        <span className="text-zinc-500 text-sm">
-                                            @{username}
-                                        </span>
-
+                                        <h3 className="font-bold">{user?.name}</h3>
+                                        <span className="text-zinc-500 text-sm">@{username}</span>
                                         <FaEllipsis className="ml-auto cursor-pointer" />
                                     </div>
 
                                     <p className="mt-3 whitespace-pre-wrap">
                                         {post.text}
                                     </p>
+
                                 </div>
                             </div>
 
-                            {/* POST IMAGE */}
+                            {/* IMAGE */}
                             {post?.image && (
                                 <div className="mt-5 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700">
                                     <Image
                                         src={post.image}
-                                        alt="Post Image"
+                                        alt="post"
                                         width={1000}
                                         height={700}
                                         className="w-full h-auto object-cover"
@@ -259,7 +243,7 @@ const Profile = () => {
                                 </div>
                             )}
 
-                            {/* ===== THREADS THIN LINE ACTION BAR ====== */}
+                            {/* ============== THREADS THIN LINE ACTION BAR ========= */}
                             <div className="flex flex-col gap-2.5 mt-2">
 
                                 {/* COMPACT ICON GROUP */}
@@ -288,22 +272,18 @@ const Profile = () => {
 
                                 {/* ENGAGEMENT FOOTPRINT COUNTER */}
                                 <div className="flex items-center gap-1.5 text-[13.5px] text-zinc-400 dark:text-zinc-500 select-none">
-                                    <span
-                                        className="hover:underline cursor-pointer">12 replies
-                                    </span>
+                                    <span className="hover:underline cursor-pointer">12 replies</span>
                                     <span>·</span>
-                                    <span
-                                        className="hover:underline cursor-pointer">99 likes
-                                    </span>
+                                    <span className="hover:underline cursor-pointer">99 likes</span>
                                 </div>
 
                             </div>
-                            {/* ================== */}
+                            {/* ========================= */}
                         </div>
                     </div>
                 ))}
-            </div>
 
+            </div>
         </div>
     );
 };
