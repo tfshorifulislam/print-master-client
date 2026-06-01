@@ -51,7 +51,7 @@ const Profile = () => {
                 const userPosts = res.data.filter(
                     (post) => post.email === currentUserEmail
                 );
-                console.log(userPosts,'post emai')
+                console.log(userPosts, 'post emai')
 
                 setPosts(userPosts);
             } catch (err) {
@@ -187,7 +187,7 @@ const Profile = () => {
                             Posts
                         </span>
 
-                        <span>
+                        {/* <span>
                             <b className="text-gray-900 dark:text-white">142</b>{" "}
                             Following
                         </span>
@@ -195,7 +195,7 @@ const Profile = () => {
                         <span>
                             <b className="text-gray-900 dark:text-white">8.4K</b>{" "}
                             Followers
-                        </span>
+                        </span> */}
 
                     </div>
 
@@ -203,73 +203,23 @@ const Profile = () => {
             </div>
 
             {/* POSTS */}
-            <div className="space-y-5 pb-10">
-
-                {posts.map((post) => (
+            <div className="columns-2 gap-4 px-4 pb-10">
+                {[...posts].reverse().map((post) => (
                     <div
                         key={post._id}
-                        className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
+                        className="mb-4 break-inside-avoid"
                     >
-                        <div className="p-5">
-
-                            {/* USER */}
-                            <div className="flex gap-3">
-
-                                <div>
-                                    <Image
-                                        src={user?.image || "/avatar.jpg"}
-                                        alt="avatar"
-                                        width={45}
-                                        height={40}
-                                        className="rounded-full object-cover"
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <h3 className="font-bold">{user?.name}</h3>
-                                    <span className="text-zinc-500 text-sm">@{username}</span>
-                                    <FaEllipsis className="ml-auto cursor-pointer" />
-                                </div>
-                            </div>
-                            <p className="mt-3 whitespace-pre-wrap">
-                                {post.text}
-                            </p>
-
-                            {/* IMAGE */}
-                            {post?.image && (
-                                <div className="mt-5 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                                    <Image
-                                        src={post.image}
-                                        alt="post"
-                                        width={1000}
-                                        height={700}
-                                        className="w-full h-auto object-cover"
-                                        unoptimized
-                                    />
-                                </div>
-                            )}
-
-                            {/* ============== THREADS THIN LINE ACTION BAR ========= */}
-                            <div className="flex flex-col gap-2.5 mt-2">
-
-                                {/* COMPACT ICON GROUP */}
-                                <div className="flex items-center gap-1.5 text-zinc-900 dark:text-zinc-100 -ml-2">
-
-                                    {/* LIKE BUTTON */}
-                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
-                                        <FiHeart className="text-[20px] stroke-2 group-hover:scale-105 transition-transform" />
-                                    </button>
-
-                                    {/* SHARE BUTTON */}
-                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
-                                        <FiSend className="text-[20px] stroke-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                    </button>
-                                </div>
-                            </div>
-                            {/* ========================= */}
-                        </div>
+                        {post?.image && (
+                            <Image
+                                src={post.image}
+                                alt="post"
+                                width={800}
+                                height={800}
+                                className="w-full h-auto object-cover rounded-xl"
+                            />
+                        )}
                     </div>
                 ))}
-
             </div>
         </div>
     );
