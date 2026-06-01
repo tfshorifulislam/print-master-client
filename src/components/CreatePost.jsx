@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Modal, Avatar } from "@heroui/react";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import axios from "axios";
 import { useState, useRef } from "react";
 import { FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
@@ -57,7 +57,12 @@ export default function CreatePost() {
         formData.append("image", file);
       }
 
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, formData);
+      const { data: token } = await authClient.token()
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, formData, {
+        headers: {
+          authorization: `Bearer ${token.token}`
+        }
+      });
       console.log(res.data, "final data");
 
       reset();
