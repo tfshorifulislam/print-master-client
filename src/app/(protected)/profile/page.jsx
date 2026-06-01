@@ -19,6 +19,7 @@ import {
     FiRepeat,
     FiSend,
 } from "react-icons/fi";
+import { Link } from "@heroui/react";
 
 const Profile = () => {
     const [posts, setPosts] = useState([]);
@@ -210,13 +211,18 @@ const Profile = () => {
                         className="mb-4 break-inside-avoid"
                     >
                         {post?.image && (
-                            <Image
-                                src={post.image}
-                                alt="post"
-                                width={800}
-                                height={800}
-                                className="w-full h-auto object-cover rounded-xl"
-                            />
+                            <Link
+                                href={`/post/${post._id}`}
+                                className="block rounded-xl overflow-hidden"
+                            >
+                                <Image
+                                    src={post.image}
+                                    alt="post"
+                                    width={800}
+                                    height={800}
+                                    className="w-full h-auto object-cover rounded-xl"
+                                />
+                            </Link>
                         )}
                     </div>
                 ))}
