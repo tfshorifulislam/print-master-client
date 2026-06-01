@@ -8,6 +8,13 @@ import { Avatar } from "@heroui/react";
 const PostDetails = async ({ params }) => {
     const { id } = await params;
 
+    //server side get token
+    const token = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    console.log(token.token,'token')
+
     // ১. সিঙ্গেল পোস্ট ফেচ
     const res = await axios.get(`${process.env.API_URL}/upload/${id}`);
     const post = res.data;
@@ -17,7 +24,7 @@ const PostDetails = async ({ params }) => {
         headers: await headers()
     });
     const user = session?.user;
-    
+
     // 🎯 নিজের প্রোফাইল চেক করার কন্ডিশন
     const isOwnProfile = user?.email === post?.email;
 
@@ -57,10 +64,10 @@ const PostDetails = async ({ params }) => {
 
                     {/* RIGHT - INFO */}
                     <div className="flex flex-col gap-6">
-                        
+
                         {/* 🎯 প্রোফাইল লিংক কন্ডিশনাল */}
-                        <Link 
-                            href={isOwnProfile ? '/profile' : `/profile/${post?.email}`} 
+                        <Link
+                            href={isOwnProfile ? '/profile' : `/profile/${post?.email}`}
                             className="flex items-center gap-3 group"
                         >
                             <Avatar size="lg">
@@ -73,7 +80,7 @@ const PostDetails = async ({ params }) => {
                             <div>
                                 <h2 className="font-semibold text-lg group-hover:underline">
                                     {post?.name || "User"}
-                                </h2> 
+                                </h2>
                                 <p className="text-xs text-gray-500">Creator</p>
                             </div>
                         </Link>
