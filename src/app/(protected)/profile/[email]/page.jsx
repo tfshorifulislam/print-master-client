@@ -48,7 +48,7 @@ const Profile = async ({ params }) => {
     const isOwnProfile = currentUserEmail === user?.email;
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white antialiased border-x border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
+        <div className="min-h-screen bg-white dark:bg-black  border-x border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
 
             {/* TOP HEADER */}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4">
@@ -152,98 +152,59 @@ const Profile = async ({ params }) => {
                         <span>
                             <b className="text-black dark:text-white">{userPosts.length}</b> Posts
                         </span>
-                        <span>
+                        {/* <span>
                             <b className="text-black dark:text-white">142</b> Following
                         </span>
                         <span>
                             <b className="text-black dark:text-white">8.4K</b> Followers
-                        </span>
+                        </span> */}
                     </div>
 
                 </div>
             </div>
 
             {/* TAB */}
-            <div className="border-b border-zinc-200 dark:border-zinc-800 text-center py-3 font-semibold">
+            <div className="text-center py-3 font-semibold">
                 Posts
             </div>
 
             {/* POSTS */}
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
-
+            <div className="px-4 pb-10">
                 {userPosts?.length === 0 ? (
                     <div className="text-center py-20 text-zinc-500">
                         No posts yet
                     </div>
                 ) : (
-                    userPosts.map((post) => (
-                        <div key={post._id} className="p-4">
-
-                            <div className="flex gap-3">
-
-                                {/* avatar */}
-                                <div className="w-10 h-10 relative rounded-full overflow-hidden">
-                                    <Image
-                                        src={user?.image || "/avatar.jpg"}
-                                        alt="user"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-
-                                {/* content */}
-                                <div className="flex-1">
-
-                                    <div className="flex gap-2 text-[15px]">
-                                        <span className="font-bold">{user?.name}</span>
-                                        <span className="text-zinc-500">@{username}</span>
-                                        <span className="text-zinc-500">· 2h</span>
-                                    </div>
-
-                                    <p className="mt-1 text-[15px]">
+                    <div className="columns-2 gap-4">
+                        {userPosts.map((post) => (
+                            <div
+                                key={post._id}
+                                className="mb-4 break-inside-avoid"
+                            >
+                                {/* TEXT */}
+                                {post.text && (
+                                    <p className="mb-2 text-[15px] text-zinc-800 dark:text-zinc-200">
                                         {post.text}
                                     </p>
+                                )}
 
-                                    {post.image && (
-                                        <div className="mt-3 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
-                                            <Image
-                                                src={post.image}
-                                                alt="post"
-                                                width={800}
-                                                height={500}
-                                                className="w-full object-cover"
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* ===== THREADS THIN LINE ACTION BAR ====== */}
-                                    <div className="flex flex-col gap-2.5 mt-2">
-
-                                        {/* COMPACT ICON GROUP */}
-                                        <div className="flex items-center gap-1.5 text-zinc-900 dark:text-zinc-100 -ml-2">
-
-                                            {/* LIKE BUTTON */}
-                                            <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
-                                                <FiHeart className="text-[20px] stroke-2 group-hover:scale-105 transition-transform" />
-                                            </button>
-
-                                            {/* SHARE BUTTON */}
-                                            <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
-                                                <FiSend className="text-[20px] stroke-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                            </button>
-                                        </div>
+                                {/* IMAGE */}
+                                {post.image && (
+                                    <div className="rounded-xl overflow-hidden">
+                                        <Image
+                                            src={post.image}
+                                            alt="post"
+                                            width={800}
+                                            height={800}
+                                            className="w-full h-auto object-cover"
+                                        />
                                     </div>
-                                    {/* ================== */}
-
-                                </div>
+                                )}
                             </div>
-
-                        </div>
-                    ))
+                        ))}
+                    </div>
                 )}
-
             </div>
-
         </div>
     );
 };
