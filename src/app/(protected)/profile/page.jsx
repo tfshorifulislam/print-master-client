@@ -253,29 +253,11 @@ const Profile = () => {
                                         <FiHeart className="text-[20px] stroke-2 group-hover:scale-105 transition-transform" />
                                     </button>
 
-                                    {/* COMMENT BUTTON */}
-                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
-                                        <FiMessageCircle className="text-xl stroke-2group-hover:-scale-x-100 transition-transform" />
-                                    </button>
-
-                                    {/* REPOST BUTTON */}
-                                    <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
-                                        <FiRepeat className="text-[20px] stroke-2 group-hover:rotate-180 transition-transform duration-300" />
-                                    </button>
-
                                     {/* SHARE BUTTON */}
                                     <button className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-150 active:scale-90 group">
                                         <FiSend className="text-[20px] stroke-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                     </button>
                                 </div>
-
-                                {/* ENGAGEMENT FOOTPRINT COUNTER */}
-                                <div className="flex items-center gap-1.5 text-[13.5px] text-zinc-400 dark:text-zinc-500 select-none">
-                                    <span className="hover:underline cursor-pointer">12 replies</span>
-                                    <span>·</span>
-                                    <span className="hover:underline cursor-pointer">99 likes</span>
-                                </div>
-
                             </div>
                             {/* ========================= */}
                         </div>

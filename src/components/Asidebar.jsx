@@ -37,7 +37,7 @@ const Asidebar = () => {
         { name: "Home", icon: BiHomeCircle, path: "/" },
         { name: "Explore", icon: BiSearch, path: "/explore" },
         { name: "Notifications", icon: BiBell, path: "/notification" },
-        { name: "Messages", icon: BiMessageSquareDetail, path: "/chat" },
+        // { name: "Messages", icon: BiMessageSquareDetail, path: "/chat" },
         { name: "Bookmarks", icon: BiBookmark, path: "/bookmarks" },
         { name: "Dashboard", icon: MdDashboardCustomize, path: "/dashboard" },
         { name: "Profile", icon: BiUser, path: "/profile" },
