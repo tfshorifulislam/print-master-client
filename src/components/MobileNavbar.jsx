@@ -4,6 +4,8 @@ import { FiSearch } from "react-icons/fi";
 import { FaPlusSquare } from "react-icons/fa";
 import { BsBookmark } from "react-icons/bs";
 import { ProfileAvatar } from './PrifileAvatar';
+import CreatePost from './CreatePost';
+import CreatePostForMobile from './CreatePostForMobile';
 
 
 const MobileScreenBottomNavbar = () => {
@@ -35,11 +37,8 @@ const MobileScreenBottomNavbar = () => {
 
             {/* Post */}
             <button className="
-                flex flex-col items-center
-                text-indigo-600 hover:text-indigo-500
-                dark:text-indigo-500 dark:hover:text-indigo-400
-            ">
-                <FaPlusSquare size={24} />
+                flex flex-col items-center">
+                <CreatePostForMobile/>
             </button>
 
             {/* Bookmark */}

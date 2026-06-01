@@ -17,6 +17,7 @@ import {
 import { MdDashboardCustomize } from "react-icons/md";
 import { signOut, useSession } from "@/lib/auth-client";
 import CreatePost from "./CreatePost";
+import { ThemeSwitch } from "./ThemeSwitch";
 
 export function ProfileAvatar() {
   const { data: user } = useSession();
@@ -36,7 +37,7 @@ export function ProfileAvatar() {
   ];
 
   const handleNavigate = (path) => {
-    closeDrawerRef.current?.click(); 
+    closeDrawerRef.current?.click();
     router.push(path);
   };
 
@@ -51,7 +52,7 @@ export function ProfileAvatar() {
       {/* TRIGGER */}
       <Drawer.Trigger className="cursor-pointer">
         <Avatar
-          size="lg"
+          size="sm"
           className="ring-2 ring-offset-2 ring-white dark:ring-neutral-900 shadow-md"
         >
           <Avatar.Image
@@ -88,23 +89,25 @@ export function ProfileAvatar() {
                       key={item.name}
                       onClick={() => handleNavigate(item.path)}
                       className={`flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition
-                        ${
-                          isActive
-                            ? "bg-zinc-200 dark:bg-zinc-900 font-semibold"
-                            : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                        ${isActive
+                          ? "bg-zinc-200 dark:bg-zinc-900 font-semibold"
+                          : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
                         }`}
                     >
                       <item.icon
-                        className={`text-xl ${
-                          isActive
+                        className={`text-xl ${isActive
                             ? "text-black dark:text-white"
                             : "text-zinc-500 dark:text-zinc-400"
-                        }`}
+                          }`}
                       />
                       <span>{item.name}</span>
                     </button>
                   );
                 })}
+                <div className="ml-1">
+                  <ThemeSwitch />
+                </div>
+
 
                 <div className="mt-3">
                   <CreatePost />
