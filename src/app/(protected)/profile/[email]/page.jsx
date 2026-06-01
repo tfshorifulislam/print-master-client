@@ -10,6 +10,7 @@ import {
     FaEllipsis
 } from "react-icons/fa6";
 import { FiHeart, FiMessageCircle, FiRepeat, FiSend } from 'react-icons/fi';
+import { Link } from '@heroui/react';
 
 const Profile = async ({ params }) => {
     const { email } = await params;
@@ -190,7 +191,9 @@ const Profile = async ({ params }) => {
 
                                 {/* IMAGE */}
                                 {post.image && (
-                                    <div className="rounded-xl overflow-hidden">
+                                    <Link
+                                        href={`/post/${post._id}`}
+                                        className="rounded-xl overflow-hidden">
                                         <Image
                                             src={post.image}
                                             alt="post"
@@ -198,7 +201,7 @@ const Profile = async ({ params }) => {
                                             height={800}
                                             className="w-full h-auto object-cover"
                                         />
-                                    </div>
+                                    </Link>
                                 )}
                             </div>
                         ))}
