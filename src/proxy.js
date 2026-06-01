@@ -12,9 +12,9 @@ export async function proxy(request) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-   return NextResponse.next()
+    return NextResponse.next()
 }
 
 export const config = {
-    matcher: ['/','/profile', '/post/:path+']
+    matcher: ['/home', '/profile', '/post/:path+']
 }

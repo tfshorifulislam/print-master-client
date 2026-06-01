@@ -41,7 +41,7 @@ const Profile = () => {
                 //client side get token
                 const { data: token } = await authClient.token()
                 // console.log(token)
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads`, {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
                     headers: {
                         authorization: `Bearer ${token.token}`
                     }

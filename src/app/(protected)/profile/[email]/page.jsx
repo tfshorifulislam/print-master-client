@@ -25,7 +25,7 @@ const Profile = async ({ params }) => {
         headers: await headers()
     })
 
-    const userRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${decodedEmail}`, {
+    const userRes = await fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/user/${decodedEmail}`, {
         cache: 'no-store',
         headers: {
             authorization: `Bearer ${token.token}`
@@ -34,7 +34,7 @@ const Profile = async ({ params }) => {
 
     const user = await userRes.json();
 
-    const postsRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads`, {
+    const postsRes = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
         headers: {
             authorization: `Bearer ${token.token}`
         }

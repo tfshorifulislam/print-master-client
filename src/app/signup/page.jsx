@@ -50,7 +50,7 @@ export default function SignupPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950 px-4">
+        <div className="min-h-screen flex items-center justify-center px-4">
             <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-neutral-900 shadow-xl rounded-2xl overflow-hidden">
 
                 {/* LEFT SIDE */}

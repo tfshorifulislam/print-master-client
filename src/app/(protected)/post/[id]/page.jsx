@@ -15,7 +15,7 @@ const PostDetails = async ({ params }) => {
     console.log(token.token, 'token')
 
     // ১. সিঙ্গেল পোস্ট ফেচ
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads/${id}`, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads/${id}`, {
         headers: {
             authorization: `Bearer ${token.token}`
         }
