@@ -58,7 +58,12 @@ export default function CreatePostForMobile() {
                 formData.append("image", file);
             }
 
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, formData);
+            const { data: token } = await authClient.token()
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/upload`, formData, {
+                headers: {
+                    authorization: `Bearer ${token.token}`
+                }
+            });
             console.log(res.data, "final data");
 
             reset();
