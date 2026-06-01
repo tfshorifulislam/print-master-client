@@ -68,10 +68,10 @@ const Profile = () => {
     const isOwnProfile = true; // current page = logged user
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-black text-black dark:text-white">
+        <div className="min-h-screen bg-white dark:bg-black">
 
             {/* TOP HEADER */}
-            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-black/80 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800 text-gray-900">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold leading-tight">
                         {user?.name || "User Name"}
@@ -86,7 +86,7 @@ const Profile = () => {
             <div>
 
                 {/* BANNER */}
-                <div className="w-full aspect-[3/1] bg-zinc-200 dark:bg-zinc-800 relative overflow-hidden">
+                <div className="w-full aspect-3/1 bg-zinc-200 dark:bg-zinc-800 relative overflow-hidden">
                     {user?.banner && (
                         <Image
                             src={user.banner}
@@ -96,7 +96,7 @@ const Profile = () => {
                             priority
                         />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 {/* AVATAR + ACTIONS */}
@@ -156,7 +156,7 @@ const Profile = () => {
                         {user?.bio || "Digital Creator 🎬 · Welcome to my profile ✨"}
                     </p>
 
-                    {/* META */}
+
                     <div className="flex flex-wrap gap-4 mt-3 text-[14px] text-zinc-500">
 
                         <span className="flex items-center gap-1">
@@ -174,18 +174,21 @@ const Profile = () => {
                     </div>
 
                     {/* STATS */}
-                    <div className="flex gap-5 mt-4 text-[14px] text-zinc-500 pb-4">
+                    <div className="flex gap-6 mt-4 text-sm pb-4 text-gray-600 dark:text-gray-300">
 
                         <span>
-                            <b className="text-black dark:text-white">{posts.length}</b> Posts
+                            <b className="text-gray-900 dark:text-white">{posts.length}</b>{" "}
+                            Posts
                         </span>
 
                         <span>
-                            <b className="text-black dark:text-white">142</b> Following
+                            <b className="text-gray-900 dark:text-white">142</b>{" "}
+                            Following
                         </span>
 
                         <span>
-                            <b className="text-black dark:text-white">8.4K</b> Followers
+                            <b className="text-gray-900 dark:text-white">8.4K</b>{" "}
+                            Followers
                         </span>
 
                     </div>
@@ -206,28 +209,24 @@ const Profile = () => {
                             {/* USER */}
                             <div className="flex gap-3">
 
-                                <Image
-                                    src={user?.image || "/avatar.jpg"}
-                                    alt="avatar"
-                                    width={48}
-                                    height={48}
-                                    className="rounded-full object-cover"
-                                />
-
-                                <div className="flex-1">
-
-                                    <div className="flex items-center gap-2">
-                                        <h3 className="font-bold">{user?.name}</h3>
-                                        <span className="text-zinc-500 text-sm">@{username}</span>
-                                        <FaEllipsis className="ml-auto cursor-pointer" />
-                                    </div>
-
-                                    <p className="mt-3 whitespace-pre-wrap">
-                                        {post.text}
-                                    </p>
-
+                                <div>
+                                    <Image
+                                        src={user?.image || "/avatar.jpg"}
+                                        alt="avatar"
+                                        width={45}
+                                        height={40}
+                                        className="rounded-full object-cover"
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-bold">{user?.name}</h3>
+                                    <span className="text-zinc-500 text-sm">@{username}</span>
+                                    <FaEllipsis className="ml-auto cursor-pointer" />
                                 </div>
                             </div>
+                            <p className="mt-3 whitespace-pre-wrap">
+                                {post.text}
+                            </p>
 
                             {/* IMAGE */}
                             {post?.image && (
