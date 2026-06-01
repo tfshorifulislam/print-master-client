@@ -40,7 +40,7 @@ const Profile = async ({ params }) => {
         <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white antialiased border-x border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
 
             {/* TOP HEADER */}
-            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold tracking-tight leading-tight">
                         {user?.name || "User Name"}

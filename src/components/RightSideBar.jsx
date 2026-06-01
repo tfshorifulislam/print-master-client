@@ -2,8 +2,19 @@
 
 import React from "react";
 import SearchInputRightSideTop from "./SearchInputRightSideTop";
+import { useSession } from "@/lib/auth-client";
+import IsPendingLoading from "./IsPendingLoading";
+
 
 const RightSideBar = () => {
+  const { data, isPending } = useSession()
+
+  if (isPending) {
+    return (
+      <IsPendingLoading />
+    )
+  }
+  
   return (
     <aside className="hidden lg:block sticky top-0 flex-col w-72 lg:w-80 h-screen p-4 gap-5">
 
