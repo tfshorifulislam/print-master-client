@@ -20,13 +20,24 @@ const Profile = async ({ params }) => {
     });
     const currentUserEmail = session?.user?.email;
 
-    const userRes = await fetch(`${process.env.API_URL}/user/${decodedEmail}`, {
-        cache: 'no-store'
+    const token = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    const userRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${decodedEmail}`, {
+        cache: 'no-store',
+        headers: {
+            authorization: `Bearer ${token.token}`
+        }
     });
 
     const user = await userRes.json();
 
-    const postsRes = await axios.get(`${process.env.API_URL}/uploads`);
+    const postsRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads`, {
+        headers: {
+            authorization: `Bearer ${token.token}`
+        }
+    });
     const allPosts = postsRes.data;
 
     const userPosts = allPosts.filter(post =>

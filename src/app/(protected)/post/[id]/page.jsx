@@ -15,7 +15,7 @@ const PostDetails = async ({ params }) => {
     console.log(token.token, 'token')
 
     // ১. সিঙ্গেল পোস্ট ফেচ
-    const res = await axios.get(`${process.env.API_URL}/uploads/${id}`, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads/${id}`, {
         headers: {
             authorization: `Bearer ${token.token}`
         }
@@ -28,7 +28,6 @@ const PostDetails = async ({ params }) => {
     });
     const user = session?.user;
 
-    // 🎯 নিজের প্রোফাইল চেক করার কন্ডিশন
     const isOwnProfile = user?.email === post?.email;
 
     // ৩. ক্রিয়েটরের অন্যান্য পোস্ট ফেচ

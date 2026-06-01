@@ -30,9 +30,6 @@ const Profile = () => {
 
     const currentUserEmail = user?.email;
 
-    // FIX: proper env usage
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
     useEffect(() => {
         if (!user?.email) return;
 
@@ -40,7 +37,7 @@ const Profile = () => {
             try {
                 setLoading(true);
 
-                const res = await axios.get(`${API_URL}/uploads`);
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads`);
 
                 const userPosts = res.data.filter(
                     (post) => post.email === user.email
@@ -56,7 +53,7 @@ const Profile = () => {
         };
 
         fetchPosts();
-    }, [user, API_URL]);
+    }, [user]);
 
     if (isPending || loading) {
         return <IsPendingLoading />;
@@ -64,8 +61,7 @@ const Profile = () => {
 
     const username = user?.email?.split("@")[0] || "username";
 
-    // FIX: correct logic
-    const isOwnProfile = true; // current page = logged user
+    const isOwnProfile = true; 
 
     return (
         <div className="min-h-screen bg-white dark:bg-black">
