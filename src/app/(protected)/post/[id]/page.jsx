@@ -12,11 +12,14 @@ const PostDetails = async ({ params }) => {
     const token = await auth.api.getToken({
         headers: await headers()
     })
-
-    console.log(token.token,'token')
+    console.log(token.token, 'token')
 
     // ১. সিঙ্গেল পোস্ট ফেচ
-    const res = await axios.get(`${process.env.API_URL}/upload/${id}`);
+    const res = await axios.get(`${process.env.API_URL}/uploads/${id}`, {
+        headers: {
+            authorization: `Bearer ${token.token}`
+        }
+    });
     const post = res.data;
 
     // ২. সেশন ইউজার ফেচ (সার্ভার সাইড)
@@ -29,7 +32,11 @@ const PostDetails = async ({ params }) => {
     const isOwnProfile = user?.email === post?.email;
 
     // ৩. ক্রিয়েটরের অন্যান্য পোস্ট ফেচ
-    const postsRes = await axios.get(`${process.env.API_URL}/uploads`);
+    const postsRes = await axios.get(`${process.env.API_URL}/uploads`, {
+        headers: {
+            authorization: `Bearer ${token.token}`
+        }
+    });
     const userPosts = postsRes.data?.filter(
         (p) => p.email === post?.email
     );
@@ -37,7 +44,6 @@ const PostDetails = async ({ params }) => {
     // 🎯 ক্লাউডিনারি ফোর্স ডাউনলোড ইউআরএল কনভার্ট লজিক
     let downloadUrl = post?.image;
     if (downloadUrl && downloadUrl.includes("res.cloudinary.com")) {
-        // ইউআরএল-এর 'upload/' অংশটিকে 'upload/fl_attachment/' দিয়ে রিপ্লেস করা হলো
         downloadUrl = downloadUrl.replace("/upload/", "/upload/fl_attachment/");
     }
 
