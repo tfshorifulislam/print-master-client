@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import IsPendingLoading from "@/components/IsPendingLoading";
 
 import {
@@ -29,6 +29,7 @@ const Profile = () => {
     const user = session?.user;
 
     const currentUserEmail = user?.email;
+    console.log(currentUserEmail)
 
     useEffect(() => {
         if (!user?.email) return;
@@ -36,12 +37,21 @@ const Profile = () => {
         const fetchPosts = async () => {
             try {
                 setLoading(true);
+                //client side get token
+                const { data: token } = await authClient.token()
+                // console.log(token)
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads`, {
+                    headers: {
+                        authorization: `Bearer ${token.token}`
+                    }
+                });
 
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/uploads`);
+                console.log('res', res)
 
                 const userPosts = res.data.filter(
-                    (post) => post.email === user.email
+                    (post) => post.email === currentUserEmail
                 );
+                console.log(userPosts,'post emai')
 
                 setPosts(userPosts);
             } catch (err) {
@@ -61,7 +71,7 @@ const Profile = () => {
 
     const username = user?.email?.split("@")[0] || "username";
 
-    const isOwnProfile = true; 
+    const isOwnProfile = true;
 
     return (
         <div className="min-h-screen bg-white dark:bg-black">
