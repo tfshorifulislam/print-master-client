@@ -27,6 +27,7 @@ const Asidebar = () => {
     const { data: session, isPending } = useSession()
     const user = session?.user;
     const userName = user?.email ? user.email.split('@')[0] : 'username';
+    
     if (isPending) {
         return (
             <IsPendingLoading />

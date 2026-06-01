@@ -5,45 +5,28 @@ import { Skeleton } from "@heroui/react";
 const PinterestLoader = () => {
     return (
         <div
-            className="
-                w-[95%]
-                mx-auto
-                mt-6
-                columns-2
-                sm:columns-3
-                md:columns-4
-                lg:columns-5
-                gap-4
-            "
-        >
+            className="w-[95%] mx-auto mt-6 grid grid-cols-2 gap-4">
+            {Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className="flex flex-col gap-3">
 
-            {
-                Array.from({ length: 15 }).map((_, index) => (
-
-                    <div
-                        key={index}
-                        className="mb-4 break-inside-avoid"
-                    >
-
-                        {/* Image Skeleton */}
-                        <Skeleton
-                            className={`
-                                w-full
-                                rounded-2xl
-                                ${index % 3 === 0
+                    <Skeleton
+                        className={`
+                            w-full rounded-2xl
+                            ${index % 3 === 0
+                                ? "h-[260px]"
+                                : index % 2 === 0
                                     ? "h-[320px]"
-                                    : index % 2 === 0
-                                        ? "h-[420px]"
-                                        : "h-[260px]"
-                                }
-                            `}
-                        />
+                                    : "h-[220px]"
+                            }
+                        `}
+                    />
 
-                    </div>
+                    {/* optional text skeleton */}
+                    <Skeleton className="h-3 w-3/4 rounded-lg" />
+                    <Skeleton className="h-3 w-1/2 rounded-lg" />
 
-                ))
-            }
-
+                </div>
+            ))}
         </div>
     );
 };
