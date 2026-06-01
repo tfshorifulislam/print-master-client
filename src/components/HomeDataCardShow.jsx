@@ -14,7 +14,7 @@ const HomeDataCardShow = async () => {
             <LogoCenter />
 
             {/* FEED CONTAINER */}
-            <div className="border-x">
+            <div className="border-x grid grid-cols-2">
                 {data?.reverse()?.map((card) => (
                     <PostCard key={card._id} card={card} />
                 ))}
