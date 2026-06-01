@@ -4,6 +4,8 @@ import { Providers } from "../providers";
 import Asidebar from "@/components/Asidebar";
 import RightSideBar from "@/components/RightSideBar";
 import MobileScreenBottomNavbar from "@/components/MobileNavbar";
+import CreatePost from "@/components/CreatePost";
+
 
 
 const geistSans = Geist({

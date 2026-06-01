@@ -19,6 +19,7 @@ import { ThemeSwitch } from "./ThemeSwitch";
 import { PiDropboxLogoFill } from "react-icons/pi";
 import { useSession } from "@/lib/auth-client";
 import IsPendingLoading from "./IsPendingLoading";
+import CreatePost from "./CreatePost";
 
 const Asidebar = () => {
     const pathname = usePathname();
@@ -91,9 +92,8 @@ const Asidebar = () => {
                 </nav>
 
                 {/* POST BUTTON */}
-                <Link href={'/createpost'}>
-                Post
-                </Link>
+                    <CreatePost />
+
             </div>
 
             {/* BOTTOM SECTION - User Profile */}
