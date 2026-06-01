@@ -34,7 +34,7 @@ const PostCard = ({ card }) => {
 
 
     return (
-        <div className="border-b border-zinc-100 dark:border-zinc-900 p-4 bg-white dark:bg-black hover:bg-zinc-50/30 dark:hover:bg-zinc-950/20 transition-colors duration-200 cursor-pointer select-none">
+        <div className=" p-4 bg-white dark:bg-black hover:bg-zinc-50/30 dark:hover:bg-zinc-950/20 transition-colors duration-200 cursor-pointer select-none">
 
             <div className="flex gap-3">
 
@@ -43,7 +43,7 @@ const PostCard = ({ card }) => {
                     {card.image && (
                         <Link href={`/post/${card._id}`} className="block mb-3.5">
 
-                            <div className="w-full h-auto rounded-xl overflow-hidden border border-zinc-200/60 dark:border-zinc-800/80 bg-black flex items-center justify-center">
+                            <div className="w-full h-auto rounded-xl overflow-hidden bg-black flex items-center justify-center">
 
                                 <Image
                                     src={card.image}
