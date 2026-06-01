@@ -107,7 +107,7 @@ const PostDetails = async ({ params }) => {
                 {/* USER OTHER POSTS */}
                 <div className="mt-16">
                     <h3 className="text-lg font-semibold mb-4">More from this creator</h3>
-                    <div className="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+                    <div className="columns-2 gap-4 space-y-4">
                         {userPosts?.map((item) => (
                             <Link key={item._id} href={`/post/${item._id}`} className="block break-inside-avoid">
                                 <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
