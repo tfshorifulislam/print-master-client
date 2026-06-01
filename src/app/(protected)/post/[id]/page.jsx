@@ -47,7 +47,7 @@ const PostDetails = async ({ params }) => {
     }
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white dark:bg-black border-x">
             <div className="w-11/12  mx-auto py-10">
 
                 {/* MAIN SECTION */}
