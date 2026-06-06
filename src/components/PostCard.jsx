@@ -1,25 +1,33 @@
 'use client'
 
+import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
+import Link from "next/link";
 
 const PostCard = ({ card }) => {
     const userImage =
         card?.userImage &&
-        card.userImage !== "undefined" &&
-        card.userImage.trim() !== ""
+            card.userImage !== "undefined" &&
+            card.userImage.trim() !== ""
             ? card.userImage
             : "/avatar.jpg";
 
-    const userName = card?.name || "Creative Designer";
-    const postTitle = card?.text || "Untitled Project";
+    const userName = card?.name;
+    const postTitle = card?.text;
+
+    const { data } = useSession()
+    const user = data?.user;
+    const isOwnProfile = user?.email === card?.email;
 
     return (
         <div className="group flex flex-col bg-transparent w-full select-none">
-            
+
             {/* 🖼️ IMAGE CONTAINER (MODERN SHARP & CLEAN GRID) */}
-            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-500 ease-out group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]">
+            <Link
+                href={`/post/${card._id}`}
+                className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-500 ease-out group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]">
                 <Image
-                    src={card.image || "/placeholder.jpg"}
+                    src={card.image}
                     alt={postTitle}
                     fill
                     sizes="(max-width:768px) 100vw, 50vw"
@@ -28,11 +36,13 @@ const PostCard = ({ card }) => {
 
                 {/* Subtle Edge Glow on Hover */}
                 <div className="absolute inset-0 bg-black/[0.02] dark:bg-white/[0.02] opacity-100 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
-            </div>
+            </Link>
 
             {/* 👤 BOTTOM DETAILS (BEHANCE / CONTRA STYLE MINIMALISM) */}
             <div className="mt-3.5 px-1 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
+                <Link
+                    href={isOwnProfile ? '/profile' : `/profile/${card?.email}`}
+                    className="flex items-center gap-3 min-w-0">
                     {/* Minimal Borderless Avatar */}
                     <div className="relative w-7 h-7 overflow-hidden rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-800">
                         <Image
@@ -52,7 +62,7 @@ const PostCard = ({ card }) => {
                             {userName}
                         </p>
                     </div>
-                </div>
+                </Link>
 
                 {/* Premium Views Indicator */}
                 <div className="flex items-center gap-1.5 text-zinc-400 dark:text-zinc-500 flex-shrink-0 pl-2">
