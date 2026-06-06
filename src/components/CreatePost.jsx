@@ -129,7 +129,7 @@ export default function CreatePost({ isMobileFloating = false }) {
               <Modal.Body className="py-4 flex flex-col gap-3">
                 <div className="flex gap-3 items-start">
                   <Avatar
-                    src={user?.image || "/avatar.jpg"}
+                    src={user?.image || '/avatar.jpg'}
                     name={user?.name}
                     size="md"
                     className="h-10 w-10"

@@ -1,5 +1,6 @@
 import { Syne, Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 
 const syneHeading = Syne({
@@ -37,13 +38,14 @@ export default function RootLayout({ children }) {
             className={`${syneHeading.className} ${interBody.className} h-full antialiased`}
             suppressHydrationWarning
         >
-            <body className="min-h-screen bg-white text-zinc-950 dark:bg-black dark:text-zinc-50 font-sans">
-
-                <div className="flex w-full min-h-screen max-w-[1400px] mx-auto">
-                    <main className="flex-1 w-full min-h-screen">
-                        {children}
-                    </main>
-                </div>
+            <body className="min-h-screen font-sans">
+                <Providers>
+                    <div className="flex w-full min-h-screen max-w-[1400px] mx-auto">
+                        <main className="flex-1 w-full min-h-screen">
+                            {children}
+                        </main>
+                    </div>
+                </Providers>
             </body>
         </html>
     );
