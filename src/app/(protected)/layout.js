@@ -5,10 +5,10 @@ import Asidebar from "@/components/Asidebar";
 import RightSideBar from "@/components/RightSideBar";
 import MobileScreenBottomNavbar from "@/components/MobileNavbar";
 
+
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"], // subsets যুক্ত করা ভালো প্র্যাকটিস
-});
+  variable: "--font-inter"
+})
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,34 +29,19 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.className} h-full antialiased`}
+      className={`${inter.className}  h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background text-foreground">
         <Providers>
-          {/* max-w-300 পরিবর্তন করে স্ট্যান্ডার্ড max-w-7xl (1280px) বা custom rem দেওয়া হয়েছে */}
-          <div className="flex max-w-[1400px] mx-auto w-full relative">
-            
-            {/* Asidebar: মোবাইলে হাইড থাকবে, md (Medium) স্ক্রিন থেকে দেখাবে */}
-            <div className="hidden md:block w-64 shrink-0">
-              <Asidebar />
-            </div>
-
-            {/* Main Content Area */}
-            <main className="flex-1 min-h-screen w-full pb-16 md:pb-0">
+          <div className="flex max-w-300 mx-auto">
+            <Asidebar />
+            <main
+              className="flex-1 min-h-screen">
               {children}
             </main>
-
-            {/* RightSideBar: মোবাইলে এবং ট্যাবলেটে হাইд থাকবে, lg (Large) স্ক্রিন থেকে দেখাবে */}
-            <div className="hidden lg:block w-80 shrink-0">
-              <RightSideBar />
-            </div>
-
-            {/* Mobile Bottom Navbar: শুধুমাত্র মোবাইলে দেখাবে (md স্ক্রিনে হাইড হয়ে যাবে) */}
-            <div className="block md:hidden fixed bottom-0 left-0 right-0 z-50">
-              <MobileScreenBottomNavbar />
-            </div>
-
+            <MobileScreenBottomNavbar />
+            <RightSideBar />
           </div>
         </Providers>
       </body>

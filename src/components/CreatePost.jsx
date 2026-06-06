@@ -6,9 +6,9 @@ import axios from "axios";
 import { useState, useRef } from "react";
 import { FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { FaCirclePlus } from "react-icons/fa6";
+import { FaCirclePlus, FaFeatherPointed } from "react-icons/fa6";
 
-export default function CreatePost() {
+export default function CreatePost({ isMobileFloating = false }) {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
@@ -38,17 +38,12 @@ export default function CreatePost() {
     setPreviewUrl("");
   };
 
-  // ফাইলকে Base64 এ রূপান্তর করার ফাংশন
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
+      fileReader.onload = () => resolve(fileReader.result);
+      fileReader.onerror = (error) => reject(error);
     });
   };
 
@@ -58,13 +53,11 @@ export default function CreatePost() {
 
     try {
       setLoading(true);
-
       let base64Image = "";
       if (file) {
         base64Image = await convertToBase64(file);
       }
 
-      // FormData এর বদলে সরাসরি JSON অবজেক্ট পাঠানো হচ্ছে
       const postData = {
         text,
         email: user?.email,
@@ -72,12 +65,12 @@ export default function CreatePost() {
         id: user?.id,
         name: user?.name,
         userImage: user?.image || "",
-        image: base64Image, // এটি ক্লাউডিনারিতে সরাসরি আপলোড হবে
+        image: base64Image,
       };
 
       const { data: token } = await authClient.token();
       
-      const res = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_AUTH_URL}/upload`, 
         postData, 
         {
@@ -88,8 +81,6 @@ export default function CreatePost() {
         }
       );
       
-      console.log(res.data, "final data");
-
       reset();
       router.refresh();
     } catch (error) {
@@ -101,60 +92,65 @@ export default function CreatePost() {
 
   return (
     <Modal>
-      <Button
-        disabled={isPending}
-        variant="none"
-        className="font-semibold shadow-md mt-7 bg-black dark:bg-white text-white dark:text-black rounded-lg w-9/12 flex items-center justify-center gap-3">
-        <FaCirclePlus />
-        Create a Post
-      </Button>
+      {/* CONDITIONAL TRIGGER BASED ON SCREEN / DEVICE TYPE */}
+      {isMobileFloating ? (
+        /* 📱 Mobile Floating Button */
+        <Button
+          disabled={isPending}
+          variant="none"
+          className="h-14 w-14 min-w-0 rounded-full bg-sky-500 hover:bg-sky-600 text-white shadow-lg flex items-center justify-center"
+        >
+          <FaFeatherPointed size={22} />
+        </Button>
+      ) : (
+        /* 🖥️ Desktop / Tablet Sidebar Button */
+        <Button
+          disabled={isPending}
+          variant="none"
+          className="font-bold shadow-md bg-sky-500 hover:bg-sky-600 text-white rounded-full w-12 h-12 xl:w-11/12 xl:h-12 flex items-center justify-center transition duration-200"
+        >
+          {/* Tablet view show only icon */}
+          <span className="xl:hidden"><FaFeatherPointed size={20} /></span>
+          {/* Desktop view show full text */}
+          <span className="hidden xl:inline text-[17px]">Post</span>
+        </Button>
+      )}
 
-      <Modal.Backdrop
-        className="bg-black/60 dark:bg-zinc-900/80"
-        variant="blur"
-      >
+      <Modal.Backdrop className="bg-black/40 dark:bg-zinc-900/60" variant="blur">
         <Modal.Container>
-          <Modal.Dialog className="sm:max-w-[500px] bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-2xl">
-            <Modal.Header className="flex justify-between items-center border-b pb-3 border-gray-100 dark:border-zinc-800">
-              <Modal.Heading className="text-xl font-bold text-gray-800 dark:text-gray-100">
+          <Modal.Dialog className="sm:max-w-[600px] bg-white dark:bg-black p-4 rounded-2xl shadow-xl border border-zinc-100 dark:border-zinc-800">
+            <Modal.Header className="flex justify-between items-center border-b pb-2 border-zinc-100 dark:border-zinc-800">
+              <Modal.Heading className="text-lg font-bold text-gray-900 dark:text-gray-100">
                 Create Post
               </Modal.Heading>
             </Modal.Header>
 
             <form onSubmit={onSubmit}>
-              <Modal.Body className="py-4 flex flex-col gap-4">
-                {/* User Info */}
-                <div className="flex items-center gap-3">
+              <Modal.Body className="py-4 flex flex-col gap-3">
+                <div className="flex gap-3 items-start">
                   <Avatar
                     src={user?.image || "/avatar.jpg"}
                     name={user?.name}
                     size="md"
-                    className="border-2 border-primary"
+                    className="h-10 w-10"
                   />
-                  <div>
-                    <h4 className="font-semibold text-sm text-gray-900 dark:text-gray-100">
-                      {user?.name || "Guest User"}
-                    </h4>
-                    <p className="text-xs text-gray-500">Posting publicly</p>
+                  <div className="flex-1">
+                    <textarea
+                      placeholder="What is happening?!"
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                      rows={4}
+                      className="w-full text-xl p-1 bg-transparent border-none outline-none resize-none text-gray-900 dark:text-gray-100 placeholder-zinc-500 focus:ring-0"
+                    />
                   </div>
                 </div>
 
-                {/* Standard HTML Textarea */}
-                <textarea
-                  placeholder="What's on your mind?..."
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  rows={4}
-                  className="w-full text-base p-3 rounded-xl bg-gray-50 dark:bg-zinc-800/50 border border-gray-100 dark:border-zinc-800 outline-none resize-none text-gray-800 dark:text-gray-200 focus:border-blue-500 dark:focus:border-blue-500 placeholder-gray-400"
-                />
-
-                {/* Image Preview */}
                 {previewUrl && (
-                  <div className="relative rounded-lg overflow-hidden border border-gray-200 dark:border-zinc-800 max-h-[250px] flex justify-center bg-gray-50 dark:bg-zinc-950">
+                  <div className="relative rounded-2xl overflow-hidden max-h-[300px] flex justify-center bg-gray-50 dark:bg-zinc-950 ml-12">
                     <img
                       src={previewUrl}
                       alt="Upload preview"
-                      className="object-cover w-full h-full max-h-[250px]"
+                      className="object-cover w-full h-full max-h-[300px]"
                     />
                     <button
                       type="button"
@@ -174,44 +170,28 @@ export default function CreatePost() {
                   className="hidden"
                 />
 
-                {/* Actions Bar */}
-                <div className="flex justify-between items-center border border-gray-200 dark:border-zinc-800 rounded-lg p-2 mt-2">
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400 pl-2">
-                    Add to your post
-                  </span>
+                <div className="flex justify-between items-center border-t border-zinc-100 dark:border-zinc-800 pt-3 ml-12">
                   <Button
                     type="button"
                     isIconOnly
                     variant="light"
-                    color="success"
                     onClick={() => fileInputRef.current?.click()}
-                    title="Add Image"
+                    className="text-sky-500 hover:bg-sky-50 dark:hover:bg-zinc-900 rounded-full"
                   >
-                    <FaImage size={20} className="text-green-500" />
+                    <FaImage size={20} />
                   </Button>
+
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="submit"
+                      disabled={loading || (!text.trim() && !file)}
+                      className="px-5 h-9 bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white font-bold rounded-full text-sm transition"
+                    >
+                      {loading ? "Posting..." : "Post"}
+                    </Button>
+                  </div>
                 </div>
               </Modal.Body>
-
-              <Modal.Footer className="pt-3 border-t border-gray-100 dark:border-zinc-800 gap-2">
-                <Button
-                  slot="close"
-                  variant="light"
-                  onClick={reset}
-                  className="font-medium"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  color="primary"
-                  isLoading={loading}
-                  disabled={loading || (!text.trim() && !file)}
-                  endContent={!loading && <FaPaperPlane className="text-xs" />}
-                  className="px-6 font-semibold"
-                >
-                  {loading ? "Posting..." : "Post"}
-                </Button>
-              </Modal.Footer>
             </form>
             <Modal.CloseTrigger onClick={reset} />
           </Modal.Dialog>
