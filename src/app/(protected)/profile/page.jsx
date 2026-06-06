@@ -12,6 +12,8 @@ import {
     FaLink,
     FaLocationDot,
 } from "react-icons/fa6";
+import { ProfilePostDelete } from "@/components/ProfilePostDelete";
+
 
 const Profile = () => {
     const [posts, setPosts] = useState([]);
@@ -153,27 +155,42 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-
             {/* POSTS GRID */}
             <div className="columns-2 gap-4 px-4 pb-10">
                 {[...posts].reverse().map((post) => (
                     <div
                         key={post._id}
-                        className="mb-4 break-inside-avoid"
+                        className="mb-4 break-inside-avoid group relative rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition"
                     >
+                        {/* IMAGE WRAPPER */}
                         {post?.image && (
-                            <a
-                                href={`/post/${post._id}`}
-                                className="block rounded-2xl overflow-hidden hover:brightness-95 transition"
-                            >
-                                <Image
-                                    src={post.image}
-                                    alt="post"
-                                    width={800}
-                                    height={800}
-                                    className="w-full h-auto object-cover"
-                                />
-                            </a>
+                            <div className="relative">
+
+                                {/* IMAGE */}
+                                <a href={`/post/${post._id}`}>
+                                    <Image
+                                        src={post.image}
+                                        alt="post"
+                                        width={800}
+                                        height={800}
+                                        className="w-full h-auto object-cover transition group-hover:scale-[1.02]"
+                                    />
+                                </a>
+
+                                {/* TOP GRADIENT OVERLAY */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/40 opacity-0 group-hover:opacity-100 transition" />
+
+                                {/* DELETE (3 DOT AREA) */}
+                                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
+                                    <ProfilePostDelete
+                                        postId={post._id}
+                                        onDeleteSuccess={(id) => {
+                                            setPosts((prev) => prev.filter((p) => p._id !== id));
+                                        }}
+                                    />
+                                </div>
+
+                            </div>
                         )}
                     </div>
                 ))}
