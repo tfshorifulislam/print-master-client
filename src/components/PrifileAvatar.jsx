@@ -51,10 +51,7 @@ export function ProfileAvatar() {
     <Drawer>
       {/* TRIGGER */}
       <Drawer.Trigger className="cursor-pointer">
-        <Avatar
-          size="sm"
-          className="ring-2 ring-offset-2 ring-white dark:ring-neutral-900 shadow-md"
-        >
+        <Avatar size="sm">
           <Avatar.Image
             alt={user?.user?.name}
             src={user?.user?.image}
