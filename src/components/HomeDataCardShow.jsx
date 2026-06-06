@@ -24,7 +24,7 @@ const HomeDataCardShow = async () => {
             <LogoCenter />
 
             {/* CONTRA & BEHANCE INSPIRATIONAL 2-COLUMN GRID */}
-            <div className="grid grid-cols-2 gap-x-8 gap-y-10 mt-8">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-5 sm:gap-y-10 mt-8">
                 {data?.map((card) => (
                     <PostCard key={card._id} card={card} />
                 ))}

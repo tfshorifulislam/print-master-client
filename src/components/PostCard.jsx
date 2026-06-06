@@ -44,7 +44,7 @@ const PostCard = ({ card }) => {
                     href={isOwnProfile ? '/profile' : `/profile/${card?.email}`}
                     className="flex items-center gap-3 min-w-0">
                     {/* Minimal Borderless Avatar */}
-                    <div className="relative w-7 h-7 overflow-hidden rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-800">
+                    <div className="relative w-4 h-4 sm:w-7 sm:h-7 overflow-hidden rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-800">
                         <Image
                             src={userImage}
                             alt={userName}
