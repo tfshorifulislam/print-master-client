@@ -31,7 +31,7 @@ const PostDetails = async ({ params }) => {
     const isOwnProfile = user?.email === post?.email;
 
     // ৩. ক্রিয়েটরের অন্যান্য পোস্ট ফেচ
-    const postsRes = await axios.get(`${process.env.API_URL}/uploads`, {
+    const postsRes = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
         headers: {
             authorization: `Bearer ${token.token}`
         }

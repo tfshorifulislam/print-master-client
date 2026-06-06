@@ -12,7 +12,7 @@ const HomeDataCardShow = async () => {
     })
 
 
-    const res = await fetch(`${process.env.API_URL}/uploads`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
         cache: "no-store",
         headers: {
             authorization: `Bearer ${token.token}`

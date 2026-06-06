@@ -38,37 +38,62 @@ export default function CreatePost() {
     setPreviewUrl("");
   };
 
+  // ফাইলকে Base64 এ রূপান্তর করার ফাংশন
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim() && !file) return;
 
     try {
       setLoading(true);
-      const formData = new FormData();
 
-      formData.append("text", text);
-      formData.append("email", user?.email);
-      formData.append("_id", user?._id);
-      formData.append("id", user?.id);
-      formData.append("name", user?.name);
-      formData.append("userImage", user?.image || "");
-
+      let base64Image = "";
       if (file) {
-        formData.append("image", file);
+        base64Image = await convertToBase64(file);
       }
 
-      const { data: token } = await authClient.token()
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_AUTH_URL}/upload`, formData, {
-        headers: {
-          authorization: `Bearer ${token.token}`
+      // FormData এর বদলে সরাসরি JSON অবজেক্ট পাঠানো হচ্ছে
+      const postData = {
+        text,
+        email: user?.email,
+        _id: user?._id,
+        id: user?.id,
+        name: user?.name,
+        userImage: user?.image || "",
+        image: base64Image, // এটি ক্লাউডিনারিতে সরাসরি আপলোড হবে
+      };
+
+      const { data: token } = await authClient.token();
+      
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_AUTH_URL}/upload`, 
+        postData, 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token.token}`
+          }
         }
-      });
+      );
+      
       console.log(res.data, "final data");
 
       reset();
       router.refresh();
     } catch (error) {
-      console.log(error);
+      console.error("Upload error:", error);
     } finally {
       setLoading(false);
     }
@@ -114,7 +139,7 @@ export default function CreatePost() {
                   </div>
                 </div>
 
-                {/* Standard HTML Textarea with Tailwind - Zero Import Errors */}
+                {/* Standard HTML Textarea */}
                 <textarea
                   placeholder="What's on your mind?..."
                   value={text}
