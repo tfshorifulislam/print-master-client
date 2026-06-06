@@ -5,12 +5,10 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 const HomeDataCardShow = async () => {
-
-    //server side get token
+    // server side get token
     const token = await auth.api.getToken({
         headers: await headers()
-    })
-
+    });
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
         cache: "no-store",
@@ -22,12 +20,12 @@ const HomeDataCardShow = async () => {
     const data = await res.json();
 
     return (
-        <div className="border-b max-w-xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <LogoCenter />
 
-            {/* FEED CONTAINER */}
-            <div className="border-x grid grid-cols-2">
-                {data?.reverse()?.map((card) => (
+            {/* CONTRA & BEHANCE INSPIRATIONAL 2-COLUMN GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 mt-8">
+                {data?.map((card) => (
                     <PostCard key={card._id} card={card} />
                 ))}
             </div>

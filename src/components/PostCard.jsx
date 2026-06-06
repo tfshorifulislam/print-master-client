@@ -1,63 +1,64 @@
 'use client'
-import { useSession } from "@/lib/auth-client";
+
 import Image from "next/image";
-import Link from "next/link";
-import {
-    FiHeart,
-    FiMessageCircle,
-    FiRepeat,
-    FiSend,
-    FiPlus
-} from "react-icons/fi";
-import IsPendingLoading from "./IsPendingLoading";
 
 const PostCard = ({ card }) => {
-
-
-    const { data: session, isPending } = useSession()
-    const user = session?.user
-
-    if (isPending) {
-        return (
-            <IsPendingLoading />
-        )
-    }
-
-
     const userImage =
         card?.userImage &&
-            card.userImage !== "undefined" &&
-            card.userImage.trim() !== ""
+        card.userImage !== "undefined" &&
+        card.userImage.trim() !== ""
             ? card.userImage
             : "/avatar.jpg";
 
-
+    const userName = card?.name || "Creative Designer";
+    const postTitle = card?.text || "Untitled Project";
 
     return (
-        <div className=" p-4 bg-white dark:bg-black hover:bg-zinc-50/30 dark:hover:bg-zinc-950/20 transition-colors duration-200 cursor-pointer select-none">
+        <div className="group flex flex-col bg-transparent w-full select-none">
+            
+            {/* 🖼️ IMAGE CONTAINER (MODERN SHARP & CLEAN GRID) */}
+            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-500 ease-out group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]">
+                <Image
+                    src={card.image || "/placeholder.jpg"}
+                    alt={postTitle}
+                    fill
+                    sizes="(max-width:768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.04]"
+                />
 
-            <div className="flex gap-3">
+                {/* Subtle Edge Glow on Hover */}
+                <div className="absolute inset-0 bg-black/[0.02] dark:bg-white/[0.02] opacity-100 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+            </div>
 
-                <div className="flex-1 min-w-0 pb-1">
+            {/* 👤 BOTTOM DETAILS (BEHANCE / CONTRA STYLE MINIMALISM) */}
+            <div className="mt-3.5 px-1 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                    {/* Minimal Borderless Avatar */}
+                    <div className="relative w-7 h-7 overflow-hidden rounded-full flex-shrink-0 bg-zinc-200 dark:bg-zinc-800">
+                        <Image
+                            src={userImage}
+                            alt={userName}
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
 
-                    {card.image && (
-                        <Link href={`/post/${card._id}`} className="block mb-3.5">
+                    {/* Typography Grid */}
+                    <div className="min-w-0">
+                        <h3 className="text-[14px] font-semibold text-zinc-900 dark:text-zinc-100 truncate tracking-tight transition-colors duration-200 group-hover:text-zinc-500 dark:group-hover:text-zinc-400">
+                            {postTitle}
+                        </h3>
+                        <p className="text-[12px] font-medium text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
+                            {userName}
+                        </p>
+                    </div>
+                </div>
 
-                            <div className="w-full h-auto rounded-xl overflow-hidden bg-black flex items-center justify-center">
-
-                                <Image
-                                    src={card.image}
-                                    alt="Post content"
-                                    width={1200}
-                                    height={1200}
-                                    className="w-full h-full object-contain"
-                                />
-
-                            </div>
-
-                        </Link>
-                    )}
-
+                {/* Premium Views Indicator */}
+                <div className="flex items-center gap-1.5 text-zinc-400 dark:text-zinc-500 flex-shrink-0 pl-2">
+                    <span className="text-[11px] font-semibold tracking-wider uppercase bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 px-2 py-0.5 rounded-md text-xs">
+                        {card.views || "1.2k"}
+                    </span>
                 </div>
             </div>
         </div>
