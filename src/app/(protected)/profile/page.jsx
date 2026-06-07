@@ -111,7 +111,7 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="mt-4 flex items-center gap-2">
+                    <div className="mt-12 md:mt-6 flex items-center gap-2">
                         <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
                             <FaEllipsis />
                         </button>
