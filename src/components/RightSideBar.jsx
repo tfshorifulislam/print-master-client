@@ -30,7 +30,7 @@ const RightSideBar = () => {
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col w-80 xl:w-[350px] h-screen sticky top-0 p-4 gap-5 overflow-y-auto no-scrollbar bg-white dark:bg-black text-black dark:text-white">
+    <aside className="hidden lg:flex flex-col w-80 xl:w-[350px] h-screen sticky top-0 p-4 gap-5 overflow-y-auto no-scrollbar text-black dark:text-white">
 
       {/* SEARCH */}
       <SearchInputRightSideTop />
