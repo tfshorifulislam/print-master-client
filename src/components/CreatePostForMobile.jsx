@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Modal, Avatar } from "@heroui/react";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import axios from "axios";
 import { useState, useRef } from "react";
 import { FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
@@ -39,37 +39,53 @@ export default function CreatePostForMobile() {
         setPreviewUrl("");
     };
 
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => resolve(fileReader.result);
+            fileReader.onerror = (error) => reject(error);
+        });
+    };
+
     const onSubmit = async (e) => {
         e.preventDefault();
         if (!text.trim() && !file) return;
 
         try {
             setLoading(true);
-            const formData = new FormData();
-
-            formData.append("text", text);
-            formData.append("email", user?.email);
-            formData.append("_id", user?._id);
-            formData.append("id", user?.id);
-            formData.append("name", user?.name);
-            formData.append("userImage", user?.image || "");
-
+            let base64Image = "";
             if (file) {
-                formData.append("image", file);
+                base64Image = await convertToBase64(file);
             }
 
-            const { data: token } = await authClient.token()
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_AUTH_URL}/upload`, formData, {
-                headers: {
-                    authorization: `Bearer ${token.token}`
+            const postData = {
+                text,
+                email: user?.email,
+                _id: user?._id,
+                id: user?.id,
+                name: user?.name,
+                userImage: user?.image || "",
+                image: base64Image,
+            };
+
+            const { data: token } = await authClient.token();
+
+            await axios.post(
+                `${process.env.NEXT_PUBLIC_AUTH_URL}/upload`,
+                postData,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: `Bearer ${token.token}`
+                    }
                 }
-            });
-            console.log(res.data, "final data");
+            );
 
             reset();
             router.refresh();
         } catch (error) {
-            console.log(error);
+            console.error("Upload error:", error);
         } finally {
             setLoading(false);
         }

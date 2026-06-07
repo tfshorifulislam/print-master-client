@@ -1,12 +1,13 @@
 "use client";
 
 import { Button, Modal, Avatar } from "@heroui/react";
-import { authClient, useSession } from "@/lib/auth-client";
+
 import axios from "axios";
 import { useState, useRef } from "react";
 import { FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { FaCirclePlus, FaFeatherPointed } from "react-icons/fa6";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function CreatePost({ isMobileFloating = false }) {
   const [text, setText] = useState("");

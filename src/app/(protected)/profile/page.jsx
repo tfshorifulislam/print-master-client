@@ -14,7 +14,6 @@ import {
 } from "react-icons/fa6";
 import { ProfilePostDelete } from "@/components/ProfilePostDelete";
 
-
 const Profile = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -32,11 +31,14 @@ const Profile = () => {
                 setLoading(true);
                 const { data: token } = await authClient.token();
 
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
-                    headers: {
-                        authorization: `Bearer ${token.token}`,
-                    },
-                });
+                const res = await axios.get(
+                    `${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${token.token}`,
+                        },
+                    }
+                );
 
                 const userPosts = res.data.filter(
                     (post) => post.email === currentUserEmail
@@ -63,7 +65,7 @@ const Profile = () => {
     return (
         <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
 
-            {/* TOP HEADER */}
+            {/* HEADER */}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/95 dark:bg-black/95 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold">
@@ -75,7 +77,7 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* HERO SECTION */}
+            {/* HERO */}
             <div>
 
                 {/* BANNER */}
@@ -89,11 +91,11 @@ const Profile = () => {
                             priority
                         />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 {/* AVATAR + ACTIONS */}
-                <div className="px-4 flex justify-between relative -mt-12">
+                <div className="px-4 flex justify-between relative -mt-12 sm:-mt-16">
 
                     {/* AVATAR */}
                     <div className="relative w-24 h-24 sm:w-32 sm:h-32">
@@ -108,15 +110,17 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* ACTIONS */}
-                    <div className="mt-4 flex items-center gap-2">
-                        <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
-                            <FaEllipsis />
+                    {/* ACTIONS (FIXED RESPONSIVE) */}
+                    <div className="mt-16 sm:mt-20 flex items-center gap-2">
+
+                        <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition bg-white/80 dark:bg-black/40 backdrop-blur">
+                            <FaEllipsis size={16} />
                         </button>
 
-                        <button className="px-5 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
+                        <button className="px-4 sm:px-5 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-full text-xs sm:text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition bg-white/80 dark:bg-black/40 backdrop-blur">
                             Edit Profile
                         </button>
+
                     </div>
                 </div>
 
@@ -146,7 +150,6 @@ const Profile = () => {
                         </span>
                     </div>
 
-                    {/* STATS */}
                     <div className="flex gap-6 mt-4 text-sm pb-4">
                         <span>
                             <b className="text-black dark:text-white">{posts.length}</b>{" "}
@@ -155,6 +158,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
+
             {/* POSTS GRID */}
             <div className="columns-2 gap-4 px-4 pb-10">
                 {[...posts].reverse().map((post) => (
@@ -162,11 +166,9 @@ const Profile = () => {
                         key={post._id}
                         className="mb-4 break-inside-avoid group relative rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition"
                     >
-                        {/* IMAGE WRAPPER */}
                         {post?.image && (
                             <div className="relative">
 
-                                {/* IMAGE */}
                                 <a href={`/post/${post._id}`}>
                                     <Image
                                         src={post.image}
@@ -177,15 +179,16 @@ const Profile = () => {
                                     />
                                 </a>
 
-                                {/* TOP GRADIENT OVERLAY */}
                                 <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/40 opacity-0 group-hover:opacity-100 transition" />
 
-                                {/* DELETE (3 DOT AREA) */}
-                                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
+                                {/* DELETE BUTTON FIXED FOR MOBILE */}
+                                <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
                                     <ProfilePostDelete
                                         postId={post._id}
                                         onDeleteSuccess={(id) => {
-                                            setPosts((prev) => prev.filter((p) => p._id !== id));
+                                            setPosts((prev) =>
+                                                prev.filter((p) => p._id !== id)
+                                            );
                                         }}
                                     />
                                 </div>
