@@ -47,94 +47,168 @@ const PostDetails = async ({ params }) => {
     }
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black border-x">
-            <div className="w-11/12  mx-auto py-10">
+        <div className="min-h-screen bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+            <div className="max-w-7xl mx-auto px-4 py-8">
 
-                {/* MAIN SECTION */}
-                <div className="grid max-w-6xl mx-auto md:grid-cols-2 gap-10">
+                {/* Main Post */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 overflow-hidden rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 dark:shadow-black/40">
 
-                    {/* LEFT - IMAGE */}
-                    <div className="rounded-2xl overflow-hidden shadow-lg bg-gray-50">
+                    {/* Left Image */}
+                    <div className="relative bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center p-5 lg:p-8">
                         {post?.image && (
-                            <Image
-                                src={post.image}
-                                alt={post?.text || "post"}
-                                width={900}
-                                height={900}
-                                className="w-full h-auto object-cover"
-                                priority
-                            />
+                            <div className="overflow-hidden rounded-lg w-full">
+                                <Image
+                                    src={post.image}
+                                    alt={post?.text || "post"}
+                                    width={1200}
+                                    height={1200}
+                                    priority
+                                    className="w-full h-auto object-contain  transition duration-500 hover:scale-[1.02]"
+                                />
+                            </div>
                         )}
                     </div>
 
-                    {/* RIGHT - INFO */}
-                    <div className="flex flex-col gap-6">
+                    {/* Right Content */}
+                    <div className="flex flex-col justify-between p-6 md:p-8 lg:p-10">
 
-                        {/* 🎯 প্রোফাইল লিংক কন্ডিশনাল */}
-                        <Link
-                            href={isOwnProfile ? '/profile' : `/profile/${post?.email}`}
-                            className="flex items-center gap-3 group"
-                        >
-                            <Avatar size="lg">
-                                <Avatar.Image src={post?.userImage} alt={post?.name} />
-                                <Avatar.Fallback className="bg-linear-to-br from-blue-500 to-indigo-600 text-white font-bold">
-                                    {post?.name?.charAt(0)?.toUpperCase() || "U"}
-                                </Avatar.Fallback>
-                            </Avatar>
+                        <div>
 
-                            <div>
-                                <h2 className="font-semibold text-lg group-hover:underline">
-                                    {post?.name || "User"}
-                                </h2>
-                                <p className="text-xs text-gray-500">Creator</p>
-                            </div>
-                        </Link>
+                            {/* Creator */}
+                            <Link
+                                href={isOwnProfile ? "/profile" : `/profile/${post?.email}`}
+                                className="group flex items-center gap-4 mb-8"
+                            >
+                                <Avatar className="h-14 w-14 ring-2 ring-zinc-200 dark:ring-zinc-700 transition group-hover:ring-red-500">
+                                    <Avatar.Image
+                                        src={post?.userImage}
+                                        alt={post?.name}
+                                    />
+                                    <Avatar.Fallback className="bg-red-600 text-white font-bold">
+                                        {post?.name?.charAt(0)?.toUpperCase()}
+                                    </Avatar.Fallback>
+                                </Avatar>
 
-                        {/* TEXT */}
-                        {post?.text && (
-                            <p className="text-gray-700 text-sm leading-relaxed">{post.text}</p>
-                        )}
+                                <div>
+                                    <h2 className="font-bold text-lg group-hover:text-red-500 transition">
+                                        {post?.name}
+                                    </h2>
 
-                        {/* ACTIONS */}
-                        <div className="flex gap-3 flex-wrap">
-                            <button className="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-700 cursor-pointer">
+                                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                                        Creator
+                                    </p>
+                                </div>
+                            </Link>
+
+                            {/* Description */}
+                            {post?.text && (
+                                <div className="rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/60 p-5 border border-zinc-200 dark:border-zinc-700">
+                                    <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+                                        {post.text}
+                                    </p>
+                                </div>
+                            )}
+
+                        </div>
+
+                        {/* Buttons */}
+                        <div className="flex flex-wrap gap-3 mt-10">
+
+                            <button
+                                className="
+                        px-6 py-3 rounded-full
+                        bg-red-600 hover:bg-red-700
+                        text-white font-semibold
+                        transition-all duration-200
+                        active:scale-95
+                        shadow-lg shadow-red-500/20
+                    "
+                            >
                                 Save
                             </button>
 
-                            <button className="bg-gray-100 text-black px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-200 cursor-pointer">
+                            <button
+                                className="
+                        px-6 py-3 rounded-full
+                        bg-zinc-200 hover:bg-zinc-300
+                        dark:bg-zinc-800 dark:hover:bg-zinc-700
+                        font-semibold
+                        transition-all duration-200
+                        active:scale-95
+                    "
+                            >
                                 Share
                             </button>
 
                             <a
                                 href={downloadUrl}
-                                download={`${post?.name || 'download'}-post.jpg`}
-                                className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 cursor-pointer text-center inline-block"
+                                download={`${post?.name || "download"}-post.jpg`}
+                                className="
+                        px-6 py-3 rounded-full
+                        bg-black hover:bg-zinc-800
+                        dark:bg-white dark:hover:bg-zinc-200
+                        text-white dark:text-black
+                        font-semibold
+                        transition-all duration-200
+                        active:scale-95
+                    "
                             >
                                 Download
                             </a>
                         </div>
+
                     </div>
                 </div>
 
-                {/* USER OTHER POSTS */}
-                <div className="mt-16">
-                    <h3 className="text-lg font-semibold mb-4">More from this creator</h3>
-                    <div className="columns-2 gap-4 space-y-4">
+                {/* More Posts */}
+                <section className="mt-16">
+
+                    <div className="flex items-center justify-between mb-8">
+                        <h3 className="text-2xl font-bold">
+                            More from this creator
+                        </h3>
+
+                        <span className="text-sm text-zinc-500">
+                            {userPosts?.length || 0} Posts
+                        </span>
+                    </div>
+
+                    <div className="columns-2 md:columns-4 gap-x-2 space-y-2">
+
                         {userPosts?.map((item) => (
-                            <Link key={item._id} href={`/post/${item._id}`} className="block break-inside-avoid">
-                                <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.text || "post"}
-                                        width={500}
-                                        height={700}
-                                        className="w-full h-auto object-cover"
-                                    />
+                            <Link
+                                key={item._id}
+                                href={`/post/${item._id}`}
+                                className="block break-inside-avoid group">
+                                <div
+                                    className="overflow-hidden rounded-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-xl dark:hover:shadow-black/30 transition-all duration-300">
+                                    <div className="relative overflow-hidden">
+
+                                        <Image
+                                            src={item.image}
+                                            alt={item.text || "post"}
+                                            width={600}
+                                            height={800}
+                                            className="w-full h-auto object-cover transition duration-500 group-hover:scale-105" />
+
+                                        <div
+                                            className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition">
+                                            {item.text && (
+                                                <div className="absolute bottom-4 left-4 right-4">
+                                                    <p className="text-white text-sm line-clamp-3">
+                                                        {item.text}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                    </div>
                                 </div>
                             </Link>
                         ))}
                     </div>
-                </div>
+
+                </section>
 
             </div>
         </div>
