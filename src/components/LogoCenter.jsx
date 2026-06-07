@@ -6,7 +6,7 @@ const LogoCenter = () => {
     <header 
       className="w-full sticky top-0 z-50 select-none bg-white/[0.15] dark:bg-black/[0.02] backdrop-blur-[4px] border-b border-zinc-200/40 dark:border-white/[0.08] shadow-[inset_0_-1px_1px_rgba(255,255,255,0.2),0_4px_20px_rgba(0,0,0,0.01)]"
     >
-      <div className="max-w-6xl mx-auto flex items-center justify-center py-3 px-4">
+      <div className="max-w-6xl mx-auto flex items-center justify-center pb-3 px-4">
 
         <Link
           href="/"

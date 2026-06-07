@@ -25,7 +25,7 @@ const PostCard = ({ card }) => {
             {/* 🖼️ IMAGE CONTAINER (MODERN SHARP & CLEAN GRID) */}
             <Link
                 href={`/post/${card._id}`}
-                className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-500 ease-out group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]">
+                className="relative w-full aspect-[4/3] overflow-hidden rounded-lg sm:rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 transition-all duration-500 ease-out group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_20px_50px_rgba(255,255,255,0.02)]">
                 <Image
                     src={card.image}
                     alt={postTitle}
