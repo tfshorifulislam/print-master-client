@@ -36,7 +36,7 @@ export function ThemeSwitch() {
       </div>
 
       {/* 🛠️ আসল ফিক্স: ছোট স্ক্রিনে টেক্সট হাইড থাকবে, শুধু XL স্ক্রিনে দৃশ্যমান হবে */}
-      <span className="hidden xl:inline text-[19px] font-medium">
+      <span className="hidden xl:inline text-sm">
         Theme
       </span>
     </button>
