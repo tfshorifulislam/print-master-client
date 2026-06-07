@@ -12,8 +12,9 @@ import {
     FaLink,
     FaLocationDot,
 } from "react-icons/fa6";
-import { ProfilePostDelete } from "@/components/ProfilePostDelete";
 
+import { ProfilePostDelete } from "@/components/ProfilePostDelete";
+import Link from "next/link";
 
 const Profile = () => {
     const [posts, setPosts] = useState([]);
@@ -32,11 +33,14 @@ const Profile = () => {
                 setLoading(true);
                 const { data: token } = await authClient.token();
 
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`, {
-                    headers: {
-                        authorization: `Bearer ${token.token}`,
-                    },
-                });
+                const res = await axios.get(
+                    `${process.env.NEXT_PUBLIC_AUTH_URL}/uploads`,
+                    {
+                        headers: {
+                            authorization: `Bearer ${token.token}`,
+                        },
+                    }
+                );
 
                 const userPosts = res.data.filter(
                     (post) => post.email === currentUserEmail
@@ -63,7 +67,7 @@ const Profile = () => {
     return (
         <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
 
-            {/* TOP HEADER */}
+            {/* HEADER */}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/95 dark:bg-black/95 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold">
@@ -75,7 +79,7 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* HERO SECTION */}
+            {/* HERO */}
             <div>
 
                 {/* BANNER */}
@@ -95,7 +99,6 @@ const Profile = () => {
                 {/* AVATAR + ACTIONS */}
                 <div className="px-4 flex justify-between relative -mt-12">
 
-                    {/* AVATAR */}
                     <div className="relative w-24 h-24 sm:w-32 sm:h-32">
                         <div className="absolute inset-0 rounded-full border-4 border-white dark:border-black overflow-hidden bg-zinc-900">
                             <Image
@@ -108,7 +111,6 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* ACTIONS */}
                     <div className="mt-4 flex items-center gap-2">
                         <button className="p-2 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
                             <FaEllipsis />
@@ -122,9 +124,7 @@ const Profile = () => {
 
                 {/* USER INFO */}
                 <div className="px-4 mt-3">
-                    <h2 className="text-2xl font-bold">
-                        {user?.name}
-                    </h2>
+                    <h2 className="text-2xl font-bold">{user?.name}</h2>
 
                     <span className="text-zinc-500 dark:text-zinc-400 text-[15px]">
                         @{username}
@@ -146,15 +146,17 @@ const Profile = () => {
                         </span>
                     </div>
 
-                    {/* STATS */}
                     <div className="flex gap-6 mt-4 text-sm pb-4">
                         <span>
-                            <b className="text-black dark:text-white">{posts.length}</b>{" "}
+                            <b className="text-black dark:text-white">
+                                {posts.length}
+                            </b>{" "}
                             Posts
                         </span>
                     </div>
                 </div>
             </div>
+
             {/* POSTS GRID */}
             <div className="columns-2 gap-4 px-4 pb-10">
                 {[...posts].reverse().map((post) => (
@@ -162,36 +164,33 @@ const Profile = () => {
                         key={post._id}
                         className="mb-4 break-inside-avoid group relative rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 shadow-sm hover:shadow-lg transition"
                     >
-                        {/* IMAGE WRAPPER */}
                         {post?.image && (
-                            <div className="relative">
-
-                                {/* IMAGE */}
-                                <a href={`/post/${post._id}`}>
-                                    <Image
-                                        src={post.image}
-                                        alt="post"
-                                        width={800}
-                                        height={800}
-                                        className="w-full h-auto object-cover transition group-hover:scale-[1.02]"
-                                    />
-                                </a>
-
-                                {/* TOP GRADIENT OVERLAY */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/40 opacity-0 group-hover:opacity-100 transition" />
-
-                                {/* DELETE (3 DOT AREA) */}
-                                <div className="absolute top-2 right-2">
-                                    <ProfilePostDelete
-                                        postId={post._id}
-                                        onDeleteSuccess={(id) => {
-                                            setPosts((prev) => prev.filter((p) => p._id !== id));
-                                        }}
-                                    />
-                                </div>
-
-                            </div>
+                            <Link
+                                href={`/post/${post._id}`}
+                                className="block relative rounded-xl overflow-hidden"
+                            >
+                                <Image
+                                    src={post.image}
+                                    alt="post"
+                                    width={800}
+                                    height={800}
+                                    className="w-full h-auto object-cover block"
+                                />
+                            </Link>
                         )}
+
+                        {/* DELETE */}
+                        <div className="absolute top-2 right-2">
+                            <ProfilePostDelete
+                                postId={post._id}
+                                onDeleteSuccess={(id) => {
+                                    setPosts((prev) =>
+                                        prev.filter((p) => p._id !== id)
+                                    );
+                                }}
+                            />
+                        </div>
+
                     </div>
                 ))}
             </div>
