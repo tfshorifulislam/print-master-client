@@ -65,7 +65,7 @@ const Profile = () => {
     const username = user?.email?.split("@")[0] || "username";
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+        <div className="min-h-screen max-w-6xl mx-auto bg-white dark:bg-black text-black dark:text-white">
 
             {/* HEADER */}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/95 dark:bg-black/95 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
