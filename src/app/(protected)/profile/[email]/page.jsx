@@ -170,38 +170,43 @@ const Profile = async ({ params }) => {
             </div>
 
             {/* POSTS */}
-            <div className="px-4 pb-10">
+            <div className="w-full">
                 {userPosts?.length === 0 ? (
-                    <div className="text-center py-20 text-zinc-500">
+                    <div className="text-center py-24 text-zinc-400 dark:text-zinc-500 font-medium tracking-wide">
                         No posts yet
                     </div>
                 ) : (
-                    <div className="columns-2 md:columns-4 gap-4">
+                    <div className="columns-2 md:columns-4 gap-2 space-y-2">
                         {userPosts.map((post) => (
                             <div
                                 key={post._id}
-                                className="mb-4 break-inside-avoid"
+                                className="mb-2 break-inside-avoid overflow-hidden group hover:shadow-md transition-all duration-300"
                             >
-                                {/* TEXT */}
-                                {post.text && (
-                                    <p className="mb-2 text-[15px] text-zinc-800 dark:text-zinc-200">
-                                        {post.text}
-                                    </p>
-                                )}
-
                                 {/* IMAGE */}
                                 {post.image && (
                                     <Link
                                         href={`/post/${post._id}`}
-                                        className="rounded-sm overflow-hidden">
+                                        className="block rounded-sm overflow-hidden relative cursor-pointer"
+                                    >
                                         <Image
                                             src={post.image}
-                                            alt="post"
+                                            alt={post.text || "post"}
                                             width={800}
                                             height={800}
-                                            className="w-full h-auto object-cover"
+                                            className="w-full h-auto object-cover rounded-sm transition-transform duration-500 group-hover:scale-[1.03]"
                                         />
+                                        {/* Smooth Hover Overlay */}
+                                        <div className="absolute inset-0 bg-black/10 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                     </Link>
+                                )}
+
+                                {/* TEXT */}
+                                {post.text && (
+                                    <div className={post.image ? "mt-2 px-1" : "p-1"}>
+                                        <p className="text-[14px] leading-snug font-medium text-zinc-800 dark:text-zinc-200 line-clamp-3">
+                                            {post.text}
+                                        </p>
+                                    </div>
                                 )}
                             </div>
                         ))}
