@@ -7,7 +7,7 @@ import { useState, useRef } from "react";
 import { FaImage, FaPaperPlane, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { FaCirclePlus } from "react-icons/fa6";
-import { div } from "framer-motion/client";
+
 
 export default function CreatePostForMobile() {
     const [text, setText] = useState("");

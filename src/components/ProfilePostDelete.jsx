@@ -4,8 +4,10 @@ import { authClient } from "@/lib/auth-client";
 import { AlertDialog, Button } from "@heroui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { AiFillDelete } from "react-icons/ai";
+import { FaDeleteLeft } from "react-icons/fa6";
 
-export function ProfilePostDelete({postId, onDeleteSuccess}) {
+export function ProfilePostDelete({ postId, onDeleteSuccess }) {
 
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -49,10 +51,12 @@ export function ProfilePostDelete({postId, onDeleteSuccess}) {
 
     return (
         <AlertDialog>
-            <Button variant="danger">Delete Project</Button>
+            <Button variant="danger" size="sm">
+                <AiFillDelete />
+            </Button>
             <AlertDialog.Backdrop>
                 <AlertDialog.Container>
-                    <AlertDialog.Dialog className="sm:max-w-[400px]">
+                    <AlertDialog.Dialog className="">
                         <AlertDialog.CloseTrigger />
                         <AlertDialog.Header>
                             <AlertDialog.Icon status="danger" />
