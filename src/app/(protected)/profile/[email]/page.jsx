@@ -49,7 +49,7 @@ const Profile = async ({ params }) => {
     const isOwnProfile = currentUserEmail === user?.email;
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black  border-x border-zinc-200 dark:border-zinc-800 max-w-2xl mx-auto">
+        <div className="min-h-screen bg-white dark:bg-black  border-x border-zinc-200 dark:border-zinc-800 max-w-6xl mx-auto">
 
             {/* TOP HEADER */}
             <div className="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-black/80 flex items-center h-14 px-4">
@@ -176,7 +176,7 @@ const Profile = async ({ params }) => {
                         No posts yet
                     </div>
                 ) : (
-                    <div className="columns-2 gap-4">
+                    <div className="columns-2 md:columns-4 gap-4">
                         {userPosts.map((post) => (
                             <div
                                 key={post._id}
@@ -193,7 +193,7 @@ const Profile = async ({ params }) => {
                                 {post.image && (
                                     <Link
                                         href={`/post/${post._id}`}
-                                        className="rounded-xl overflow-hidden">
+                                        className="rounded-sm overflow-hidden">
                                         <Image
                                             src={post.image}
                                             alt="post"
