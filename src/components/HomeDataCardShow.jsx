@@ -20,11 +20,11 @@ const HomeDataCardShow = async () => {
     const data = await res.json();
 
     return (
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full max-w-7xl mx-auto px-4 py-8">
             <LogoCenter />
 
             {/* CONTRA & BEHANCE INSPIRATIONAL 2-COLUMN GRID */}
-            <div className="grid grid-cols-2 gap-x-2  gap-y-5 sm:gap-y-10 mt-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2  gap-y-5 sm:gap-y-7">
                 {data?.map((card) => (
                     <PostCard key={card._id} card={card} />
                 ))}

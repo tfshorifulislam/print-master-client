@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         >
             <body className="min-h-screen font-sans">
                 <Providers>
-                    <div className="flex w-full min-h-screen max-w-350 mx-auto">
+                    <div className="flex w-full min-h-screen  mx-auto">
                         <main className="flex-1 w-full min-h-screen">
                             {children}
                         </main>
