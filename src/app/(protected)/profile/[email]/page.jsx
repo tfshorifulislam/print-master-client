@@ -9,7 +9,6 @@ import {
     FaLocationDot,
     FaEllipsis
 } from "react-icons/fa6";
-import { FiHeart, FiMessageCircle, FiRepeat, FiSend } from 'react-icons/fi';
 import { Link } from '@heroui/react';
 
 const Profile = async ({ params }) => {
