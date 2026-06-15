@@ -63,160 +63,152 @@ const PostDetails = async ({ params }) => {
 
     if (!post) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-                <p className="text-zinc-400 font-medium animate-pulse">Loading post workspace...</p>
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#050505]">
+                <p className="text-zinc-400 text-sm font-light tracking-widest animate-pulse">LOADING WORK...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-50 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+        <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 transition-colors duration-500 antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
             
-            {/* মেইন কনটেন্ট র্যাপার - Behance স্টাইল ফ্লুইড লেআউট */}
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
+            {/* 🎥 CINEMATIC HERO WORKSPACE */}
+            <div className="w-full max-w-5xl mx-auto px-4 pt-8 pb-24 sm:pt-12 sm:pb-32">
                 
-                {/* 🌟 NEW STRUCTURE: STUDIO WORKSPACE LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* BACK BUTTON / MINI HEADER */}
+                <div className="mb-8 flex items-center justify-between">
+                    <Link 
+                        href="/" 
+                        className="text-xs font-medium tracking-widest uppercase text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
+                    >
+                        ← Back to Gallery
+                    </Link>
+                    <span className="text-xs font-mono text-zinc-400">
+                        ID: {id.slice(-6)}
+                    </span>
+                </div>
+
+                {/* 🖼️ MASTERPIECE VIEWER (ফুল ও অরিজিনাল সাইজ ফোকাস) */}
+                <div className="relative w-full rounded-3xl overflow-hidden bg-zinc-50 dark:bg-[#0a0a0c] p-2 sm:p-6 flex items-center justify-center transition-all duration-700 shadow-[0_30px_100px_rgba(0,0,0,0.04)] dark:shadow-black/40">
+                    {post?.image && (
+                        <Image
+                            src={post.image}
+                            alt={post?.text || "Showcase item"}
+                            width={1600}
+                            height={1200}
+                            priority
+                            className="w-full h-auto max-h-[85vh] object-contain rounded-2xl"
+                        />
+                    )}
+                </div>
+
+                {/* 🎛️ FLOATING GLASS CONTROL BAR & INFO (নিচে এক লাইনে মডার্ন লেআউট) */}
+                <div className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-start px-2">
                     
-                    {/* LEFT SIDE: IMMERSIVE ARTWORK VIEWER (7 Columns) */}
-                    <div className="lg:col-span-7 xl:col-span-8 w-full">
-                        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)] dark:shadow-black/20 group/viewer">
-                            {post?.image && (
-                                <div className="p-2 sm:p-4 md:p-6 lg:p-8 flex items-center justify-center min-h-[50vh] lg:min-h-[75vh]">
-                                    <Image
-                                        src={post.image}
-                                        alt={post?.text || "Creative showcase"}
-                                        width={1600}
-                                        height={1200}
-                                        priority
-                                        className="w-full h-auto max-h-[80vh] object-contain rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.04)] dark:shadow-black/40 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/viewer:scale-[1.01]"
-                                    />
-                                </div>
-                            )}
-                            {/* আর্টওয়ার্কের ওপর হালকা গ্লস ফিনিশ */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-black/[0.02] via-transparent to-white/[0.02] pointer-events-none" />
-                        </div>
+                    {/* বাম পাশ: ক্রিয়েটর এবং ডেসক্রিপশন (7 Columns) */}
+                    <div className="md:col-span-7 space-y-6">
+                        
+                        {/* ক্রিয়েটর ব্লক (বর্ডার ছাড়া একদম ক্লিন) */}
+                        <Link
+                            href={isOwnProfile ? "/profile" : `/profile/${post?.email}`}
+                            className="flex items-center gap-3.5 group"
+                        >
+                            <Avatar className="h-11 w-11 ring-1 ring-zinc-200 dark:ring-zinc-800 group-hover:scale-105 transition-transform duration-300">
+                                <Avatar.Image src={post?.userImage || "/avatar.jpg"} className="object-cover" />
+                                <Avatar.Fallback className="bg-black text-white text-sm font-bold">
+                                    {post?.name?.charAt(0)}
+                                </Avatar.Fallback>
+                            </Avatar>
+                            <div>
+                                <h2 className="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:opacity-70 transition">
+                                    {post?.name || "Anonymous Artist"}
+                                </h2>
+                                <p className="text-xs text-zinc-400 dark:text-zinc-500 font-light">
+                                    Posted Work
+                                </p>
+                            </div>
+                        </Link>
+
+                        {/* ডেসক্রিপশন (কোনো ভারী বক্স নেই, জাস্ট ক্লিন মিনিমালিস্ট প্যারাগ্রাফ) */}
+                        {post?.text && (
+                            <p className="text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300 whitespace-pre-line font-light tracking-wide max-w-xl">
+                                {post.text}
+                            </p>
+                        )}
                     </div>
 
-                    {/* RIGHT SIDE: INSIGHTS & ACTIONS PANEL (5 Columns) - Sticky Enabled */}
-                    <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24 space-y-6">
+                    {/* ডান পাশ: প্রিমিয়াম ও স্লীক অ্যাকশন বাটন প্যানেল (5 Columns) */}
+                    <div className="md:col-span-5 flex flex-col sm:flex-row md:flex-col gap-3 w-full md:justify-end">
                         
-                        {/* মেটা ইনফো কার্ড */}
-                        <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900/50 border border-zinc-200/60 dark:border-zinc-800/60 shadow-[0_20px_50px_rgba(0,0,0,0.03)] dark:shadow-black/30 backdrop-blur-md">
-                            
-                            {/* ক্রিয়েটর প্রোফাইল হেডার */}
-                            <Link
-                                href={isOwnProfile ? "/profile" : `/profile/${post?.email}`}
-                                className="flex items-center gap-4 group/user pb-6 mb-6 border-b border-zinc-100 dark:border-zinc-800/60"
-                            >
-                                <Avatar className="h-12 w-12 sm:h-14 sm:w-14 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 ring-2 ring-zinc-200 dark:ring-zinc-800 transition-all duration-500 ease-out group-hover/user:ring-zinc-950 dark:group-hover/user:ring-zinc-200">
-                                    <Avatar.Image 
-                                        src={post?.userImage || "/avatar.jpg"} 
-                                        alt={post?.name || "Creator"}
-                                        className="object-cover"
-                                    />
-                                    <Avatar.Fallback className="bg-zinc-950 text-white font-semibold">
-                                        {post?.name?.charAt(0)?.toUpperCase() || "C"}
-                                    </Avatar.Fallback>
-                                </Avatar>
+                        <div className="grid grid-cols-2 gap-3 w-full">
+                            {/* Save বাটন */}
+                            <button className="flex-1 px-5 py-3.5 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-black font-semibold text-xs tracking-wider uppercase transition-all active:scale-95 shadow-sm">
+                                Save
+                            </button>
 
-                                <div className="space-y-0.5">
-                                    <h2 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover/user:text-zinc-600 dark:group-hover/user:text-zinc-400 transition duration-200">
-                                        {post?.name || "Creative Talent"}
-                                    </h2>
-                                    <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 tracking-wide">
-                                        Verified Network Asset
-                                    </p>
-                                </div>
-                            </Link>
-
-                            {/* প্রজেক্ট ডেসক্রিপশন */}
-                            {post?.text && (
-                                <div className="space-y-3">
-                                    <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-                                        Project Context
-                                    </span>
-                                    <p className="text-sm sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300 whitespace-pre-line font-normal">
-                                        {post.text}
-                                    </p>
-                                </div>
-                            )}
-
-                            {/* প্রফেশনাল অ্যাকশন বাটন ম্যাট্রিক্স */}
-                            <div className="mt-8 space-y-3">
-                                <div className="grid grid-cols-2 gap-3">
-                                    <button className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-50 dark:hover:bg-zinc-200 text-white dark:text-zinc-950 font-bold text-xs sm:text-sm tracking-wide transition duration-300 active:scale-[0.98] shadow-sm">
-                                        Appreciate
-                                    </button>
-                                    <button className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-zinc-100 hover:bg-zinc-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-bold text-xs sm:text-sm tracking-wide border border-zinc-200/40 dark:border-zinc-700/40 transition duration-300 active:scale-[0.98]">
-                                        Share Asset
-                                    </button>
-                                </div>
-
-                                <a
-                                    href={downloadUrl}
-                                    download={`${post?.name || "source"}-file.jpg`}
-                                    className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-zinc-800 hover:to-zinc-700 dark:from-zinc-100 dark:to-zinc-200 dark:hover:from-zinc-200 dark:hover:to-zinc-300 text-white dark:text-zinc-950 font-bold text-xs sm:text-sm tracking-wide transition duration-300 text-center shadow-lg shadow-black/[0.03] dark:shadow-white/[0.02]"
-                                >
-                                    Download Source File
-                                </a>
-                            </div>
-
+                            {/* Share বাটন */}
+                            <button className="flex-1 px-5 py-3.5 rounded-full bg-transparent text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 font-semibold text-xs tracking-wider uppercase border border-zinc-200 dark:border-zinc-800 transition-all active:scale-95">
+                                Share
+                            </button>
                         </div>
+
+                        {/* Download বাটন (ফুল উইডথ লাইনার) */}
+                        <a
+                            href={downloadUrl}
+                            download={`${post?.name || "artwork"}.jpg`}
+                            className="w-full px-5 py-3.5 rounded-full bg-zinc-100 dark:bg-[#111115] hover:bg-zinc-200 dark:hover:bg-[#16161c] text-zinc-900 dark:text-zinc-100 font-semibold text-xs tracking-wider uppercase transition-all active:scale-95 text-center border border-zinc-200/40 dark:border-zinc-800/40"
+                        >
+                            Download Source File
+                        </a>
                     </div>
 
                 </div>
 
-                {/* 🗂️ MORE PROJECTS GRID - ULTRA MODERN GRID SYSTEM */}
-                <section className="mt-24 lg:mt-32">
-                    <div className="flex items-baseline justify-between mb-10 border-b border-zinc-200/60 dark:border-zinc-800/60 pb-5">
-                        <div className="space-y-1">
-                            <h3 className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-                                Curator Portfolio Showcase
-                            </h3>
-                            <p className="text-xs text-zinc-400 dark:text-zinc-500">
-                                Additional works indexed from {post?.name || "the artist"}
-                            </p>
-                        </div>
-                        <span className="text-xs font-mono font-bold bg-zinc-100 dark:bg-zinc-900/80 text-zinc-500 dark:text-zinc-400 px-3 py-1 rounded-md border border-zinc-200/40 dark:border-zinc-800">
-                            INDEX: {userPosts?.length || 0}
+            </div>
+
+            {/* 🗂️ CLEAN ART PORTFOLIO MATRIX (নিচের সেকশন) */}
+            <div className="bg-zinc-50/50 dark:bg-[#0a0a0c]/40 border-t border-zinc-100 dark:border-zinc-900/60 w-full">
+                <div className="max-w-5xl mx-auto px-4 py-20">
+                    
+                    {/* সেকশন হেডার */}
+                    <div className="flex items-baseline justify-between mb-12">
+                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
+                            More Creations
+                        </h3>
+                        <span className="text-xs font-mono text-zinc-400">
+                            [{userPosts?.length || 0}]
                         </span>
                     </div>
 
-                    {/* ৩ থেকে ৪ কলামের ডাইনামিক রেসপন্সিভ গ্রিড */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {/* গ্রিড সিস্টেম: কোনো বর্ডার বা শ্যাডো নেই, জাস্ট ক্লিন ইমেজ ম্যাট্রিক্স */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8">
                         {userPosts?.map((item) => (
                             <Link
                                 key={item._id}
                                 href={`/post/${item._id}`}
-                                className="group/card block space-y-3"
+                                className="group block space-y-3"
                             >
-                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/40 dark:border-zinc-800/40 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/card:shadow-[0_24px_48px_rgba(0,0,0,0.06)] dark:group-hover/card:shadow-black/50">
+                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
                                     <Image
                                         src={item.image}
-                                        alt={item.text || "Portfolio node"}
+                                        alt={item.text || "Portfolio asset"}
                                         fill
-                                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/card:scale-105"
+                                        sizes="(max-width: 640px) 50vw, 33vw"
+                                        className="object-cover transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03] group-hover:opacity-90 grayscale-[30%] group-hover:grayscale-0"
                                     />
-                                    {/* কার্ডের ওপর ডার্ক গ্লেজ ওভারলে */}
-                                    <div className="absolute inset-0 bg-black/[0.02] dark:bg-white/[0.01] pointer-events-none" />
                                 </div>
-                                
-                                {/* কার্ডের নিচের মিনিমাল মেটা টেক্সট */}
                                 {item.text && (
-                                    <div className="px-1 transition-transform duration-300 group-hover/card:translate-x-1">
-                                        <p className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 line-clamp-1 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-100 transition">
-                                            {item.text}
-                                        </p>
-                                    </div>
+                                    <p className="text-xs font-light text-zinc-500 dark:text-zinc-400 truncate tracking-wide px-0.5 group-hover:text-black dark:group-hover:text-white transition-colors duration-300">
+                                        {item.text}
+                                    </p>
                                 )}
                             </Link>
                         ))}
                     </div>
-                </section>
 
+                </div>
             </div>
+
         </div>
     );
 };
