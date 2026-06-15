@@ -13,7 +13,7 @@ const PostDetails = async ({ params }) => {
         headers: await headers()
     });
 
-    // ২. সিঙ্গেল পোস্ট ডেটা ফেচ (টোকেন চেক সহ)
+    // ২. সিঙ্গেল পোস্ট ডেটা ফেচ
     let post = null;
     try {
         const res = await axios.get(
@@ -35,7 +35,6 @@ const PostDetails = async ({ params }) => {
     });
     const user = session?.user;
 
-    // 🌟 [FIXED ERROR]: post ভেরিয়েবল অ্যাসাইন করার পর এখন ওনারশিপ চেক করা হচ্ছে
     const isOwnProfile = user && post && user.email === post.email;
 
     // ৪. ক্রিয়েটরের অন্যান্য পোস্ট ফেচ
@@ -62,138 +61,156 @@ const PostDetails = async ({ params }) => {
         downloadUrl = downloadUrl.replace("/upload/", "/upload/fl_attachment/");
     }
 
-    // পোস্ট পাওয়া না গেলে সেফটি রিটার্ন
     if (!post) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black">
-                <p className="text-zinc-500">Post not found or failed to load.</p>
+            <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950">
+                <p className="text-zinc-400 font-medium animate-pulse">Loading post workspace...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-black dark:to-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300 antialiased">
-            <div className="max-w-6xl mx-auto px-4 py-10">
-
-                {/* 🌟 HERO CARD PANEL */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-3xl overflow-hidden bg-white dark:bg-zinc-900/60 backdrop-blur-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.04)] dark:shadow-black/50">
-
-                    {/* LEFT CONTAINER: IMAGE DISPLAY (7 Columns) */}
-                    <div className="lg:col-span-7 relative flex items-center justify-center p-4 sm:p-6 lg:p-10 bg-zinc-100 dark:bg-zinc-950/40 border-b lg:border-b-0 lg:border-r border-zinc-200/60 dark:border-zinc-800/60 group/hero">
-                        {post?.image && (
-                            <div className="relative w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 shadow-sm transition-all duration-500 group-hover/hero:shadow-xl">
-                                <Image
-                                    src={post.image}
-                                    alt={post?.text || "Post artwork"}
-                                    width={1200}
-                                    height={1200}
-                                    priority
-                                    className="w-full h-auto max-h-[70vh] object-contain block transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/hero:scale-[1.015]"
-                                />
-                                <div className="absolute inset-0 bg-black/[0.01] dark:bg-white/[0.01] pointer-events-none" />
-                            </div>
-                        )}
+        <div className="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-50 font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+            
+            {/* মেইন কনটেন্ট র্যাপার - Behance স্টাইল ফ্লুইড লেআউট */}
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
+                
+                {/* 🌟 NEW STRUCTURE: STUDIO WORKSPACE LAYOUT */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                    
+                    {/* LEFT SIDE: IMMERSIVE ARTWORK VIEWER (7 Columns) */}
+                    <div className="lg:col-span-7 xl:col-span-8 w-full">
+                        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.02)] dark:shadow-black/20 group/viewer">
+                            {post?.image && (
+                                <div className="p-2 sm:p-4 md:p-6 lg:p-8 flex items-center justify-center min-h-[50vh] lg:min-h-[75vh]">
+                                    <Image
+                                        src={post.image}
+                                        alt={post?.text || "Creative showcase"}
+                                        width={1600}
+                                        height={1200}
+                                        priority
+                                        className="w-full h-auto max-h-[80vh] object-contain rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.04)] dark:shadow-black/40 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/viewer:scale-[1.01]"
+                                    />
+                                </div>
+                            )}
+                            {/* আর্টওয়ার্কের ওপর হালকা গ্লস ফিনিশ */}
+                            <div className="absolute inset-0 bg-gradient-to-tr from-black/[0.02] via-transparent to-white/[0.02] pointer-events-none" />
+                        </div>
                     </div>
 
-                    {/* RIGHT CONTAINER: METADATA & ACTIONS (5 Columns) */}
-                    <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 lg:p-10">
+                    {/* RIGHT SIDE: INSIGHTS & ACTIONS PANEL (5 Columns) - Sticky Enabled */}
+                    <div className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24 space-y-6">
                         
-                        <div>
-                            {/* Creator Information */}
+                        {/* মেটা ইনফো কার্ড */}
+                        <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-900/50 border border-zinc-200/60 dark:border-zinc-800/60 shadow-[0_20px_50px_rgba(0,0,0,0.03)] dark:shadow-black/30 backdrop-blur-md">
+                            
+                            {/* ক্রিয়েটর প্রোফাইল হেডার */}
                             <Link
                                 href={isOwnProfile ? "/profile" : `/profile/${post?.email}`}
-                                className="flex items-center gap-4 group/author border-b border-zinc-100 dark:border-zinc-800/60 pb-6 mb-6"
+                                className="flex items-center gap-4 group/user pb-6 mb-6 border-b border-zinc-100 dark:border-zinc-800/60"
                             >
-                                <Avatar className="h-14 w-14 ring-2 ring-zinc-200/80 dark:ring-zinc-800 transition-all duration-300 group-hover/author:ring-black dark:group-hover/author:ring-white">
+                                <Avatar className="h-12 w-12 sm:h-14 sm:w-14 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 ring-2 ring-zinc-200 dark:ring-zinc-800 transition-all duration-500 ease-out group-hover/user:ring-zinc-950 dark:group-hover/user:ring-zinc-200">
                                     <Avatar.Image 
                                         src={post?.userImage || "/avatar.jpg"} 
-                                        alt={post?.name || "User"}
+                                        alt={post?.name || "Creator"}
                                         className="object-cover"
                                     />
-                                    <Avatar.Fallback className="bg-zinc-900 text-white font-bold text-lg">
-                                        {post?.name?.charAt(0)?.toUpperCase() || "U"}
+                                    <Avatar.Fallback className="bg-zinc-950 text-white font-semibold">
+                                        {post?.name?.charAt(0)?.toUpperCase() || "C"}
                                     </Avatar.Fallback>
                                 </Avatar>
 
-                                <div>
-                                    <h2 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover/author:text-zinc-600 dark:group-hover/author:text-zinc-400 transition">
-                                        {post?.name || "Anonymous Creator"}
+                                <div className="space-y-0.5">
+                                    <h2 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover/user:text-zinc-600 dark:group-hover/user:text-zinc-400 transition duration-200">
+                                        {post?.name || "Creative Talent"}
                                     </h2>
-                                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mt-0.5">
-                                        Independent Creator
+                                    <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 tracking-wide">
+                                        Verified Network Asset
                                     </p>
                                 </div>
                             </Link>
 
-                            {/* Description Block */}
+                            {/* প্রজেক্ট ডেসক্রিপশন */}
                             {post?.text && (
-                                <div className="p-5 rounded-2xl bg-zinc-100/60 dark:bg-zinc-800/40 border border-zinc-200/40 dark:border-zinc-700/40 backdrop-blur-md shadow-inner">
-                                    <p className="text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300 whitespace-pre-line tracking-wide">
+                                <div className="space-y-3">
+                                    <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                                        Project Context
+                                    </span>
+                                    <p className="text-sm sm:text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300 whitespace-pre-line font-normal">
                                         {post.text}
                                     </p>
                                 </div>
                             )}
+
+                            {/* প্রফেশনাল অ্যাকশন বাটন ম্যাট্রিক্স */}
+                            <div className="mt-8 space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-50 dark:hover:bg-zinc-200 text-white dark:text-zinc-950 font-bold text-xs sm:text-sm tracking-wide transition duration-300 active:scale-[0.98] shadow-sm">
+                                        Appreciate
+                                    </button>
+                                    <button className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-zinc-100 hover:bg-zinc-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-bold text-xs sm:text-sm tracking-wide border border-zinc-200/40 dark:border-zinc-700/40 transition duration-300 active:scale-[0.98]">
+                                        Share Asset
+                                    </button>
+                                </div>
+
+                                <a
+                                    href={downloadUrl}
+                                    download={`${post?.name || "source"}-file.jpg`}
+                                    className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-zinc-800 hover:to-zinc-700 dark:from-zinc-100 dark:to-zinc-200 dark:hover:from-zinc-200 dark:hover:to-zinc-300 text-white dark:text-zinc-950 font-bold text-xs sm:text-sm tracking-wide transition duration-300 text-center shadow-lg shadow-black/[0.03] dark:shadow-white/[0.02]"
+                                >
+                                    Download Source File
+                                </a>
+                            </div>
+
                         </div>
-
-                        {/* Interactive Buttons Matrix */}
-                        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <button className="flex items-center justify-center px-6 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-black font-bold text-[14px] shadow-md shadow-black/5 dark:shadow-white/5 transition duration-200 active:scale-98">
-                                Save
-                            </button>
-
-                            <button className="flex items-center justify-center px-6 py-3.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/60 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-bold text-[14px] border border-zinc-200/40 dark:border-zinc-700/40 transition duration-200 active:scale-98">
-                                Share
-                            </button>
-
-                            <a
-                                href={downloadUrl}
-                                download={`${post?.name || "download"}-post.jpg`}
-                                className="flex items-center justify-center px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-[14px] shadow-lg shadow-emerald-500/10 transition duration-200 active:scale-98 hover:opacity-95"
-                            >
-                                Download
-                            </a>
-                        </div>
-
                     </div>
+
                 </div>
 
-                {/* 🗂️ MORE POSTS GRID SECTION */}
-                <section className="mt-20">
-                    <div className="flex items-end justify-between mb-8 pb-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
-                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
-                            More from {post?.name || "this creator"}
-                        </h3>
-                        <span className="text-xs sm:text-sm font-bold bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 px-3 py-1.5 rounded-full border border-zinc-200/40 dark:border-zinc-800">
-                            {userPosts?.length} {userPosts?.length === 1 ? "project" : "projects"}
+                {/* 🗂️ MORE PROJECTS GRID - ULTRA MODERN GRID SYSTEM */}
+                <section className="mt-24 lg:mt-32">
+                    <div className="flex items-baseline justify-between mb-10 border-b border-zinc-200/60 dark:border-zinc-800/60 pb-5">
+                        <div className="space-y-1">
+                            <h3 className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                                Curator Portfolio Showcase
+                            </h3>
+                            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+                                Additional works indexed from {post?.name || "the artist"}
+                            </p>
+                        </div>
+                        <span className="text-xs font-mono font-bold bg-zinc-100 dark:bg-zinc-900/80 text-zinc-500 dark:text-zinc-400 px-3 py-1 rounded-md border border-zinc-200/40 dark:border-zinc-800">
+                            INDEX: {userPosts?.length || 0}
                         </span>
                     </div>
 
-                    {/* Grid System: Mobile/Tablet 2 columns, Desktop 4 columns */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {/* ৩ থেকে ৪ কলামের ডাইনামিক রেসপন্সিভ গ্রিড */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {userPosts?.map((item) => (
                             <Link
                                 key={item._id}
                                 href={`/post/${item._id}`}
-                                className="group/card relative overflow-hidden rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/60 shadow-sm transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] dark:hover:shadow-black/60"
+                                className="group/card block space-y-3"
                             >
-                                <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full overflow-hidden">
+                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/40 dark:border-zinc-800/40 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/card:shadow-[0_24px_48px_rgba(0,0,0,0.06)] dark:group-hover/card:shadow-black/50">
                                     <Image
                                         src={item.image}
-                                        alt={item.text || "Creator artwork"}
+                                        alt={item.text || "Portfolio node"}
                                         fill
-                                        sizes="(max-width: 768px) 50vw, 25vw"
-                                        className="object-cover group-hover/card:scale-105 transition duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+                                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/card:scale-105"
                                     />
-                                    
-                                    {/* Glassmorphism Title Slider on Hover */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-all duration-300 flex items-end p-3 sm:p-4">
-                                        {item.text && (
-                                            <p className="text-white text-xs font-medium leading-snug line-clamp-2 transform translate-y-2 group-hover/card:translate-y-0 transition-transform duration-300">
-                                                {item.text}
-                                              </p>
-                                        )}
-                                    </div>
+                                    {/* কার্ডের ওপর ডার্ক গ্লেজ ওভারলে */}
+                                    <div className="absolute inset-0 bg-black/[0.02] dark:bg-white/[0.01] pointer-events-none" />
                                 </div>
+                                
+                                {/* কার্ডের নিচের মিনিমাল মেটা টেক্সট */}
+                                {item.text && (
+                                    <div className="px-1 transition-transform duration-300 group-hover/card:translate-x-1">
+                                        <p className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 line-clamp-1 group-hover/card:text-zinc-900 dark:group-hover/card:text-zinc-100 transition">
+                                            {item.text}
+                                        </p>
+                                    </div>
+                                )}
                             </Link>
                         ))}
                     </div>
