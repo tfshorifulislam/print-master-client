@@ -63,151 +63,137 @@ const PostDetails = async ({ params }) => {
 
     if (!post) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#050505]">
-                <p className="text-zinc-400 text-sm font-light tracking-widest animate-pulse">LOADING WORK...</p>
+            <div className="min-h-screen flex items-center justify-center bg-black">
+                <div className="h-8 w-8 border-2 border-t-purple-500 border-zinc-800 rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-white dark:bg-[#050505] text-zinc-900 dark:text-zinc-100 transition-colors duration-500 antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+        <div className="min-h-screen bg-[#07070a] text-zinc-100 transition-colors duration-300">
             
-            {/* 🎥 CINEMATIC HERO WORKSPACE */}
-            <div className="w-full max-w-5xl mx-auto px-4 pt-8 pb-24 sm:pt-12 sm:pb-32">
-                
-                {/* BACK BUTTON / MINI HEADER */}
-                <div className="mb-8 flex items-center justify-between">
-                    <Link 
-                        href="/" 
-                        className="text-xs font-medium tracking-widest uppercase text-zinc-400 hover:text-black dark:hover:text-white transition-colors"
-                    >
-                        ← Back to Gallery
+            {/* 🌟 STREAMLINED FLOATING TOP NAVIGATION */}
+            <header className="sticky top-0 z-50 bg-[#07070a]/80 backdrop-blur-md border-b border-zinc-900 px-4 py-4">
+                <div className="max-w-7xl mx-auto flex items-center justify-between">
+                    <Link href="/" className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white transition">
+                        <span className="group-hover:-translate-x-1 transition-transform">←</span> Explore Stream
                     </Link>
-                    <span className="text-xs font-mono text-zinc-400">
-                        ID: {id.slice(-6)}
-                    </span>
+                    
+                    {/* টপ বারে ইন্টারেক্টিভ অ্যাকশন বাটন */}
+                    <div className="flex items-center gap-3">
+                        <a
+                            href={downloadUrl}
+                            download={`${post?.name || "file"}.jpg`}
+                            className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs tracking-wide transition shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+                        >
+                            Get Source
+                        </a>
+                    </div>
                 </div>
+            </header>
 
-                {/* 🖼️ MASTERPIECE VIEWER (ফুল ও অরিজিনাল সাইজ ফোকাস) */}
-                <div className="relative w-full rounded-3xl overflow-hidden bg-zinc-50 dark:bg-[#0a0a0c] p-2 sm:p-6 flex items-center justify-center transition-all duration-700 shadow-[0_30px_100px_rgba(0,0,0,0.04)] dark:shadow-black/40">
+            {/* 🚀 MAIN HERO CONTENT: IMMERSIVE FULL-WIDTH VIEW */}
+            <main className="max-w-7xl mx-auto px-4 py-8">
+                
+                {/* ইমেজ কন্টেইনার - নিয়ন বর্ডার গ্লো এবং ডার্ক মোড ভাইব */}
+                <div className="relative w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-900 shadow-[0_24px_60px_rgba(0,0,0,0.8)]">
                     {post?.image && (
                         <Image
                             src={post.image}
-                            alt={post?.text || "Showcase item"}
-                            width={1600}
-                            height={1200}
+                            alt={post?.text || "Stream showcase"}
+                            width={1920}
+                            height={1085}
                             priority
-                            className="w-full h-auto max-h-[85vh] object-contain rounded-2xl"
+                            className="w-full h-auto max-h-[80vh] object-contain mx-auto block"
                         />
                     )}
                 </div>
 
-                {/* 🎛️ FLOATING GLASS CONTROL BAR & INFO (নিচে এক লাইনে মডার্ন লেআউট) */}
-                <div className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-start px-2">
+                {/* 🏷️ META CONTEXT & ACTIONS BANNER */}
+                <div className="mt-8 bg-zinc-900/40 border border-zinc-900/80 rounded-2xl p-6 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
                     
-                    {/* বাম পাশ: ক্রিয়েটর এবং ডেসক্রিপশন (7 Columns) */}
-                    <div className="md:col-span-7 space-y-6">
-                        
-                        {/* ক্রিয়েটর ব্লক (বর্ডার ছাড়া একদম ক্লিন) */}
-                        <Link
-                            href={isOwnProfile ? "/profile" : `/profile/${post?.email}`}
-                            className="flex items-center gap-3.5 group"
-                        >
-                            <Avatar className="h-11 w-11 ring-1 ring-zinc-200 dark:ring-zinc-800 group-hover:scale-105 transition-transform duration-300">
+                    {/* বাম পাশ: ক্রিয়েটর ডাটা */}
+                    <div className="flex items-center gap-4">
+                        <Link href={isOwnProfile ? "/profile" : `/profile/${post?.email}`} className="relative group">
+                            <Avatar className="h-12 w-12 ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all">
                                 <Avatar.Image src={post?.userImage || "/avatar.jpg"} className="object-cover" />
-                                <Avatar.Fallback className="bg-black text-white text-sm font-bold">
-                                    {post?.name?.charAt(0)}
-                                </Avatar.Fallback>
+                                <Avatar.Fallback className="bg-zinc-800 text-zinc-200">{post?.name?.charAt(0)}</Avatar.Fallback>
                             </Avatar>
-                            <div>
-                                <h2 className="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:opacity-70 transition">
-                                    {post?.name || "Anonymous Artist"}
-                                </h2>
-                                <p className="text-xs text-zinc-400 dark:text-zinc-500 font-light">
-                                    Posted Work
-                                </p>
-                            </div>
+                            <span className="absolute -bottom-1 -right-1 flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span></span>
                         </Link>
-
-                        {/* ডেসক্রিপশন (কোনো ভারী বক্স নেই, জাস্ট ক্লিন মিনিমালিস্ট প্যারাগ্রাফ) */}
-                        {post?.text && (
-                            <p className="text-[15px] leading-relaxed text-zinc-600 dark:text-zinc-300 whitespace-pre-line font-light tracking-wide max-w-xl">
-                                {post.text}
-                            </p>
-                        )}
+                        
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h2 className="text-base font-bold tracking-tight text-white">{post?.name || "Anonymous"}</h2>
+                                <span className="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-full font-mono">PRO</span>
+                            </div>
+                            {post?.text ? (
+                                <p className="text-sm text-zinc-400 mt-1 line-clamp-2 max-w-xl font-light">{post.text}</p>
+                            ) : (
+                                <p className="text-xs text-zinc-500 mt-0.5">Active Studio Creator</p>
+                            )}
+                        </div>
                     </div>
 
-                    {/* ডান পাশ: প্রিমিয়াম ও স্লীক অ্যাকশন বাটন প্যানেল (5 Columns) */}
-                    <div className="md:col-span-5 flex flex-col sm:flex-row md:flex-col gap-3 w-full md:justify-end">
-                        
-                        <div className="grid grid-cols-2 gap-3 w-full">
-                            {/* Save বাটন */}
-                            <button className="flex-1 px-5 py-3.5 rounded-full bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-black font-semibold text-xs tracking-wider uppercase transition-all active:scale-95 shadow-sm">
-                                Save
-                            </button>
-
-                            {/* Share বাটন */}
-                            <button className="flex-1 px-5 py-3.5 rounded-full bg-transparent text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 font-semibold text-xs tracking-wider uppercase border border-zinc-200 dark:border-zinc-800 transition-all active:scale-95">
-                                Share
-                            </button>
-                        </div>
-
-                        {/* Download বাটন (ফুল উইডথ লাইনার) */}
-                        <a
-                            href={downloadUrl}
-                            download={`${post?.name || "artwork"}.jpg`}
-                            className="w-full px-5 py-3.5 rounded-full bg-zinc-100 dark:bg-[#111115] hover:bg-zinc-200 dark:hover:bg-[#16161c] text-zinc-900 dark:text-zinc-100 font-semibold text-xs tracking-wider uppercase transition-all active:scale-95 text-center border border-zinc-200/40 dark:border-zinc-800/40"
-                        >
-                            Download Source File
-                        </a>
+                    {/* ডান পাশ: সোশ্যাল ইন্টারঅ্যাকশন বাটন */}
+                    <div className="flex items-center gap-3 w-full md:w-auto">
+                        <button className="flex-1 md:flex-none px-5 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-100 font-medium text-xs tracking-wide transition active:scale-95 border border-zinc-700/50">
+                            Appreciate
+                        </button>
+                        <button className="flex-1 md:flex-none px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white font-medium text-xs tracking-wide transition active:scale-95 border border-zinc-800">
+                            Collect
+                        </button>
                     </div>
 
                 </div>
 
-            </div>
+            </main>
 
-            {/* 🗂️ CLEAN ART PORTFOLIO MATRIX (নিচের সেকশন) */}
-            <div className="bg-zinc-50/50 dark:bg-[#0a0a0c]/40 border-t border-zinc-100 dark:border-zinc-900/60 w-full">
-                <div className="max-w-5xl mx-auto px-4 py-20">
+            {/* 🗂️ PINTEREST-STYLE MASONRY STREAM (নিচের রিকমেন্ডেশন গ্যালারি) */}
+            <section className="bg-[#0b0b0f] border-t border-zinc-900 mt-16 py-16">
+                <div className="max-w-7xl mx-auto px-4">
                     
-                    {/* সেকশন হেডার */}
-                    <div className="flex items-baseline justify-between mb-12">
-                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
-                            More Creations
+                    {/* সেকশন টাইটেল */}
+                    <div className="mb-10">
+                        <h3 className="text-sm font-bold uppercase tracking-widest text-purple-400">
+                            More From This Space
                         </h3>
-                        <span className="text-xs font-mono text-zinc-400">
-                            [{userPosts?.length || 0}]
-                        </span>
+                        <p className="text-xs text-zinc-500 mt-1">Discover other assets uploaded by the same creator account</p>
                     </div>
 
-                    {/* গ্রিড সিস্টেম: কোনো বর্ডার বা শ্যাডো নেই, জাস্ট ক্লিন ইমেজ ম্যাট্রিক্স */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8">
+                    {/* ডাইনামিক Pinterest টাইপ কলাম সিস্টেম */}
+                    <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
                         {userPosts?.map((item) => (
                             <Link
                                 key={item._id}
                                 href={`/post/${item._id}`}
-                                className="group block space-y-3"
+                                className="break-inside-avoid block relative rounded-xl overflow-hidden group bg-zinc-950 border border-zinc-900/60 transition-all duration-300 hover:border-purple-500/40 hover:shadow-[0_10px_30px_rgba(147,51,234,0.1)]"
                             >
-                                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-900">
-                                    <Image
+                                <div className="relative w-full h-auto">
+                                    <img
                                         src={item.image}
-                                        alt={item.text || "Portfolio asset"}
-                                        fill
-                                        sizes="(max-width: 640px) 50vw, 33vw"
-                                        className="object-cover transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03] group-hover:opacity-90 grayscale-[30%] group-hover:grayscale-0"
+                                        alt="Gallery Grid Node"
+                                        className="w-full h-auto object-cover block transition duration-500 group-hover:scale-[1.02]"
+                                        loading="lazy"
                                     />
+                                    
+                                    {/* স্মার্ট ওভারলে হভার ইফেক্ট */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
+                                        <p className="text-xs text-white font-medium truncate">{item.text || "View Project"}</p>
+                                        <span className="text-[10px] text-purple-400 font-mono mt-1">Click to view →</span>
+                                    </div>
                                 </div>
-                                {item.text && (
-                                    <p className="text-xs font-light text-zinc-500 dark:text-zinc-400 truncate tracking-wide px-0.5 group-hover:text-black dark:group-hover:text-white transition-colors duration-300">
-                                        {item.text}
-                                    </p>
-                                )}
                             </Link>
                         ))}
                     </div>
 
+                    {/* কোনো পোস্ট না থাকলে সেফটি মেসেজ */}
+                    {userPosts?.length === 0 && (
+                        <p className="text-zinc-600 text-xs text-center py-8 font-mono">NO MORE NODES FOUND IN THIS REPOSITORY</p>
+                    )}
+
                 </div>
-            </div>
+            </section>
 
         </div>
     );
