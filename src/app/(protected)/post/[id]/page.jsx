@@ -154,47 +154,81 @@ const PostDetails = async ({ params }) => {
             </main>
 
             {/* MORE POSTS */}
-            <section className="border-t border-zinc-200 dark:border-zinc-800 py-14 bg-zinc-50 dark:bg-black">
+            <section className="border-t border-zinc-200 dark:border-zinc-800 py-16 bg-white dark:bg-black transition-colors duration-300">
 
                 <div className="max-w-6xl mx-auto px-4">
 
-                    <div className="mb-6">
-                        <h3 className="text-sm font-semibold tracking-wide">
+                    {/* HEADER */}
+                    <div className="mb-8">
+                        <h3 className="text-sm font-semibold tracking-wide text-zinc-900 dark:text-white">
                             More from this creator
                         </h3>
-                        <p className="text-xs text-zinc-500 mt-1">
-                            Explore other works
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                            Explore more projects and creative works
                         </p>
                     </div>
 
-                    <div className="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5">
+                    {/* GRID */}
+                    <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-5 space-y-5">
 
                         {userPosts?.map((item) => (
                             <Link
                                 key={item._id}
                                 href={`/post/${item._id}`}
-                                className="block break-inside-avoid rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:shadow-md transition"
+                                className="group block break-inside-avoid rounded-2xl overflow-hidden 
+                    bg-white dark:bg-zinc-950 
+                    border border-zinc-200 dark:border-zinc-800 
+                    shadow-sm hover:shadow-lg dark:hover:shadow-xl 
+                    transition-all duration-300"
                             >
-                                <img
-                                    src={item.image}
-                                    alt=""
-                                    className="w-full object-cover hover:scale-[1.02] transition duration-300"
-                                />
 
-                                <div className="p-3">
-                                    <p className="text-xs text-zinc-600 dark:text-zinc-300 truncate">
-                                        {item.text || "Untitled"}
-                                    </p>
+                                {/* IMAGE */}
+                                <div className="relative overflow-hidden">
+
+                                    <img
+                                        src={item.image}
+                                        alt={item.text || "post"}
+                                        className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+
+                                    {/* OVERLAY */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+
+                                        <p className="text-xs text-white font-medium line-clamp-2">
+                                            {item.text || "Untitled Project"}
+                                        </p>
+
+                                    </div>
+
                                 </div>
+
+                                {/* FOOTER */}
+                                <div className="p-3 flex items-center justify-between">
+
+                                    <span className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
+                                        {item.text || "Untitled"}
+                                    </span>
+
+                                    <span className="text-[10px] px-2 py-1 rounded-md 
+                            bg-zinc-100 dark:bg-zinc-900 
+                            text-zinc-600 dark:text-zinc-300">
+                                        View
+                                    </span>
+
+                                </div>
+
                             </Link>
                         ))}
 
                     </div>
 
+                    {/* EMPTY STATE */}
                     {userPosts?.length === 0 && (
-                        <p className="text-center text-xs text-zinc-400 py-10">
-                            No more posts
-                        </p>
+                        <div className="text-center py-14">
+                            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                                No more posts from this creator
+                            </p>
+                        </div>
                     )}
 
                 </div>
