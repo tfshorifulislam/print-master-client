@@ -19,7 +19,6 @@ import Link from "next/link";
 const Profile = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
 
     const { data: session, isPending } = useSession();
     const user = session?.user;
@@ -31,6 +30,7 @@ const Profile = () => {
         const fetchPosts = async () => {
             try {
                 setLoading(true);
+
                 const { data: token } = await authClient.token();
 
                 const res = await axios.get(
@@ -49,7 +49,6 @@ const Profile = () => {
                 setPosts(userPosts);
             } catch (err) {
                 console.error(err);
-                setError("Failed to load posts");
             } finally {
                 setLoading(false);
             }
@@ -62,136 +61,159 @@ const Profile = () => {
         return <IsPendingLoading />;
     }
 
-    const username = user?.email?.split("@")[0] || "username";
+    const username = user?.email?.split("@")[0] || "user";
 
     return (
-        <div className="min-h-screen max-w-6xl mx-auto bg-white dark:bg-black text-black dark:text-white">
+        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
 
             {/* HEADER */}
-            <div className="sticky top-0 z-40 backdrop-blur-md bg-white/95 dark:bg-black/95 flex items-center h-14 px-4 border-b border-zinc-200 dark:border-zinc-800">
-                <div className="flex flex-col">
-                    <h1 className="text-xl font-bold">
-                        {user?.name || "User Name"}
-                    </h1>
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                        {posts.length} {posts.length === 1 ? "Post" : "Posts"}
-                    </span>
+            <div className="sticky top-0 z-40 bg-white/80 dark:bg-black/70 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800">
+                <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+
+                    <div>
+                        <h1 className="text-xl font-semibold">
+                            {user?.name || "User"}
+                        </h1>
+                        <p className="text-xs text-zinc-500">
+                            {posts.length} posts
+                        </p>
+                    </div>
+
+                    <button className="p-2 rounded-full border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
+                        <FaEllipsis />
+                    </button>
+
                 </div>
             </div>
 
-            {/* HERO */}
-            <div>
+            {/* PROFILE HEADER */}
+            <div className="max-w-6xl mx-auto px-4">
+
                 {/* BANNER */}
-                <div className="w-full aspect-[3/1] bg-zinc-200 dark:bg-zinc-800 relative overflow-hidden">
+                <div className="relative mt-4 aspect-[3/1] rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                     {user?.banner && (
                         <Image
                             src={user.banner}
                             alt="banner"
                             fill
                             className="object-cover"
-                            priority
                         />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
 
-                {/* AVATAR + ACTIONS */}
-                <div className="px-4 flex justify-between relative -mt-12 sm:-mt-16">
-                    <div className="relative w-24 h-24 sm:w-32 sm:h-32">
-                        <div className="absolute inset-0 rounded-full border-4 border-white dark:border-black overflow-hidden bg-zinc-900 shadow-sm">
+                {/* PROFILE INFO */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 -mt-10 px-2">
+
+                    {/* LEFT */}
+                    <div className="flex items-end gap-4">
+
+                        <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white dark:border-black overflow-hidden bg-zinc-200">
                             <Image
                                 src={user?.image || "/avatar.jpg"}
                                 alt="avatar"
                                 fill
                                 className="object-cover"
-                                priority
                             />
                         </div>
+
+                        <div>
+                            <h2 className="text-2xl font-semibold">
+                                {user?.name}
+                            </h2>
+
+                            <p className="text-sm text-zinc-500">
+                                @{username}
+                            </p>
+
+                            <p className="text-sm mt-2 text-zinc-600 dark:text-zinc-300 max-w-md">
+                                {user?.bio || "Digital Creator ✨"}
+                            </p>
+                        </div>
+
                     </div>
 
-                    <div className="mt-14 sm:mt-18 flex items-center gap-2">
-                        <button className="p-2.5 border border-zinc-300 dark:border-zinc-700 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">
-                            <FaEllipsis className="w-4 h-4" />
-                        </button>
+                    {/* RIGHT ACTIONS */}
+                    <div className="flex gap-3">
 
-                        <button className="px-5 py-2 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors">
+                        <button className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
                             Edit Profile
                         </button>
+
+                        <button className="px-4 py-2 rounded-lg bg-black text-white dark:bg-white dark:text-black text-sm font-medium hover:opacity-80 transition">
+                            Share
+                        </button>
+
                     </div>
+
                 </div>
 
-                {/* USER INFO */}
-                <div className="px-4 mt-3">
-                    <h2 className="text-2xl font-bold tracking-tight">{user?.name}</h2>
+                {/* META INFO */}
+                <div className="flex flex-wrap gap-4 mt-5 text-sm text-zinc-500">
 
-                    <span className="text-zinc-500 dark:text-zinc-400 text-[15px]">
-                        @{username}
+                    <span className="flex items-center gap-2">
+                        <FaLocationDot /> Global
                     </span>
 
-                    <p className="mt-3 text-[15px] leading-relaxed text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap">
-                        {user?.bio || "Digital Creator 🎬 · Welcome to my profile ✨"}
-                    </p>
+                    <span className="flex items-center gap-2 hover:underline cursor-pointer">
+                        <FaLink /> domain.com
+                    </span>
 
-                    <div className="flex flex-wrap gap-x-5 gap-y-1.5 mt-3 text-[14px] text-zinc-500 dark:text-zinc-400">
-                        <span className="flex items-center gap-1.5">
-                            <FaLocationDot className="text-zinc-400" /> Global
-                        </span>
-                        <span className="flex items-center gap-1.5 text-sky-500 hover:underline cursor-pointer">
-                            <FaLink /> domain.com
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                            <FaCalendarDays className="text-zinc-400" /> Joined 2026
-                        </span>
-                    </div>
+                    <span className="flex items-center gap-2">
+                        <FaCalendarDays /> Joined 2026
+                    </span>
 
-                    <div className="flex gap-6 mt-4 text-sm pb-5 border-b border-zinc-100 dark:border-zinc-900">
-                        <span>
-                            <b className="text-black dark:text-white font-bold">
-                                {posts.length}
-                            </b>{" "}
-                            Posts
-                        </span>
-                    </div>
                 </div>
+
+                {/* STATS */}
+                <div className="mt-6 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+                    <span className="text-sm">
+                        <b className="text-black dark:text-white">{posts.length}</b> Posts
+                    </span>
+                </div>
+
             </div>
 
-            {/* POSTS GRID UPDATE */}
-            {/* columns-2 থেকে sm:columns-4 ব্যবহার করা হয়েছে যেন মোবাইল স্ক্রিনে ২টা এবং বড় স্ক্রিনে ৪টা কলামে Masonry লেআউট তৈরি হয় */}
-            <div className="columns-2 sm:columns-4 gap-3 sm:gap-4 px-4 pt-5 pb-10">
-                {[...posts].reverse().map((post) => (
-                    <div
-                        key={post._id}
-                        className="mb-3 sm:mb-4 break-inside-avoid group relative rounded-xl sm:rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 shadow-sm border border-zinc-100 dark:border-zinc-900/50 hover:shadow-md transition-all duration-300"
-                    >
-                        {post?.image && (
-                            <Link
-                                href={`/post/${post._id}`}
-                                className="block relative overflow-hidden"
-                            >
+            {/* POSTS GRID */}
+            <div className="max-w-6xl mx-auto px-4 py-6">
+
+                <div className="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+
+                    {[...posts].reverse().map((post) => (
+                        <div
+                            key={post._id}
+                            className="group relative break-inside-avoid rounded-2xl overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:shadow-lg transition"
+                        >
+
+                            <Link href={`/post/${post._id}`}>
                                 <Image
                                     src={post.image}
                                     alt="post"
-                                    width={500} // Masonry গ্রিডের জন্য ৮০০-র চেয়ে ৫০০ উইডথ বেশি অপ্টিমাইজড ও ফাস্ট লোড হবে
-                                    height={500}
-                                    className="w-full h-auto object-cover block group-hover:scale-[1.02] transition-transform duration-300"
+                                    width={600}
+                                    height={600}
+                                    className="w-full h-auto object-cover group-hover:scale-[1.03] transition duration-300"
                                 />
                             </Link>
-                        )}
 
-                        {/* DELETE BUTTON */}
-                        <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                            <ProfilePostDelete
-                                postId={post._id}
-                                onDeleteSuccess={(id) => {
-                                    setPosts((prev) =>
-                                        prev.filter((p) => p._id !== id)
-                                    );
-                                }}
-                            />
+                            {/* DELETE */}
+                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
+                                <ProfilePostDelete
+                                    postId={post._id}
+                                    onDeleteSuccess={(id) => {
+                                        setPosts((prev) =>
+                                            prev.filter((p) => p._id !== id)
+                                        );
+                                    }}
+                                />
+                            </div>
+
                         </div>
-                    </div>
-                ))}
+                    ))}
+
+                </div>
+
             </div>
+
         </div>
     );
 };
